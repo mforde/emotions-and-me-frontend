@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import './App.css';
 import reducer from './reducers'
 import Home from  './containers/Home.js';
+import Webcam from './containers/Webcam.js';
 
 class App extends Component {
   render() {
@@ -16,7 +17,7 @@ class App extends Component {
       <Provider store={store}>
         <div className="App">
           <header className="App-header">
-            <Home />
+            <Webcam />
            </header>
         </div>
       </Provider>
