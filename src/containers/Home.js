@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAllNames } from '../actions';
 import Names from '../components/Names.js';
+import NavBar from "../components/NavBar";
+import FeatureGrid from "../components/FeatureGrid";
 
 class Home extends Component {
   static propTypes = {
@@ -25,7 +27,9 @@ class Home extends Component {
 
     return (
       <div>
+        <NavBar/>
         <Names names={names} />
+        <FeatureGrid/>
       </div>
     )
   }
