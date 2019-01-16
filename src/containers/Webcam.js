@@ -7,14 +7,13 @@ class Webcam extends Component {
     static propTypes = {
         webcamStream: PropTypes.instanceOf(MediaStream).isRequired,
         isFetching: PropTypes.bool.isRequired,
-        dispatch: PropTypes.func.isRequired
+        getWebcamStream: PropTypes.func.isRequired,
     }
 
     componentDidMount() {
-        const { dispatch, webcamStream } = this.props;
-        dispatch(getWebcamStream());
+        this.props.getWebcamStream();
         if(this.video) {
-            this.video.srcObject = webcamStream;
+            this.video.srcObject = this.props.webcamStream;
         }
     }
 
@@ -41,8 +40,15 @@ class Webcam extends Component {
     }
 }
 
-const mapStateToProps = state => state.webcamStream;
+const mapStateToProps = state => {
+    return state.webcamStream
+}
 
+const mapDispatchToProps = {
+    getWebcamStream,
+}
+  
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(Webcam);

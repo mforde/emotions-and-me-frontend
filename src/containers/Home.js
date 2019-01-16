@@ -6,14 +6,13 @@ import Names from '../components/Names.js';
 
 class Home extends Component {
   static propTypes = {
-    names: PropTypes.array.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    names: PropTypes.array.isRequired,
+    fetchAllNames: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchAllNames());
+    this.props.fetchAllNames();
   }
 
   render() {
@@ -33,6 +32,11 @@ class Home extends Component {
 
 const mapStateToProps = state => state.allNames;
 
+const mapDispatchToProps = {
+  fetchAllNames,
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Home);

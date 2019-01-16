@@ -1,13 +1,14 @@
 import {
-    REQUEST_WEBCAM, RECEIVE_WEBCAM_STREAM,
+    REQUEST_WEBCAM, RECEIVE_WEBCAM_STREAM, FAILED_RECEIVE_WEBCAM,
 } from '../actions';
 
 const defaultState = {
     isFetching: false,
+    hasFailed: false,
     webcamStream: new MediaStream(),
 }
 
-const allNames = ( state = defaultState, action) => {
+const webcam = ( state = defaultState, action) => {
     switch (action.type) {
         case REQUEST_WEBCAM:
             return {
@@ -20,14 +21,15 @@ const allNames = ( state = defaultState, action) => {
                 isFetching: false,
                 webcamStream: action.stream,
             }
-        // case FAILED_RECEIVE_WEBCAM:
-        //     return {
-        //         ...state,
-        //         isFetching: false,
-        //     }
+        case FAILED_RECEIVE_WEBCAM:
+            return {
+                ...state,
+                isFetching: false,
+                hasFailed: true,
+            }
         default:
             return state
     }
 }
 
-export default allNames;
+export default webcam;
