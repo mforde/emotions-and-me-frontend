@@ -8,6 +8,7 @@ import reducer from './reducers'
 import NavBar from './components/NavBar.js';
 import Home from  './containers/Home.js';
 import Login from './containers/Login.js';
+import QuizMakerPage from "./containers/QuizMakerPage";
 
 class App extends Component {
   render() {
@@ -25,14 +26,14 @@ class App extends Component {
             <div className="App-body">
                 <Route path="/" exact component={Home} />
                 <Route path="/login" component={Login} />
-                
+
                 {/* comment these out once we have components to link to */}
                 {/* <Route path="/signup" component={SignUp} /> */}
                 {/* <Route path="/webcam" component={Webcam} /> */}
                 {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
                 {/* <Route path="/recordaudio" component={RecordAudio} /> */}
                 {/* <Route path="/browse" component={Browse} /> */}
-                {/* <Route path="/assignmentcreator" component={AssignmentCreator} /> */}
+                <Route path="/assignmentcreator" component={QuizMakerPage} />
                 {/* <Route path="/myassignments" component={MyAssignments} /> */}
 
             </div>
