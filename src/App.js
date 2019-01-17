@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import thunk from 'redux-thunk';
 import './App.css';
 import reducer from './reducers'
+import NavBar from './components/NavBar.js';
 import Home from  './containers/Home.js';
+import Login from './containers/Login.js';
 
 class App extends Component {
   render() {
@@ -14,11 +17,27 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <div className="App">
-          <header className="App-header">
-            <Home />
-           </header>
-        </div>
+        <Router>
+          <div className="App">
+            <header className="App-header">
+                <NavBar />
+            </header>
+            <div className="App-body">
+                <Route path="/" exact component={Home} />
+                <Route path="/login" component={Login} />
+                
+                {/* comment these out once we have components to link to */}
+                {/* <Route path="/signup" component={SignUp} /> */}
+                {/* <Route path="/webcam" component={Webcam} /> */}
+                {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
+                {/* <Route path="/recordaudio" component={RecordAudio} /> */}
+                {/* <Route path="/browse" component={Browse} /> */}
+                {/* <Route path="/assignmentcreator" component={AssignmentCreator} /> */}
+                {/* <Route path="/myassignments" component={MyAssignments} /> */}
+
+            </div>
+          </div>
+        </Router>
       </Provider>
     );
   }

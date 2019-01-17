@@ -21,14 +21,10 @@ class Home extends Component {
   render() {
     const { names, isFetching } = this.props;
 
-    if (isFetching) {
-      return  "Loading...";
-    }
-
+    const namesList = isFetching ? "Loading..." : <Names names={names} />
     return (
       <div>
-        <NavBar/>
-        <Names names={names} />
+        {namesList}
         <FeatureGrid/>
       </div>
     )
