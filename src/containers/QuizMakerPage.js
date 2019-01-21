@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import QuizQuestion from "../components/QuizQuestion"
-import QuizMaker from "../components/QuizMaker"
+import StudentSelect from "../components/StudentSelect";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -10,39 +10,55 @@ class QuizMakerPage extends Component {
 
     state = {
         numQuestions: 1,
-        questions: [(<QuizQuestion key={1} number={1} />)]
-    }
+    };
 
     render() {
+        function quizMaker(questions, addQuestion, removeQuestion) {
+            return (
+                <div className="w3-container w3-margin">
+                    <form>
+                        <div className="questions" id="questions">
+                            {questions}
+                        </div>
+                        <button type="button" className="w3-button" id="addBtn" onClick={addQuestion}>Add Question</button>
+                        <button type="button" className="w3-button" id="removeBtn" onClick={removeQuestion}>Remove Question</button>
+                        <StudentSelect/>
+                        <button type="button" className="w3-button w3-bar" id="btn">Save & Send Quiz</button>
+                    </form>
+                </div>
+            );
+        }
+
+        function questionList(num) {
+            const questions = [];
+            for (let i = 1; i <= num; i++) {
+                questions.push(<QuizQuestion key={i} number={i} />)
+            }
+
+            return questions;
+        }
+
         return (
-            <QuizMaker questions={this.state.questions} addQuestion={this.onAddQuestion}>
-            </QuizMaker>
+            quizMaker(questionList(this.state.numQuestions), this.onAddQuestion, this.onRemoveQuestion)
         );
     }
 
     onAddQuestion = () => {
         this.setState({
             numQuestions: this.state.numQuestions + 1,
-            questions: [this.state.questions, <QuizQuestion key={this.state.numQuestions + 1} number={this.state.numQuestions + 1} />]
-            });
+        });
+    };
+
+    onRemoveQuestion = () => {
+        let newNum = this.state.numQuestions;
+        if(this.state.numQuestions > 1) {
+            newNum -= 1;
+        }
+
+        this.setState({
+            numQuestions: newNum,
+        });
     }
 }
-
-const QuizMaker1 = props => {
-    return (
-        <div className="w3-container w3-margin">
-            <form id="form-class">
-                <div className="form-group w3-container">
-                    <div className="questions" id="questions">
-                        {props.questions}
-                    </div>
-                </div>
-                <button type="button" className="w3-button" id="btn">Submit</button>
-                <button type="button" className="w3-button" id="addBtn" onClick={props.addQuestion}>Add Question</button>
-            </form>
-        </div>
-    );
-}
-
 
 export default QuizMakerPage;
