@@ -51,6 +51,28 @@ class App extends Component {
     this.setState({ openModal: ModalOptions.NONE })
   }
 
+  renderRoutes({ isLoggedIn }) {
+    if (!isLoggedIn) {
+      return (
+        <Route path="/" render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
+      )
+    }
+    
+    return (
+      <div>
+        <Route path="/" exact render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
+        <Route path="/webcam" component={Webcam} />
+
+        {/* comment these out once we have components to link to */}
+        {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
+        {/* <Route path="/recordaudio" component={RecordAudio} /> */}
+        {/* <Route path="/browse" component={Browse} /> */}
+        {/* <Route path="/assignmentcreator" component={AssignmentCreator} /> */}
+        {/* <Route path="/myassignments" component={MyAssignments} /> */}
+      </div>
+    )
+  }
+
   render() {
     const middleware = [ thunk ]
     const store = createStore(reducer, applyMiddleware(...middleware));
@@ -80,16 +102,7 @@ class App extends Component {
                 />
             </header>
             <div>
-                <Route path="/" exact render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
-                <Route path="/webcam" component={Webcam} />
-
-                {/* comment these out once we have components to link to */}
-                {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
-                {/* <Route path="/recordaudio" component={RecordAudio} /> */}
-                {/* <Route path="/browse" component={Browse} /> */}
-                {/* <Route path="/assignmentcreator" component={AssignmentCreator} /> */}
-                {/* <Route path="/myassignments" component={MyAssignments} /> */}
-
+                {this.renderRoutes({ isLoggedIn })}
             </div>
           </div>
         </Router>

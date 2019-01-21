@@ -35,10 +35,10 @@ class Webcam extends Component {
         }
 
         return (
-            <div className="w3-container">
-                <h2 className="w3-center">Try some faces!</h2>
-                <video className="w3-center" autoPlay ref={video => {this.video = video}} />
-                <h3 className="w3-center w3-padding">
+            <div className="w3-container w3-center">
+                <h2>Try some faces!</h2>
+                <video autoPlay ref={video => {this.video = video}} />
+                <h3 className="w3-padding">
                     Your emotion:&nbsp;
                     <EmotionLabel emotion={Emotions.HAPPY} />
                 </h3>
