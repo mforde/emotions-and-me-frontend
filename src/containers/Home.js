@@ -1,38 +1,32 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchAllNames } from '../actions';
-import Names from '../components/Names.js';
-import NavBar from "../components/NavBar";
 import FeatureGrid from "../components/FeatureGrid";
 
 class Home extends Component {
   static propTypes = {
-    names: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchAllNames());
+    isLoggedIn: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { names, isFetching } = this.props;
+    const { isLoggedIn } = this.props;
 
-    const namesList = isFetching ? "Loading..." : <Names names={names} />
+    if (!isLoggedIn) {
+      return (
+        <div className="w3-center">
+          <h1> Welcome to Emotions & Me! </h1>
+          <h3> Please log in or sign up. </h3>
+        </div>
+        
+         
+      );
+    }
+
     return (
       <div>
-        {namesList}
         <FeatureGrid/>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => state.allNames;
-
-export default connect(
-  mapStateToProps
-)(Home);
+export default Home;
