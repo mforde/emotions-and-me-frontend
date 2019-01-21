@@ -19,35 +19,35 @@ class Signup extends Component {
                         <Modal.Title>Sign up for an account</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form className="w3-container" onSubmit={() => handleSignupAttempt()} >
+                        <form className="w3-container" onSubmit={e => handleSignupAttempt(e)} >
                             <p>
-                                <label>Account Type:</label>
+                                <label htmlFor="account_type">Account Type:</label>
                                 <br/>
                                 <span>
-                                    <input className="w3-radio" type="radio" name="account_type" value="student"/>
+                                    <input className="w3-radio" type="radio" name="account_type" value="student" required />
                                     &nbsp;Student
                                 </span>
                                 <br/>
                                 <span>
-                                    <input className="w3-radio" type="radio" name="account_type" value="teacher"/>
+                                    <input className="w3-radio" type="radio" name="account_type" value="teacher" required />
                                     &nbsp;Teacher
                                 </span>
                             </p>
                             <p>
-                                <label>First Name</label>
-                                <input className="w3-input w3-border" type="text" name="first_name" />
+                                <label htmlFor="first_name">First Name</label>
+                                <input className="w3-input w3-border" type="text" name="first_name" required />
                             </p>
                             <p>
-                                <label>Last Name</label>
-                                <input className="w3-input w3-border" type="text" name="last_name" />
+                                <label htmlFor="last_name">Last Name</label>
+                                <input className="w3-input w3-border" type="text" name="last_name" required />
                             </p>
                             <p>
-                                <label>Email</label>
-                                <input className="w3-input w3-border" type="email" name="email" />
+                                <label htmlFor="email">Email</label>
+                                <input className="w3-input w3-border" type="email" name="email" required />
                             </p>
                             <p>
-                                <label>Password</label>
-                                <input className="w3-input w3-border" type="password" name="password" />
+                                <label htmlFor="password">Password</label>
+                                <input className="w3-input w3-border" type="password" name="password" required />
                             </p>
                             <p>
                                 <input className="w3-btn w3-green" type="submit" value="Sign Up" />

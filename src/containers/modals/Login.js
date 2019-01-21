@@ -38,14 +38,14 @@ class Login extends Component {
                         <Modal.Title>Login to your account</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form className="w3-container" onSubmit={() => handleLoginAttempt()}>
+                        <form className="w3-container" onSubmit={e => handleLoginAttempt(e)} >
                             <p>
-                                <label>Username</label>
-                                <input className="w3-input w3-border" type="username" name="username" />
+                                <label htmlFor="username">Username</label>
+                                <input className="w3-input w3-border" type="username" name="username" required />
                             </p>
                             <p>
-                                <label>Password</label>
-                                <input className="w3-input w3-border" type="password" name="password" />
+                                <label htmlFor="password">Password</label>
+                                <input className="w3-input w3-border" type="password" name="password" required />
                             </p>
                             <p>
                                 <button className="w3-btn w3-green" >
