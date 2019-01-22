@@ -20,10 +20,10 @@ class QuizMakerPage extends Component {
                         <div className="questions" id="questions">
                             {questions}
                         </div>
-                        <button type="button" className="w3-button" id="addBtn" onClick={addQuestion}>Add Question</button>
-                        <button type="button" className="w3-button" id="removeBtn" onClick={removeQuestion}>Remove Question</button>
+                        <button type="button" className="w3-button w3-theme" id="addBtn" onClick={addQuestion}>Add Question</button>
+                        <button type="button" className="w3-button w3-theme" id="removeBtn" onClick={removeQuestion}>Remove Question</button>
                         <StudentSelect/>
-                        <button type="button" className="w3-button w3-bar" id="btn">Save & Send Quiz</button>
+                        <button type="button" className="w3-button w3-theme w3-bar" id="btn">Save & Send Quiz</button>
                     </form>
                 </div>
             );

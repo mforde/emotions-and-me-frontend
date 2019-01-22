@@ -8,7 +8,9 @@ import reducer from './reducers'
 import NavBar from './components/NavBar.js';
 import Home from  './containers/Home.js';
 import Login from './containers/Login.js';
+import AssignmentCreator from "./containers/AssignmentCreator";
 import QuizMakerPage from "./containers/QuizMakerPage";
+import TasklistCreator from "./containers/TasklistCreator";
 
 class App extends Component {
   render() {
@@ -33,7 +35,9 @@ class App extends Component {
                 {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
                 {/* <Route path="/recordaudio" component={RecordAudio} /> */}
                 {/* <Route path="/browse" component={Browse} /> */}
-                <Route path="/assignmentcreator" component={QuizMakerPage} />
+                <Route path="/assignmentcreator" component={AssignmentCreator} />
+                <Route path="/assignmentcreator/quizmaker" component={QuizMakerPage} />
+                <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
                 {/* <Route path="/myassignments" component={MyAssignments} /> */}
 
             </div>

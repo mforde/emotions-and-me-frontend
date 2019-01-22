@@ -29,7 +29,7 @@ class StudentSelect extends Component {
         const { items, selectedItems } = this.state;
         return (
             <div className="w3-container w3-padding-top">
-                <label className="w3-padding ">Select Students to Receive Quiz
+                <label className="w3-padding w3-medium">Select Students to Receive Quiz
                     <MultiSelect
                         items={items}
                         selectedItems={selectedItems}
