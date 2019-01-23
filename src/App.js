@@ -10,12 +10,11 @@ import Home from  './containers/Home.js';
 import Webcam from './containers/Webcam.js';
 import Login from './containers/modals/Login';
 import Signup from './containers/modals/Signup';
-import Login from './containers/Login.js';
 import VideoStreaming from './containers/Videostreaming.js'
 import RecordAudio from './containers/RecordAudio.js'
 import Browse from './containers/Browse.js'
-import  AudioList from './components/AudioList.js'
-import  PictureList from './components/PictureList.js'
+import AudioList from './components/AudioList.js'
+import PictureList from './components/PictureList.js'
 import DemoCarousel from './components/PictureCarousel.js'
 import AudioPlayer from './components/AudioPlayer.js';
 
