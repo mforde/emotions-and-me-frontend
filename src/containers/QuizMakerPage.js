@@ -10,6 +10,7 @@ class QuizMakerPage extends Component {
 
     state = {
         numQuestions: 1,
+        questions: [<QuizQuestion key={1} number={1}/>]
     };
 
     render() {
@@ -29,34 +30,34 @@ class QuizMakerPage extends Component {
             );
         }
 
-        function questionList(num) {
-            const questions = [];
-            for (let i = 1; i <= num; i++) {
-                questions.push(<QuizQuestion key={i} number={i} />)
-            }
-
-            return questions;
-        }
-
         return (
-            quizMaker(questionList(this.state.numQuestions), this.onAddQuestion, this.onRemoveQuestion)
+            quizMaker(this.state.questions, this.onAddQuestion, this.onRemoveQuestion)
         );
     }
 
     onAddQuestion = () => {
+        let tempQ = this.state.questions;
+        let tempNum = this.state.numQuestions + 1;
+        tempQ.push(<QuizQuestion key={tempNum} number={tempNum}/>);
+
         this.setState({
-            numQuestions: this.state.numQuestions + 1,
+            numQuestions: tempNum,
+            questions: tempQ
         });
     };
 
     onRemoveQuestion = () => {
+        let tempQ = this.state.questions;
         let newNum = this.state.numQuestions;
+
         if(this.state.numQuestions > 1) {
+            tempQ.pop();
             newNum -= 1;
         }
 
         this.setState({
             numQuestions: newNum,
+            questions: tempQ
         });
     }
 }

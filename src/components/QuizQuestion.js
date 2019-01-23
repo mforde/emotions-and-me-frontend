@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../App.css';
-import FormGroup from "../containers/QuizMakerPage";
 
 
 class QuizQuestion extends Component {
@@ -13,15 +12,6 @@ class QuizQuestion extends Component {
     render() {
 
         function answer(label, num) {
-            /*return (
-                <div className={label + num}>
-                    <FieldGroup
-                        id={label + num}
-                        type={label + num}
-                        label={"Answer " + label + ":"}
-                    />
-                </div>
-            );*/
             return (
                 <div className={label + num + " w3-padding-top"}>
                     <label htmlFor={label + num}>{"Answer " + label + ":"}</label>
