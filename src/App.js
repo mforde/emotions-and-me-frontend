@@ -10,6 +10,14 @@ import Home from  './containers/Home.js';
 import Webcam from './containers/Webcam.js';
 import Login from './containers/modals/Login';
 import Signup from './containers/modals/Signup';
+import Login from './containers/Login.js';
+import VideoStreaming from './containers/Videostreaming.js'
+import RecordAudio from './containers/RecordAudio.js'
+import Browse from './containers/Browse.js'
+import  AudioList from './components/AudioList.js'
+import  PictureList from './components/PictureList.js'
+import DemoCarousel from './components/PictureCarousel.js'
+import AudioPlayer from './components/AudioPlayer.js';
 
 const ModalOptions = {
   NONE: "NONE",
@@ -62,13 +70,13 @@ class App extends Component {
       <div>
         <Route path="/" exact render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
         <Route path="/webcam" component={Webcam} />
-
-        {/* comment these out once we have components to link to */}
-        {/* <Route path="/videostreaming" component={VideoStreaming} /> */}
-        {/* <Route path="/recordaudio" component={RecordAudio} /> */}
-        {/* <Route path="/browse" component={Browse} /> */}
-        {/* <Route path="/assignmentcreator" component={AssignmentCreator} /> */}
-        {/* <Route path="/myassignments" component={MyAssignments} /> */}
+        <Route path="/videostreaming" component={VideoStreaming} />
+        <Route path="/recordaudio" component={RecordAudio} />
+        <Route path="/browse"  component={Browse} />
+        <Route  path="/carousel"  component={DemoCarousel} />
+        <Route  path="/picturelist"  component={PictureList} />
+        <Route  path="/audiolist"  component={AudioList} />
+        <Route  path="/audioplayer"  component={AudioPlayer} />
       </div>
     )
   }
