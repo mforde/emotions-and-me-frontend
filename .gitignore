@@ -18,6 +18,10 @@
 .env.test.local
 .env.production.local
 
+#IDE specific
+.idea/*
+.vscode/*
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
