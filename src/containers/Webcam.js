@@ -12,6 +12,13 @@ class Webcam extends Component {
         this.button_callback = this.button_callback.bind(this);
     }
 
+    componentDidMount() {
+        this.interval = setInterval(() => console.log(document.getElementsByTagName('canvas')[0].toDataURL()), 5000);
+    }
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
     button_callback() {
         function camvas(ctx, callback) {
             var self = this
