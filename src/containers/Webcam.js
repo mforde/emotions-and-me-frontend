@@ -12,26 +12,6 @@ class Webcam extends Component {
         this.button_callback = this.button_callback.bind(this);
     }
 
-    static propTypes = {
-        webcamStream: PropTypes.instanceOf(MediaStream).isRequired,
-        isFetching: PropTypes.bool.isRequired,
-        getWebcamStream: PropTypes.func.isRequired,
-    }
-
-    componentDidMount() {
-        this.props.getWebcamStream();
-        if(this.video) {
-            this.video.srcObject = this.props.webcamStream;
-        }
-    }
-
-    componentDidUpdate() {
-        if(this.video) {
-            const { webcamStream } = this.props;
-            this.video.srcObject = webcamStream;
-        }
-    }
-
     button_callback() {
         function camvas(ctx, callback) {
             var self = this
@@ -84,6 +64,8 @@ class Webcam extends Component {
                 requestAnimationFrame(loop)
             }
         }
+
+
 
         let pico = {}
 
@@ -337,15 +319,15 @@ class Webcam extends Component {
             var rgba = ctx.getImageData(0, 0, 640, 480).data;
             // prepare input to `run_cascade`
             let image = {
-                "pixels": rgba_to_grayscale(rgba, 1000, 1000),
-                "nrows": 1000,
-                "ncols": 1000,
+                "pixels": rgba_to_grayscale(rgba, 480, 640),
+                "nrows": 480,
+                "ncols": 640,
                 "ldim": 640
             }
             let params = {
                 "shiftfactor": 0.1, // move the detection window by 10% of its size
                 "minsize": 100,     // minimum size of a face
-                "maxsize": 10000000,    // maximum size of a face
+                "maxsize": 1000,    // maximum size of a face
                 "scalefactor": 1.1  // for multiscale processing: resize the detection window by 10% when moving to the higher scale
             }
             // run the cascade over the frame and cluster the obtained detections
@@ -387,25 +369,11 @@ class Webcam extends Component {
 
         return (
             <div>
-                <div>
-
-                    <section>
-                        <h3>pico.js: face detection in JavaScript</h3>
-                        <p>If your platform supports the getUserMedia API call, you can try the <b>pico.js</b> real-time face detector.</p>
-                        <p>Simply click the button below and allow the page to access your webcam.</p>
-                        <p><b>All the processing is done on the client side, i.e., without sending images to a server.</b></p>
-                    </section>
-                    <hr />
-                    <p><input type="button" value="Start real-time face detection" onClick={this.button_callback} /></p>
-                    <p><canvas width='1000' height='1000'></canvas></p>
-                </div>
+                <p><input type="button" value="Start real-time face detection" onClick={this.button_callback} /></p>
+                <canvas width= '640' height= '480'></canvas>
             </div>
         )
     }
-}
-
-const mapStateToProps = state => {
-    return state.webcamStream
 }
 
 const mapDispatchToProps = {
@@ -413,6 +381,4 @@ const mapDispatchToProps = {
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
 )(Webcam);
