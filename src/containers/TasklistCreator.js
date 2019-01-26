@@ -114,17 +114,14 @@ const AddWebcamTask = () => {
         <div className={"w3-group w3-card w3-padding"}>
             <h3>Webcam Task</h3>
             <p>Go to the Webcam feature and practice expressing
-                <div className="w3-dropdown-hover">
-                    <button className={"w3-button"}>Pick Emotion</button>
-                    <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                        <button className={"w3-button"}>Anger</button>
-                        <button className={"w3-button"}>Disgust</button>
-                        <button className={"w3-button"}>Happiness</button>
-                        <button className={"w3-button"}>Fear</button>
-                        <button className={"w3-button"}>Sadness</button>
-                        <button className={"w3-button"}>Surprise</button>
-                    </div>
-                </div>
+                <select>Pick Emotion
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happiness">Happiness</option>
+                    <option value="fear">Fear</option>
+                    <option value="sadness">Sadness</option>
+                    <option value="surprise">Surprise</option>
+                </select>
             .</p>
         </div>
     );
@@ -145,17 +142,14 @@ const AddAudioTask = () => {
         <div className={"w3-group w3-card w3-padding w3-padding"}>
             <h3>Record Audio Task</h3>
             <p>Go to the Record Audio feature and practice expressing
-                <div className="w3-dropdown-hover">
-                    <button className={"w3-button"}>Pick Emotion</button>
-                    <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                        <button className={"w3-button"}>Anger</button>
-                        <button className={"w3-button"}>Disgust</button>
-                        <button className={"w3-button"}>Happiness</button>
-                        <button className={"w3-button"}>Fear</button>
-                        <button className={"w3-button"}>Sadness</button>
-                        <button className={"w3-button"}>Surprise</button>
-                    </div>
-                </div>
+                <select>Pick Emotion
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happiness">Happiness</option>
+                    <option value="fear">Fear</option>
+                    <option value="sadness">Sadness</option>
+                    <option value="surprise">Surprise</option>
+                </select>
             </p>
         </div>
     );
@@ -176,17 +170,14 @@ const AddBrowseTask = () => {
         <div className={"w3-group w3-card w3-padding"}>
             <h3>Browse Photos & Audio Task</h3>
             <p>Go to the Browse Photos & Audio feature and look through the clips under
-                <div className="w3-dropdown-hover">
-                    <button className={"w3-button"}>Pick Emotion</button>
-                    <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                        <button className={"w3-button"}>Anger</button>
-                        <button className={"w3-button"}>Disgust</button>
-                        <button className={"w3-button"}>Happiness</button>
-                        <button className={"w3-button"}>Fear</button>
-                        <button className={"w3-button"}>Sadness</button>
-                        <button className={"w3-button"}>Surprise</button>
-                    </div>
-                </div>
+                <select>Pick Emotion
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happiness">Happiness</option>
+                    <option value="fear">Fear</option>
+                    <option value="sadness">Sadness</option>
+                    <option value="surprise">Surprise</option>
+                </select>
              .</p>
             <a href={"#"}/>
         </div>

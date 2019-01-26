@@ -6,12 +6,69 @@ class QuizQuestion extends Component {
     constructor(props) {
         super(props);
 
+        this.handleQChange = this.handleQChange.bind(this);
+        this.handleAChange = this.handleAChange.bind(this);
         this.numQ = props.number;
+        this.label = props.label;
+
+        this.state = {
+            "question": {
+                "text": "",
+                "photoLink": "",
+                "audioLink": ""
+            },
+            "answerA": {
+                "text": "",
+                "photoLink": "",
+                "audioLink": ""
+            },
+            "answerB": {
+                "text": "",
+                "photoLink": "",
+                "audioLink": ""
+            },
+            "answerC": {
+                "text": "",
+                "photoLink": "",
+                "audioLink": ""
+            },
+            "answerD": {
+                "text": "",
+                "photoLink": "",
+                "audioLink": ""
+            },
+            "correct": "",
+        }
+    }
+
+    handleQChange(e) {
+        const {id, value} = e.target;
+
+        this.setState({
+            "question": {
+                [id]: value
+            }
+        });
+        const text = this.state;
+        this.props.onChange(this.label, text);
+    }
+
+    handleAChange(e) {
+        const {id, name, value} = e.target;
+
+        this.setState({
+            [id]: {
+                [name]: value
+            }
+        });
+        alert(JSON.stringify(this.state));
+        const text = this.state;
+        this.props.onChange(this.label, text);
     }
 
     render() {
 
-        function answer(label, num) {
+        function answer(label, num, state, change) {
             return (
                 <div className={label + num + " w3-padding-top"}>
                     <label htmlFor={label + num}>{"Answer " + label + ":"}</label>
@@ -19,7 +76,7 @@ class QuizQuestion extends Component {
                         <button type="button" className="w3-button" id={"photo" + label + num}>Add Photo</button>
                         <button type="button" className="w3-button" id={"audio" + label + num}>Add Audio</button>
                     </div>
-                    <input type={label + num} className="form-control w3-bar" id={label + num}/>
+                    <input type={label + num} className="form-control w3-bar" id={"answer" + label} name="text" onChange={change}/>
                 </div>
             );
         }
@@ -29,18 +86,18 @@ class QuizQuestion extends Component {
                 <div className={"Q" + this.numQ}>
                     <label htmlFor={"question" + this.numQ}>Question {this.numQ}:</label>
                     <div className="w3-container w3-right">
-                        <button type="button" className="w3-button" id={"photoQ" + this.numQ}>Add Photo</button>
-                        <button type="button" className="w3-button" id={"audioQ" + this.numQ}>Add Audio</button>
+                        <button type="button" className="w3-button" id={"photoQ" + this.numQ} value={this.state.question.photoLink}>Add Photo</button>
+                        <button type="button" className="w3-button" id={"audioQ" + this.numQ} value={this.state.question.audioLink}>Add Audio</button>
                     </div>
-                    <input type={"question" + this.numQ} className="form-control w3-bar" id={"question" + this.numQ}/>
+                    <input name={"question" + this.numQ} id={"text"} className="form-control w3-bar" value={this.state.question.text} onChange={this.handleQChange}/>
                 </div>
-                {answer("A", this.numQ)}
-                {answer("B", this.numQ)}
-                {answer("C", this.numQ)}
-                {answer("D", this.numQ)}
+                {answer("A", this.numQ, this.state.answers, this.handleAChange)}
+                {answer("B", this.numQ, this.state.answers, this.handleAChange)}
+                {answer("C", this.numQ, this.state.answers, this.handleAChange)}
+                {answer("D", this.numQ, this.state.answers, this.handleAChange)}
                 <div className="w3-padding-top">
                     <label htmlFor={"radios" + this.numQ}>Correct Answer:</label>
-                    <div className="radio-inline" id={"radios" + this.numQ}>
+                    <div className="radio-inline" id={"radios" + this.numQ} value={this.state.correct} onChange={this.handleChange}>
                         <label htmlFor={"radioA"+this.numQ} className="radio-inline w3-padding">
                             <input type="radio" className="w3-radio w3-padding" name={"answer" + this.numQ} value={"A" + this.numQ} id={"radioA" + this.numQ}/>A
                         </label>
