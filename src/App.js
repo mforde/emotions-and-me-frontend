@@ -11,6 +11,7 @@ import Login from './containers/Login.js';
 import AssignmentCreator from "./containers/AssignmentCreator";
 import QuizMakerPage from "./containers/QuizMakerPage";
 import TasklistCreator from "./containers/TasklistCreator";
+import MyAssignments from "./containers/MyAssignments";
 
 class App extends Component {
   render() {
@@ -38,7 +39,7 @@ class App extends Component {
                 <Route path="/assignmentcreator" component={AssignmentCreator} />
                 <Route path="/assignmentcreator/quizmaker" component={QuizMakerPage} />
                 <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
-                {/* <Route path="/myassignments" component={MyAssignments} /> */}
+                <Route path="/myassignments" component={MyAssignments} />
 
             </div>
           </div>

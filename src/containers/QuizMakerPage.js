@@ -31,7 +31,8 @@ class QuizMakerPage extends Component {
     handleSubmit = async values => {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
         await sleep(300);
-        alert(JSON.stringify(this.state));
+
+        alert(JSON.stringify(values));
         //event.preventDefault();
     }
 
@@ -107,15 +108,15 @@ const OtherQuizForm = () => (
         <StudentSelect/>
         <input type="submit" value="Save & Send Quiz" className="w3-button w3-theme w3-bar"/>
     </form>
-)
+);
 
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const onSubmit = async values => {
-    await sleep(300)
-    window.alert(JSON.stringify(values, 0, 2))
-}
+    await sleep(300);
+    window.alert(JSON.stringify(values, 0, 2));
+};
 
 const QuizForm = () => (
     <Form
@@ -294,6 +295,6 @@ const QuizForm = () => (
             )
         }}
     />
-)
+);
 
 export default QuizMakerPage;

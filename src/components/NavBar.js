@@ -7,9 +7,9 @@ class NavBar extends Component {
     navigationBar() {
         return (
             <div className="w3-bar w3-theme">
-                <a href="/" className="w3-bar-item w3-button w3-padding-16 w3-animate-left">Home</a>
+                <a href="/" className="w3-bar-item w3-button w3-padding-16">Home</a>
                 <div className="w3-dropdown-hover">
-                    <button className="w3-button w3-padding-16 w3-animate-left">
+                    <button className="w3-button w3-padding-16">
                         Features
                     </button>
                     <div className="w3-dropdown-content w3-card-4 w3-bar-block">
@@ -21,8 +21,8 @@ class NavBar extends Component {
                         <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
                     </div>
                 </div>
-                <a href="/signup" className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Sign Up</a>
-                <a href="/login"  className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Login</a>
+                <a href="/signup" className="w3-bar-item-right w3-button w3-padding-16">Sign Up</a>
+                <a href="/login"  className="w3-bar-item-right w3-button w3-padding-16">Login</a>
             </div>
         )
     }
