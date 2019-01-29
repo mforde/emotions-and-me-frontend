@@ -28,29 +28,72 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: localStorage.getItem('loggedIn') ? true : false,
+      isLoggedIn: localStorage.getItem('token') ? true : false,
       openModal: ModalOptions.NONE,
+      username: '',
     }
     this.handleLoginAttempt = this.handleLoginAttempt.bind(this);
-    this.handleSignupAttempt = this.handleLoginAttempt.bind(this);
+    this.handleSignupAttempt = this.handleSignupAttempt.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  handleLoginAttempt(e) {
+  componentDidMount() {
+    if(this.state.isLoggedIn) {
+      fetch('http://localhost:8000/core/current_user/', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        }
+      })
+      .then(res => res.json())
+      .then(json => {
+        this.setState({ username: json.username })
+      })
+    }
+  }
+
+  handleLoginAttempt(e, data) {
     e.preventDefault();
-    localStorage.setItem('loggedIn', true);
+    fetch('http://localhost:8000/token-auth/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(json => {
+      localStorage.setItem('token', json.token);
+      this.setState({
+        isLoggedIn: true,
+        displayed_form: '',
+        username: json.user.username
+      })
+    })
     this.setState({ isLoggedIn: true, openModal: ModalOptions.NONE })
   }
 
-  handleSignupAttempt(e) {
+  handleSignupAttempt(e, data) {
     e.preventDefault();
-    localStorage.setItem('loggedIn', true);
-    this.setState({ isLoggedIn: true, openModal: ModalOptions.NONE });
+    fetch('http://localhost:8000/core/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(json => {
+      this.setState({ 
+        isLoggedIn: true, 
+        openModal: ModalOptions.NONE,
+        username: json.username
+      });
+    })
   }
 
   handleSignout() {
-    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token');
     this.setState({ isLoggedIn: false });
   }
 
