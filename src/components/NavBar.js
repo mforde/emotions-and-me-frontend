@@ -28,7 +28,7 @@ class NavBar extends Component {
         );
     }
 
-    signoutButton() {        
+    signoutButton() {
         const { onClickSignout } = this.props;
         return (
             <div onClick={onClickSignout} className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Sign Out</div>

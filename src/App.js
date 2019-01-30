@@ -17,6 +17,11 @@ import AudioList from './components/AudioList.js'
 import PictureList from './components/PictureList.js'
 import DemoCarousel from './components/PictureCarousel.js'
 import AudioPlayer from './components/AudioPlayer.js';
+import AssignmentCreator from "./containers/AssignmentCreator";
+import QuizMakerPage from "./containers/QuizMakerPage";
+import TasklistCreator from "./containers/TasklistCreator";
+import MyAssignments from "./containers/MyAssignments";
+import TestQuiz from "./containers/TestQuiz";
 
 const ModalOptions = {
   NONE: "NONE",
@@ -64,7 +69,7 @@ class App extends Component {
         <Route path="/" render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
       )
     }
-    
+
     return (
       <div>
         <Route path="/" exact render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
@@ -72,10 +77,15 @@ class App extends Component {
         <Route path="/videostreaming" component={VideoStreaming} />
         <Route path="/recordaudio" component={RecordAudio} />
         <Route path="/browse"  component={Browse} />
-        <Route  path="/carousel"  component={DemoCarousel} />
-        <Route  path="/picturelist"  component={PictureList} />
-        <Route  path="/audiolist"  component={AudioList} />
-        <Route  path="/audioplayer"  component={AudioPlayer} />
+        <Route path="/carousel"  component={DemoCarousel} />
+        <Route path="/picturelist"  component={PictureList} />
+        <Route path="/audiolist"  component={AudioList} />
+        <Route path="/audioplayer"  component={AudioPlayer} />
+        <Route path="/assignmentcreator" component={AssignmentCreator} />
+        <Route path="/assignmentcreator/quizmaker" component={QuizMakerPage} />
+        <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
+        <Route path="/myassignments" component={MyAssignments} />
+        <Route path="/testQuiz" component={TestQuiz} />
       </div>
     )
   }
@@ -90,21 +100,21 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <Login 
-              showModal={openModal === ModalOptions.LOGIN} 
+            <Login
+              showModal={openModal === ModalOptions.LOGIN}
               handleClose={this.handleCloseModal}
               handleLoginAttempt={this.handleLoginAttempt}
             />
-            <Signup 
-              showModal={openModal === ModalOptions.SIGNUP} 
+            <Signup
+              showModal={openModal === ModalOptions.SIGNUP}
               handleClose={this.handleCloseModal}
               handleSignupAttempt={this.handleSignupAttempt}
             />
             <header>
-                <NavBar 
-                  isLoggedIn={isLoggedIn} 
-                  onClickLogin={() => this.setState({ openModal: ModalOptions.LOGIN })} 
-                  onClickSignup={() => this.setState({ openModal: ModalOptions.SIGNUP })} 
+                <NavBar
+                  isLoggedIn={isLoggedIn}
+                  onClickLogin={() => this.setState({ openModal: ModalOptions.LOGIN })}
+                  onClickSignup={() => this.setState({ openModal: ModalOptions.SIGNUP })}
                   onClickSignout={() => this.handleSignout()}
                 />
             </header>
