@@ -21,6 +21,7 @@ import AssignmentCreator from "./containers/AssignmentCreator";
 import QuizMakerPage from "./containers/QuizMakerPage";
 import TasklistCreator from "./containers/TasklistCreator";
 import MyAssignments from "./containers/MyAssignments";
+import TestQuiz from "./containers/TestQuiz";
 
 const ModalOptions = {
   NONE: "NONE",
@@ -84,6 +85,7 @@ class App extends Component {
         <Route path="/assignmentcreator/quizmaker" component={QuizMakerPage} />
         <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
         <Route path="/myassignments" component={MyAssignments} />
+        <Route path="/testQuiz" component={TestQuiz} />
       </div>
     )
   }

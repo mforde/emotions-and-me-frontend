@@ -3,7 +3,6 @@ import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import '../App.css';
-import QuizQuestion from "../components/QuizQuestion";
 import StudentSelect from "../components/StudentSelect";
 
 class QuizMakerPage extends Component {
@@ -17,16 +16,8 @@ class QuizMakerPage extends Component {
             numQuestions: 1,
         };
 
-        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    questionList = [<QuizQuestion
-                        key={1}
-                        number={1}
-                        label={"Q1"}
-                        onChange={this.handleQuestionChange.bind(this)}
-                    />];
 
     handleSubmit = async values => {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -36,21 +27,6 @@ class QuizMakerPage extends Component {
         //event.preventDefault();
     }
 
-    handleInputChange(property) {
-        return e => {
-            this.setState({
-                [property]: e.target.value
-            });
-        };
-    }
-
-    handleQuestionChange(qId, value) {
-        alert(JSON.stringify(value));
-        this.setState({
-            [qId]: value
-        });
-    }
-
     render() {
         return (
             <div className="w3-container w3-margin">
@@ -58,58 +34,7 @@ class QuizMakerPage extends Component {
             </div>
         );
     }
-
-    onAddQuestion = () => {
-        let tempQ = this.questionList;
-        let tempNum = this.state.numQuestions + 1;
-        tempQ.push(<QuizQuestion
-                        key={tempNum}
-                        number={tempNum}
-                        label={"Q" + tempNum}
-                        onChange={this.handleQuestionChange.bind(this)}
-                    />);
-
-        this.setState({
-            numQuestions: tempNum,
-        });
-    };
-
-    onRemoveQuestion = () => {
-        let tempQ = this.questionList;
-        let newNum = this.state.numQuestions;
-
-        if(this.state.numQuestions > 1) {
-            tempQ.pop();
-            newNum -= 1;
-        }
-
-        this.setState({
-            numQuestions: newNum,
-        });
-    }
 }
-
-const OtherQuizForm = () => (
-    <form onSubmit={this.handleSubmit}>
-        <div className={"w3-group w3-card w3-padding w3-padding-24"}>
-            <label htmlFor="quizName">Quiz Name:</label>
-            <input type="quizName" className="form-control w3-bar" id="quizName" value={this.state.name}
-                   onChange={this.handleInputChange('name')}/>
-        </div>
-        <div className="questions" id="questions">
-            {this.questionList}
-        </div>
-        <button type="button" className="w3-button w3-theme" id="addBtn" onClick={this.onAddQuestion}>Add
-            Question
-        </button>
-        <button type="button" className="w3-button w3-theme" id="removeBtn"
-                onClick={this.onRemoveQuestion}>Remove Question
-        </button>
-        <StudentSelect/>
-        <input type="submit" value="Save & Send Quiz" className="w3-button w3-theme w3-bar"/>
-    </form>
-);
-
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -125,13 +50,13 @@ const QuizForm = () => (
             ...arrayMutators
         }}
         render={({
-            handleSubmit,
-            mutators: { push, pop }, // injected from final-form-arrays above
-            pristine,
-            reset,
-            submitting,
-            values
-        }) => {
+                     handleSubmit,
+                     mutators: { push, pop }, // injected from final-form-arrays above
+                     pristine,
+                     reset,
+                     submitting,
+                     values
+                 }) => {
             return (
                 <form onSubmit={handleSubmit}>
                     <div className={"w3-group w3-card w3-padding w3-padding-24"}>
@@ -290,7 +215,6 @@ const QuizForm = () => (
                             Clear
                         </button>
                     </div>
-                    <pre>{JSON.stringify(values, 0, 2)}</pre>
                 </form>
             )
         }}

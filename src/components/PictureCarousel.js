@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Slider} from "react-simple-image-carousel"
+import {Slider} from 'react-simple-image-carousel';
 
 export default class DemoCarousel extends Component {
     render() {
