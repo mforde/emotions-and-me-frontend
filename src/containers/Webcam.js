@@ -6,14 +6,43 @@ import { getWebcamStream } from '../actions';
 class Webcam extends Component {
     constructor(props) {
         super(props);
-        this.state = {initialized: false};
+        this.state = {initialized: false, data: []};
 
         // This binding is necessary to make `this` work in the callback
         this.button_callback = this.button_callback.bind(this);
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => console.log(document.getElementsByTagName('canvas')[0].toDataURL()), 5000);
+        //this.interval = setInterval(() => console.log(document.getElementsByTagName('canvas')[0].toDataURL()), 5000);
+        // getImagedata(0, 0, 640, 480).data
+        this.interval = setInterval(() => {
+            var width = 640;
+            var height = 480;
+            var pixeldata = (document.getElementsByTagName('canvas')[0].getContext('2d').getImageData(0,0,width,height).data);
+            var data = [];
+            var idx = 0;
+            for (var j=0; j<height; j++) {
+                var row = [];
+                for (var i = 0; i < (width * 4); i = i + 4) {
+                    row.push(Math.floor(pixeldata[idx + i] * 0.299 + pixeldata[idx + i + 1] * 0.587 + pixeldata[idx + i + 2] * 0.114))
+                }
+                data.push(row);
+                idx = idx + (width * 4)
+            }
+            // var imageJSON = '{' +
+            //     "image:" + JSON.stringify(data) +
+            // '}';
+
+            var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
+            console.log(imageJSON);
+            fetch('http://127.0.0.1:8000/analyze_emotion', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: imageJSON,
+            }).then(response => console.log(response));
+        }, 10000);
     }
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -324,6 +353,7 @@ class Webcam extends Component {
             // render the video frame to the canvas element and extract RGBA pixel data
             ctx.drawImage(video, 0, 0);
             var rgba = ctx.getImageData(0, 0, 640, 480).data;
+
             // prepare input to `run_cascade`
             let image = {
                 "pixels": rgba_to_grayscale(rgba, 480, 640),
@@ -334,7 +364,7 @@ class Webcam extends Component {
             let params = {
                 "shiftfactor": 0.1, // move the detection window by 10% of its size
                 "minsize": 100,     // minimum size of a face
-                "maxsize": 1000,    // maximum size of a face
+                "maxsize": 10000,    // maximum size of a face
                 "scalefactor": 1.1  // for multiscale processing: resize the detection window by 10% when moving to the higher scale
             }
             // run the cascade over the frame and cluster the obtained detections
@@ -378,6 +408,7 @@ class Webcam extends Component {
             <div>
                 <p><input type="button" value="Start real-time face detection" onClick={this.button_callback} /></p>
                 <canvas width= '640' height= '480'></canvas>
+
             </div>
         )
     }
