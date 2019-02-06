@@ -1,7 +1,28 @@
 import React, { Component } from 'react';
 import '../App.css';
+import {fetchAssignments} from "../actions/getAssignments";
 
 class MyAssignments extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data : null
+        }
+    }
+
+    componentDidMount() {
+        let data = fetchAssignments();
+        this.setState(data);
+        alert(this.state.data);
+    }
+
+    onClick() {
+        //Get list of assignments from backend
+        //Send backend name? of selected quiz and get quiz data
+        //Convert data to proper quiz format
+        //Go to quiz page
+    }
 
     myAssignments() {
         return (
