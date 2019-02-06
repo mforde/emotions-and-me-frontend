@@ -33,8 +33,12 @@ class Webcam extends Component {
             //     "image:" + JSON.stringify(data) +
             // '}';
 
-            var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
+            //var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
+            var imageJSON = `{"image": "${JSON.stringify(data)}" }`;
+
+            var imageJSON = { "image": '[[1,2,3],[1,2,3]]' }
             console.log(imageJSON);
+            debugger;
             fetch('http://127.0.0.1:8000/analyze_emotion', {
                 method: "POST",
                 headers: {
@@ -100,7 +104,6 @@ class Webcam extends Component {
                 requestAnimationFrame(loop)
             }
         }
-
 
 
         let pico = {}
@@ -380,11 +383,44 @@ class Webcam extends Component {
                 // (the constant 50.0 is empirical: other cascades might require a different one)
                 if(dets[i][3]>50.0)
                 {
+                    //draws circle around face
                     ctx.beginPath();
                     ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2, 0, 2*Math.PI, false);
                     ctx.lineWidth = 3;
                     ctx.strokeStyle = 'red';
                     ctx.stroke();
+
+                    // Crop the face and output as array of grayscale integers
+                    var centerx = dets[i][0];
+                    var centery = dets[i][1];
+                    var diameter = dets[i][2];
+
+
+                    var croppedFace = ctx.getImageData(centerx-diameter/2, centery-diameter/2, diameter, diameter);
+                    var width = diameter;
+                    var height = diameter;
+                    var pixeldata = (croppedFace.data);
+                    var data = [];
+                    var idx = 0;
+                    for (var j=0; j<height; j++) {
+                        var row = [];
+                        for (var i = 0; i < (width * 4); i = i + 4) {
+                            row.push(Math.floor(pixeldata[idx + i] * 0.299 + pixeldata[idx + i + 1] * 0.587 + pixeldata[idx + i + 2] * 0.114))
+                        }
+                        data.push(row);
+                        idx = idx + (width * 4)
+                    }
+
+                    // Check face
+                    var c = document.getElementById("myFace");
+                    var ctx2 = c.getContext("2d");
+                    var imgData = ctx2.createImageData(width, height);
+                    for (var i = 0; i <imgData.data.length; i++) {
+                        imgData.data[i] = pixeldata[i];
+                    }
+                    ctx2.putImageData(imgData, 10, 10)
+                    // ctx2.putImageData(croppedFace,0, 0);
+
                 }
         }
         /*
@@ -408,7 +444,7 @@ class Webcam extends Component {
             <div>
                 <p><input type="button" value="Start real-time face detection" onClick={this.button_callback} /></p>
                 <canvas width= '640' height= '480'></canvas>
-
+                <canvas id="myFace"></canvas>
             </div>
         )
     }
