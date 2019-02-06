@@ -14,7 +14,6 @@ class MyAssignments extends Component {
     componentDidMount() {
         let data = fetchAssignments();
         this.setState(data);
-        alert(this.state.data);
     }
 
     onClick() {

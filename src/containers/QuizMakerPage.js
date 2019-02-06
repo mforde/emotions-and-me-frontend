@@ -4,6 +4,7 @@ import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import '../App.css';
 import MultiSelect from "@kenshooui/react-multi-select";
+import {sendAssignment} from "../actions/saveAssignment";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -42,25 +43,12 @@ class QuizMakerPage extends Component {
             'quizData'      : values.questions
         }));
 
-        fetch('', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'teacher'       : this.state.teacher,
-                'students'      : this.state.selectedStudents,
-                'quizName'      : values.quizName,
-                'quizData'      : values.questions
-            })
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                alert(responseJson);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        sendAssignment(JSON.stringify({
+            'teacher'       : this.state.teacher,
+            'students'      : this.state.selectedStudents,
+            'quizName'      : values.quizName,
+            'quizData'      : values.questions
+        }));
     };
 
     QuizForm = () => {

@@ -1,6 +1,5 @@
 const LOCAL_ENDPOINT = 'http://localhost:8000/'
 
-export const SAVE_QUIZ = 'SAVE_QUIZ';
 export const REQUEST_ASSIGNMENTS = 'REQUEST_ASSIGNMENTS';
 export const RECEIVE_ASSIGNMENTS = 'RECEIVE_ASSIGNMENTS';
 
@@ -30,25 +29,3 @@ export const fetchAssignments = () => {
             });
     }
 }
-
-/*export const sendQuizData = () => {
-    fetch('', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            'teacher': this.state.teacher,
-            'students': this.state.selectedStudents,
-            'quizName': values.quizName,
-            'quizData': values.questions
-        })
-    })
-        .then((response) => response.json())
-        .then((responseJson) => {
-            alert(responseJson);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}*/
