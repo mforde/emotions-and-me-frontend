@@ -8,7 +8,7 @@ import QuizAnswers from "./TakeQuizAnswers";
 function Quiz(props) {
     function renderAnswerOptions(key) {
         return (
-            <div className="w3-group w3-card w3-padding w3-padding-24">
+            <div className="w3-group w3-card w3-padding w3-padding-24" key={key.content}>
                 <QuizAnswers
                     key={key.content}
                     answerContent={key.content}
