@@ -35,7 +35,7 @@ export const failLogin = failedResponse => {
     }
 }
 
-export const handleLoginAttempt = (e, data) => {
+export const toke = (e, data) => {
     return dispatch => {
         dispatch(requestLogin())
         e.preventDefault();
