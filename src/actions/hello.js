@@ -22,7 +22,8 @@ export const fetchAllNames = () => {
           method: "GET",
           headers: {
             "Accept": "application/json"
-          }
+          },
+          
         })
           .then(response => response.json())
           .then(json => dispatch(receiveAllNames(json)))
