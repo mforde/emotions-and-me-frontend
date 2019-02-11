@@ -34,17 +34,17 @@ class Webcam extends Component {
             // '}';
 
             //var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
-            var imageJSON = `{"image": "${JSON.stringify(data)}" }`;
+            var imageJSON = {"image": JSON.stringify(data)};
 
-            var imageJSON = { "image": '[[1,2,3],[1,2,3]]' }
-            console.log(imageJSON);
-            debugger;
+            //var imageJSON = { "image": '[[1,2,3],[1,2,3]]' }
+            //console.log(imageJSON);
+            //debugger;
             fetch('http://127.0.0.1:8000/analyze_emotion', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: imageJSON,
+                body: JSON.stringify(imageJSON),
             }).then(response => console.log(response));
         }, 10000);
     }
@@ -385,17 +385,18 @@ class Webcam extends Component {
                 {
                     //draws circle around face
                     ctx.beginPath();
-                    ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2, 0, 2*Math.PI, false);
+                    ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);
                     ctx.lineWidth = 3;
                     ctx.strokeStyle = 'red';
                     ctx.stroke();
 
                     // Crop the face and output as array of grayscale integers
-                    var centerx = dets[i][0];
-                    var centery = dets[i][1];
+                    var centerx = dets[i][1];
+                    var centery = dets[i][0];
                     var diameter = dets[i][2];
 
-
+                    //image.pixels -> grayscale image, use to crop and resize face 48x48
+                    //var cropped =
                     var croppedFace = ctx.getImageData(centerx-diameter/2, centery-diameter/2, diameter, diameter);
                     var width = diameter;
                     var height = diameter;
@@ -414,11 +415,12 @@ class Webcam extends Component {
                     // Check face
                     var c = document.getElementById("myFace");
                     var ctx2 = c.getContext("2d");
+
                     var imgData = ctx2.createImageData(width, height);
                     for (var i = 0; i <imgData.data.length; i++) {
                         imgData.data[i] = pixeldata[i];
                     }
-                    ctx2.putImageData(imgData, 10, 10)
+                    ctx2.putImageData(imgData, -50, -50)
                     // ctx2.putImageData(croppedFace,0, 0);
 
                 }
