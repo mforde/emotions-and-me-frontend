@@ -17,6 +17,7 @@ import AudioList from './components/AudioList.js'
 import PictureList from './components/PictureList.js'
 import DemoCarousel from './components/PictureCarousel.js'
 import AudioPlayer from './components/AudioPlayer.js';
+import IFrame from './components/Iframe.js';
 
 const ModalOptions = {
   NONE: "NONE",
@@ -76,6 +77,8 @@ class App extends Component {
         <Route  path="/picturelist"  component={PictureList} />
         <Route  path="/audiolist"  component={AudioList} />
         <Route  path="/audioplayer"  component={AudioPlayer} />
+        <Route  path="/videostreaming/iframe"  component={IFrame} />
+
       </div>
     )
   }
