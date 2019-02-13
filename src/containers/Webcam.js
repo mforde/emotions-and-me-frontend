@@ -6,7 +6,8 @@ import { getWebcamStream } from '../actions';
 class Webcam extends Component {
     constructor(props) {
         super(props);
-        this.state = {initialized: false, data: []};
+        this.state = {initialized: false, data: [], result: "bye"};
+        // this.emotionResponse = {initialized: false, data: [], result: ""};
 
         // This binding is necessary to make `this` work in the callback
         this.button_callback = this.button_callback.bind(this);
@@ -29,24 +30,25 @@ class Webcam extends Component {
                 data.push(row);
                 idx = idx + (width * 4)
             }
-            // var imageJSON = '{' +
-            //     "image:" + JSON.stringify(data) +
-            // '}';
-
-            //var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
-            var imageJSON = {"image": JSON.stringify(data)};
 
             //var imageJSON = { "image": '[[1,2,3],[1,2,3]]' }
-            //console.log(imageJSON);
-            //debugger;
-            fetch('http://127.0.0.1:8000/analyze_emotion', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(imageJSON),
-            }).then(response => console.log(response));
+
+            //var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
+            // var imageJSON = {"image": JSON.stringify(data)};
+            //
+            // console.log(imageJSON);
+            //
+            // fetch('http://127.0.0.1:8000/analyze_emotion', {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(imageJSON),
+            // }).then(response => console.log(response));
+
         }, 10000);
+
+
     }
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -384,11 +386,11 @@ class Webcam extends Component {
                 if(dets[i][3]>50.0)
                 {
                     //draws circle around face
-                    ctx.beginPath();
-                    ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);
-                    ctx.lineWidth = 3;
-                    ctx.strokeStyle = 'red';
-                    ctx.stroke();
+                    // ctx.beginPath();
+                    // ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);
+                    // ctx.lineWidth = 3;
+                    // ctx.strokeStyle = 'red';
+                    // ctx.stroke();
 
                     // Crop the face and output as array of grayscale integers
                     var centerx = dets[i][1];
@@ -398,15 +400,15 @@ class Webcam extends Component {
                     //image.pixels -> grayscale image, use to crop and resize face 48x48
                     //var cropped =
                     var croppedFace = ctx.getImageData(centerx-diameter/2, centery-diameter/2, diameter, diameter);
-                    var width = diameter;
-                    var height = diameter;
+                    var width = Math.floor(diameter);
+                    var height = Math.floor(diameter);
                     var pixeldata = (croppedFace.data);
                     var data = [];
                     var idx = 0;
-                    for (var j=0; j<height; j++) {
+                    for (var j=0; j<height-1; j++) {
                         var row = [];
-                        for (var i = 0; i < (width * 4); i = i + 4) {
-                            row.push(Math.floor(pixeldata[idx + i] * 0.299 + pixeldata[idx + i + 1] * 0.587 + pixeldata[idx + i + 2] * 0.114))
+                        for (var k = 0; k < (width * 4); k = k + 4) {
+                            row.push(Math.floor(pixeldata[idx + k] * 0.299 + pixeldata[idx + k + 1] * 0.587 + pixeldata[idx + k + 2] * 0.114))
                         }
                         data.push(row);
                         idx = idx + (width * 4)
@@ -415,16 +417,54 @@ class Webcam extends Component {
                     // Check face
                     var c = document.getElementById("myFace");
                     var ctx2 = c.getContext("2d");
+                    ctx2.clearRect(0, 0, c.width, c.height);
 
                     var imgData = ctx2.createImageData(width, height);
-                    for (var i = 0; i <imgData.data.length; i++) {
-                        imgData.data[i] = pixeldata[i];
+                    // for (var i = 0; i <imgData.data.length; i++) {
+                    //     imgData.data[i] = pixeldata[i];
+                    // }
+                    for (var k = 0; k <imgData.data.length; k=k+4) {
+                        var gray = Math.floor(pixeldata[k] * 0.299 + pixeldata[k + 1] * 0.587 + pixeldata[k + 2] * 0.114);
+                        imgData.data[k] = gray;
+                        imgData.data[k+1] = gray;
+                        imgData.data[k+2] = gray;
+                        imgData.data[k+3] = pixeldata[k + 3];
                     }
-                    ctx2.putImageData(imgData, -50, -50)
-                    // ctx2.putImageData(croppedFace,0, 0);
+                    // ctx2.putImageData(imgData, -50, -50)
+
+                    ctx2.putImageData(imgData,0, 0);
+
+                    var imageJSON = {"image": JSON.stringify(data)};
+                    fetch('http://127.0.0.1:8000/analyze_emotion', {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(imageJSON),
+                    }).then(response => response.json().then(function(data) {
+                        console.log(data)
+                        var maxConf = 0
+                        var emot = ""
+                        for (var k=0; k<7; k++) {
+                            let conf = data[k][1]
+                            if (conf > maxConf) {
+                                maxConf = conf
+                                emot = data[k][0]
+                            }
+                        }
+                        // var resultStr = JSON.stringify(data);
+                        var resultStr = emot;
+                        this.setState({result: resultStr})
+                    }.bind(this)));
+
+                    ctx.beginPath();
+                    ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = 'red';
+                    ctx.stroke();
 
                 }
-        }
+        }.bind(this)
         /*
             (4) instantiate camera handling (see https://github.com/cbrandolino/camvas)
         */
@@ -444,9 +484,11 @@ class Webcam extends Component {
 
         return (
             <div>
+                <p>{this.state.result}</p>
                 <p><input type="button" value="Start real-time face detection" onClick={this.button_callback} /></p>
                 <canvas width= '640' height= '480'></canvas>
-                <canvas id="myFace"></canvas>
+                <canvas width='640' height='480' id="myFace"></canvas>
+
             </div>
         )
     }
