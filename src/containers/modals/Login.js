@@ -8,6 +8,7 @@ class Login extends Component {
         showModal: PropTypes.bool.isRequired,
         handleClose: PropTypes.func.isRequired,
         handleLoginAttempt: PropTypes.func.isRequired,
+        hasFailed: PropTypes.bool.isRequired,
     }
     
     constructor(props) {
@@ -16,6 +17,7 @@ class Login extends Component {
             username: '',
             password: ''
         }
+        this.handleChange = this.handleChange.bind(this);
     };
 
     handleChange(e) {
@@ -29,7 +31,29 @@ class Login extends Component {
     };
 
     render() {
-        const { showModal, handleClose, handleLoginAttempt } = this.props;
+        const { showModal, handleClose, handleLoginAttempt, hasFailed } = this.props;
+
+        let modalBody;
+        if (hasFailed) {
+            modalBody = "Something went wrong. Please try again."
+        } else {
+            modalBody =  
+            <form className="w3-container" onSubmit={e => handleLoginAttempt(e, this.state)} >
+                <p>
+                    <label htmlFor="username">Username</label>
+                    <input className="w3-input w3-border" type="username" name="username" value={this.state.username} onChange={this.handleChange} required />
+                </p>
+                <p>
+                    <label htmlFor="password">Password</label>
+                    <input className="w3-input w3-border" type="password" name="password" value={this.state.password} onChange={this.handleChange} required />
+                </p>
+                <p>
+                    <button className="w3-btn w3-green" >
+                        Login
+                    </button>
+                </p>
+            </form> 
+        }
 
         return (
             <div>
@@ -38,21 +62,7 @@ class Login extends Component {
                         <Modal.Title>Login to your account</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form className="w3-container" onSubmit={e => handleLoginAttempt(e)} >
-                            <p>
-                                <label htmlFor="username">Username</label>
-                                <input className="w3-input w3-border" type="username" name="username" required />
-                            </p>
-                            <p>
-                                <label htmlFor="password">Password</label>
-                                <input className="w3-input w3-border" type="password" name="password" required />
-                            </p>
-                            <p>
-                                <button className="w3-btn w3-green" >
-                                    Login
-                                </button>
-                            </p>
-                        </form> 
+                        {modalBody}
                     </Modal.Body>
                 </Modal>
             </div>

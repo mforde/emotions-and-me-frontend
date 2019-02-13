@@ -8,7 +8,7 @@ function QuizList(props) {
         <div className="quizList">
             <h3 className="w3-center w3-margin-bottom">Quizzes</h3>
             <>
-                {props.quizzes.map(quiz => (
+                {props.quizzes.assignments.map(quiz => (
                     <div className="w3-row-padding w3-center" key={quiz.quizName}>
                         <Link to={{pathname: '/takequiz', state: {quizName: quiz.quizName}}}>
                             <div className="w3-theme w3-card w3-container w3-hover-shadow w3-hover-light-gray">

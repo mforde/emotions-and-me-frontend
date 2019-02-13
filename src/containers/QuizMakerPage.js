@@ -3,8 +3,9 @@ import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import '../App.css';
-import MultiSelect from "@kenshooui/react-multi-select";
-import {sendAssignment} from "../actions/saveAssignment";
+import MultiSelect from '@kenshooui/react-multi-select';
+import {sendAssignment} from '../actions/assignments';
+import {connect} from "react-redux";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -42,6 +43,7 @@ class QuizMakerPage extends Component {
             'quizName'      : values.quizName,
             'quizData'      : values.questions
         }));
+
 
         sendAssignment(JSON.stringify({
             'teacher'       : this.state.teacher,
@@ -101,7 +103,7 @@ class QuizMakerPage extends Component {
                                                     </div>
                                                 </div>
                                                 <Field
-                                                    name={`${name}.Q${index}`}
+                                                    name={`${name}.Q`}
                                                     component="input"
                                                     id="text"
                                                     className="w3-bar"
@@ -117,7 +119,7 @@ class QuizMakerPage extends Component {
                                                         </button>
                                                     </div>
                                                     <Field
-                                                        name={`${name}.A${index}`}
+                                                        name={`${name}.A`}
                                                         component="input"
                                                         className="w3-bar"
                                                         id={"answerA" + index}
@@ -134,7 +136,7 @@ class QuizMakerPage extends Component {
                                                         </button>
                                                     </div>
                                                     <Field
-                                                        name={`${name}.B${index}`}
+                                                        name={`${name}.B`}
                                                         component="input"
                                                         className="w3-bar"
                                                         id={"answerB" + index}
@@ -151,7 +153,7 @@ class QuizMakerPage extends Component {
                                                         </button>
                                                     </div>
                                                     <Field
-                                                        name={`${name}.C${index}`}
+                                                        name={`${name}.C`}
                                                         component="input"
                                                         className="w3-bar"
                                                         id={"answerC" + index}
@@ -168,7 +170,7 @@ class QuizMakerPage extends Component {
                                                         </button>
                                                     </div>
                                                     <Field
-                                                        name={`${name}.D${index}`}
+                                                        name={`${name}.D`}
                                                         component="input"
                                                         className="w3-bar"
                                                         id={"answerD" + index}
@@ -179,7 +181,7 @@ class QuizMakerPage extends Component {
                                                     <div className="radio-inline">
                                                         <label className="w3-padding">
                                                             <Field
-                                                                name={`${name}.correct${index}`}
+                                                                name={`${name}.correct`}
                                                                 component="input"
                                                                 type="radio"
                                                                 className="w3-radio w3-padding"
@@ -190,7 +192,7 @@ class QuizMakerPage extends Component {
                                                         </label>
                                                         <label className="w3-padding">
                                                             <Field
-                                                                name={`${name}.correct${index}`}
+                                                                name={`${name}.correct`}
                                                                 component="input"
                                                                 type="radio"
                                                                 className="w3-radio w3-padding"
@@ -201,7 +203,7 @@ class QuizMakerPage extends Component {
                                                         </label>
                                                         <label className="w3-padding">
                                                             <Field
-                                                                name={`${name}.correct${index}`}
+                                                                name={`${name}.correct`}
                                                                 component="input"
                                                                 type="radio"
                                                                 className="w3-radio w3-padding"
@@ -212,7 +214,7 @@ class QuizMakerPage extends Component {
                                                         </label>
                                                         <label className="w3-padding">
                                                             <Field
-                                                                name={`${name}.correct${index}`}
+                                                                name={`${name}.correct`}
                                                                 component="input"
                                                                 type="radio"
                                                                 className="w3-radio w3-padding"
@@ -271,4 +273,13 @@ class QuizMakerPage extends Component {
     }
 }
 
-export default QuizMakerPage;
+
+const mapStateToProps = state => {
+    return state.assignments
+};
+
+const mapDispatchToProps = {
+    sendAssignment,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (QuizMakerPage);
