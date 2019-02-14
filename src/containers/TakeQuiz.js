@@ -94,7 +94,7 @@ class TakeQuiz extends Component {
                         content: question.D
                     },
                 ]
-            }
+            };
             newData.push(newQ);
             idx = idx + 1;
         });

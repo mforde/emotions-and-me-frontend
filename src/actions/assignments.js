@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://localhost:8000/'
+const LOCAL_ENDPOINT = 'http://localhost:8000/';
 
 export const REQUEST_ASSIGNMENTS = 'REQUEST_ASSIGNMENTS';
 export const RECEIVE_ASSIGNMENTS = 'RECEIVE_ASSIGNMENTS';
@@ -10,29 +10,29 @@ export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
 
 export const requestAssignments = () => ({
     type : REQUEST_ASSIGNMENTS
-})
+});
 
 export const receiveAssignments = json => ({
     type: RECEIVE_ASSIGNMENTS,
     data: json,
-})
+});
 
 export const failedToReceiveAssignments = () => ({
     type: FAILED_RECEIVE_ASSIGNMENTS,
-})
+});
 
 export const saveAssignment = () => ({
     type : SAVE_ASSIGNMENT
-})
+});
 
 export const successfulSave = (data) => ({
     type: SUCCESSFUL_SAVE,
     data: data
-})
+});
 
 export const failedSave =() => ({
     type: FAILED_SAVE
-})
+});
 
 export const fetchAssignments = () => {
     return (dispatch) => {
@@ -48,27 +48,36 @@ export const fetchAssignments = () => {
             .then(json => dispatch(receiveAssignments(json)),
                 () => dispatch(failedToReceiveAssignments()))
             .catch(function(error) {
-                console.log(error);
-            });
-    }
-}
-
-export const sendAssignment = (data) => {
-    return (dispatch) => {
-        alert('saving');
-        dispatch(saveAssignment())
-
-        fetch(LOCAL_ENDPOINT + 'assignments/save?teacher=username', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-            .then((response) => dispatch(successfulSave(response.json())))
-            .catch((error) => {
                 console.error(error);
             });
     }
-}
+};
+
+export const sendAssignment = (students, data) => {
+    return (dispatch) => {
+        alert("saving");
+        dispatch(saveAssignment());
+
+        let studentQuery = '';
+        students.forEach(function (student) {
+            studentQuery = studentQuery + ',' + student;
+        });
+        alert(studentQuery);
+
+        fetch(LOCAL_ENDPOINT + 'assignments/save?teacher=username&students=' + studentQuery, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(json => dispatch(successfulSave(json)),
+                () => dispatch(failedSave()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};
 

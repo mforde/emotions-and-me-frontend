@@ -9,14 +9,14 @@ class Login extends Component {
         handleClose: PropTypes.func.isRequired,
         handleLoginAttempt: PropTypes.func.isRequired,
         hasFailed: PropTypes.bool.isRequired,
-    }
+    };
     
     constructor(props) {
         super(props);
         this.state = {
             username: '',
             password: ''
-        }
+        };
         this.handleChange = this.handleChange.bind(this);
     };
 

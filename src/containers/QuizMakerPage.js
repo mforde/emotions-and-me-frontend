@@ -17,15 +17,18 @@ class QuizMakerPage extends Component {
         this.state = {
             teacher : 'Teacher Name',
             students : [
-                {id: 0, label: "Zach Morris"},
-                {id: 1, label: "Kelly Kapowski"},
-                {id: 2, label: "A.C. Slater"},
-                {id: 3, label: "Lisa Turtle"},
-                {id: 4, label: "Jessie Spano"},
-                {id: 5, label: "Samuel Powers"},
-                {id: 6, label: "Tori Scott"},
+                {id: "student0", label: "Zach Morris"},
+                {id: "student1", label: "Kelly Kapowski"},
+                {id: "student2", label: "A.C. Slater"},
+                {id: "student3", label: "Lisa Turtle"},
+                {id: "student4", label: "Jessie Spano"},
+                {id: "student5", label: "Samuel Powers"},
+                {id: "student6", label: "Tori Scott"},
             ],
-            selectedStudents: []
+            selectedStudents: [],
+            saveData: this.props.hasSaved,
+            isSaving: this.props.isSaving,
+            hasFailed: this.props.hasFailed,
         }
     }
 
@@ -44,8 +47,13 @@ class QuizMakerPage extends Component {
             'quizData'      : values.questions
         }));
 
+        let studentUsers = [];
+        this.state.selectedStudents.forEach(function (student) {
+            studentUsers.push(student.id);
+        });
 
-        sendAssignment(JSON.stringify({
+        alert(studentUsers);
+        this.props.sendAssignment(studentUsers, JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
             'quizName'      : values.quizName,
@@ -273,13 +281,16 @@ class QuizMakerPage extends Component {
     }
 }
 
-
 const mapStateToProps = state => {
-    return state.assignments
+    return {
+        saveData: state.hasSaved,
+        isSaving: state.isSaving,
+        hasFailed: state.hasFailed,
+    }
 };
 
 const mapDispatchToProps = {
     sendAssignment,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps) (QuizMakerPage);

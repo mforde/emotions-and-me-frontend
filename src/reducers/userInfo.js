@@ -11,7 +11,7 @@ const defaultState = {
     currentUserRequestStatus: RequestStatus.UNINITIALIZED,
     token: "",
     user: {},
-}
+};
 
 const setRequestStatus = (actionType, status, state) => {
     let requestStatusType;
@@ -25,7 +25,7 @@ const setRequestStatus = (actionType, status, state) => {
 
     state[requestStatusType] = status;
     return state;
-}
+};
 
 const userInfo = ( state = defaultState, action) => {
     switch (action.type) {
@@ -40,7 +40,7 @@ const userInfo = ( state = defaultState, action) => {
                     token: "",
                     user: {},
                 }
-            )
+            );
         case RECEIVE_LOGIN:
         case RECEIVE_SIGNUP:
         case RECEIVE_CURRENT_USER:
@@ -52,7 +52,7 @@ const userInfo = ( state = defaultState, action) => {
                     token: action.token,
                     user: action.user,
                 }
-            )
+            );
         case FAILED_LOGIN:
         case FAILED_SIGNUP:
         case FAILED_CURRENT_USER:
@@ -62,10 +62,10 @@ const userInfo = ( state = defaultState, action) => {
                 {
                     ...state,
                 }
-            )
+            );
         default:
             return state
     }
-}
+};
 
 export default userInfo;

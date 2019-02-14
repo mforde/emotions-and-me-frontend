@@ -27,7 +27,7 @@ const ModalOptions = {
   NONE: "NONE",
   LOGIN: "LOGIN",
   SIGNUP: "SIGNUP",
-}
+};
 
 class App extends Component {
   static propTypes = {
@@ -39,14 +39,14 @@ class App extends Component {
     handleLoginAttempt: PropTypes.func.isRequired,
     handleSignupAttempt: PropTypes.func.isRequired,
     handleCheckToken: PropTypes.func.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: localStorage.getItem('token') ? true : false,
       openModal: ModalOptions.NONE,
-    }
+    };
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
@@ -145,7 +145,7 @@ const mapDispatchToProps = {
   handleLoginAttempt,
   handleSignupAttempt,
   handleCheckToken,
-}
+};
 
 export default connect(
   mapStateToProps,

@@ -1,6 +1,6 @@
-const LOGIN_ENDPOINT = 'http://localhost:8000/token-auth/'
-const SIGNUP_ENDPOINT = 'http://localhost:8000/core/users/'
-const CURRENT_USER_ENDPOINT = 'http://localhost:8000/core/current_user/'
+const LOGIN_ENDPOINT = 'http://localhost:8000/token-auth/';
+const SIGNUP_ENDPOINT = 'http://localhost:8000/core/users/';
+const CURRENT_USER_ENDPOINT = 'http://localhost:8000/core/current_user/';
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
@@ -16,7 +16,7 @@ export const FAILED_CURRENT_USER = 'FAILED_CURRENT_USER';
 
 export const requestLogin = () => ({
     type: REQUEST_LOGIN
-})
+});
 
 export const receiveLogin = json => {
   localStorage.setItem('token', json.token);
@@ -25,7 +25,7 @@ export const receiveLogin = json => {
     token: json.token,
     user: json.user,
   }
-}
+};
 
 export const failLogin = failedResponse => {
     return {
@@ -33,11 +33,11 @@ export const failLogin = failedResponse => {
         status: failedResponse.status,
         statusText: failedResponse.statusText,
     }
-}
+};
 
 export const handleLoginAttempt = (e, data) => {
     return dispatch => {
-        dispatch(requestLogin())
+        dispatch(requestLogin());
         e.preventDefault();
         fetch(LOGIN_ENDPOINT, {
             method: 'POST',
@@ -56,11 +56,11 @@ export const handleLoginAttempt = (e, data) => {
           }
         })
     }
-}
+};
 
 export const requestSignup = () => ({
   type: REQUEST_SIGNUP,
-})
+});
 
 export const receiveSignup = json => {
   localStorage.setItem('token', json.token);
@@ -74,7 +74,7 @@ export const receiveSignup = json => {
       email: json.email,
     },
   }
-}
+};
 
 export const failSignup = failedResponse => {
     return {
@@ -82,11 +82,11 @@ export const failSignup = failedResponse => {
         status: failedResponse.status,
         statusText: failedResponse.statusText,
     }
-}
+};
 
 export const handleSignupAttempt = (e, data) => {
   return dispatch => {
-    dispatch(requestSignup())
+    dispatch(requestSignup());
     e.preventDefault();
     fetch(SIGNUP_ENDPOINT, {
       method: 'POST',
@@ -105,11 +105,11 @@ export const handleSignupAttempt = (e, data) => {
       }
     })
   }
-}
+};
 
 export const requestCurrentUser = () => ({
   type: REQUEST_CURRENT_USER,
-})
+});
 
 export const receiveCurrentUser = json => {
   return {
@@ -122,7 +122,7 @@ export const receiveCurrentUser = json => {
       email: json.email,
     },
   }
-}
+};
 
 export const failedCurrentUser = failedResponse => {
     return {
@@ -130,11 +130,11 @@ export const failedCurrentUser = failedResponse => {
         status: failedResponse.status,
         statusText: failedResponse.statusText,
     }
-}
+};
 
 export const handleCheckToken = () => {
   return dispatch => {
-    dispatch(requestCurrentUser())
+    dispatch(requestCurrentUser());
     fetch(CURRENT_USER_ENDPOINT, {
       headers: {
         Authorization: `JWT ${localStorage.getItem('token')}`
@@ -150,5 +150,5 @@ export const handleCheckToken = () => {
       }
     })
   }
-}
+};
 

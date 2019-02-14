@@ -16,7 +16,6 @@ class MyAssignments extends Component {
             quizData: this.props.quizData,
             isFetching: this.props.isFetching,
             hasFailed: this.props.hasFailed,
-
         }
     }
 

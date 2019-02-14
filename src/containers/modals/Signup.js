@@ -7,7 +7,7 @@ class Signup extends Component {
         showModal: PropTypes.bool.isRequired,
         handleClose: PropTypes.func.isRequired,
         handleSignupAttempt: PropTypes.func.isRequired,
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class Signup extends Component {
             email: '',
             first_name: '',
             last_name: ''
-        }
+        };
         this.handleChange = this.handleChange.bind(this);
     };
 

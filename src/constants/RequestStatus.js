@@ -3,6 +3,6 @@ const RequestStatus = {
     PENDING: "PENDING",
     SUCCEEDED: "SUCCEEDED",
     FAILED: "FAILED",
-}
+};
 
 export default RequestStatus;
