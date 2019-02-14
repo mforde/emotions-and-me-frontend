@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+PropTypes.
 class Names extends Component {
   static propTypes = {
     names: PropTypes.array.isRequired
