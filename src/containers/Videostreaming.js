@@ -1,51 +1,49 @@
 import React, { Component } from 'react';
+import IFrame from '../components/Iframe.js';
 
 
-class VideoStreaming extends Component {
-  render() {
-    return (
-      <div className="form-container" class="middle_align"
-
-      >Enter Video Link
-        <VideoLinkSearchForm />
-      </div>
-
-    );
-  }
-}
-
-export default VideoStreaming;
-
-class VideoLinkSearchForm extends React.Component {
+export default class VideoStreaming extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
-
+    this.state = {value: '',submitted: false};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
+    this.setState({ submitted: false });
+
+
   }
 
   handleSubmit(event) {
-    //send value to backend
-    alert('A link was submitted: ' + this.state.value);
-    event.preventDefault();
+
+        event.preventDefault();
+        this.setState({ submitted: true });
+
   }
+
+  renderIFrame() {
+
+        return <IFrame url={this.state.value} />
+        }
 
   render() {
     return (
+        <div>
       <form onSubmit={this.handleSubmit}>
         <label>
-          Link:
+          Video Link:
           <input type="Enter Video Link Here" value={this.state.value} onChange={this.handleChange} />
         </label>
         <input type="submit" value="Submit" />
       </form>
+            {this.state.submitted && this.renderIFrame()}
+        </div>
     );
   }
 }
 
-export {VideoLinkSearchForm}
+
+

@@ -22,6 +22,7 @@ import QuizMakerPage from "./containers/QuizMakerPage";
 import TasklistCreator from "./containers/TasklistCreator";
 import MyAssignments from "./containers/MyAssignments";
 import TakeQuiz from "./containers/TakeQuiz";
+import IFrame from './components/Iframe.js';
 
 const ModalOptions = {
   NONE: "NONE",
@@ -87,6 +88,7 @@ class App extends Component {
         <Route path="/" exact render={(props) => <Home {...props} isLoggedIn={isLoggedIn} />} />
         <Route path="/webcam" component={Webcam} />
         <Route path="/videostreaming" component={VideoStreaming} />
+        <Route path="/videostreaming/iframe" component={IFrame} />
         <Route path="/recordaudio" component={RecordAudio} />
         <Route path="/browse"  component={Browse} />
         <Route path="/carousel"  component={DemoCarousel} />
