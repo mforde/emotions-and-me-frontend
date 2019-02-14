@@ -10,8 +10,8 @@ function QuizAnswers(props) {
                     type="radio"
                     className="w3-radio w3-padding"
                     name="radioGroup"
-                    checked={props.answerType === props.answer}
-                    id={props.answerType}
+                    checked={props.answerType.toString() === props.answer}
+                    id={props.answerType.toString()}
                     value={props.answerType}
                     disabled={props.answer}
                     onChange={props.onAnswerSelected}
@@ -23,7 +23,7 @@ function QuizAnswers(props) {
 }
 
 QuizAnswers.propTypes = {
-    answerType: PropTypes.string.isRequired,
+    answerType: PropTypes.bool.isRequired,
     answerContent: PropTypes.string.isRequired,
     answer: PropTypes.string.isRequired,
     onAnswerSelected: PropTypes.func.isRequired

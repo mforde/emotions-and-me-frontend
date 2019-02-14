@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import '../App.css';
-import quizQuestions from "../components/tempQuizData";
 import Quiz from "../components/TakeQuiz";
 import Result from "../components/QuizResults";
 
-class TestQuiz extends Component {
+class TakeQuiz extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            quizName: "Quiz 1",
+            quizName: this.props.location.state.quizName,
             counter: 0,
             questionId: 1,
             question: '',
@@ -20,21 +19,99 @@ class TestQuiz extends Component {
                 true: 0
             },
             result: '',
+            quizData: ''
         };
 
         this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
+        this.quizQuestions = this.getQuizData(this.props.location.state.quizName);
+    }
+
+    getQuizData(name) {
+        let newData = [];
+
+        let tempData =
+            {
+                "teacher": "testTeacher",
+                "quizName": "Quiz 1",
+                "questions": [
+                    {
+                        "Q": "Question 1",
+                        "A": "Answer A",
+                        "B": "Answer B",
+                        "C": "Answer C",
+                        "D": "Answer D",
+                        "correct": "B"
+                    },
+                    {
+                        "Q": "Question 2",
+                        "A": "Answer A2",
+                        "B": "Answer B2",
+                        "C": "Answer C2",
+                        "D": "Answer D2",
+                        "correct": "D"
+                    }
+                ]
+            };
+
+        let idx = 0;
+        tempData.questions.forEach(function(question) {
+            let correct = question.correct;
+            let A = false;
+            let B = false;
+            let C = false;
+            let D = false;
+
+            if (correct === "A") {
+                A = true;
+            }
+            if (correct === "B") {
+                B = true;
+            }
+            if (correct === "C") {
+                C = true;
+            }
+            if (correct === "D") {
+                D = true;
+            }
+
+            let newQ = {
+                question: question.Q,
+                answers: [
+                    {
+                        type: A,
+                        content: question.A
+                    },
+                    {
+                        type: B,
+                        content: question.B
+                    },
+                    {
+                        type: C,
+                        content: question.C
+                    },
+                    {
+                        type: D,
+                        content: question.D
+                    },
+                ]
+            };
+            newData.push(newQ);
+            idx = idx + 1;
+        });
+
+        return newData;
     }
 
     componentWillMount() {
-        const shuffledAnswerOptions = quizQuestions.map((question) => this.shuffleArray(question.answers));
+        const shuffledAnswerOptions = this.quizQuestions.map((question) => TakeQuiz.shuffleArray(question.answers));
 
         this.setState({
-            question: quizQuestions[0].question,
+            question: this.quizQuestions[0].question,
             answerOptions: shuffledAnswerOptions[0]
         });
     }
 
-    shuffleArray(array) {
+    static shuffleArray(array) {
         let currentIndex = array.length, temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
@@ -55,7 +132,7 @@ class TestQuiz extends Component {
 
     handleAnswerSelected(event) {
         this.setUserAnswer(event.currentTarget.value);
-        if (this.state.questionId < quizQuestions.length) {
+        if (this.state.questionId < this.quizQuestions.length) {
             setTimeout(() => this.setNextQuestion(), 300);
         } else {
             setTimeout(() => this.setResults(this.getResults()), 300);
@@ -78,8 +155,8 @@ class TestQuiz extends Component {
         this.setState({
             counter: counter,
             questionId: questionId,
-            question: quizQuestions[counter].question,
-            answerOptions: quizQuestions[counter].answers,
+            question: this.quizQuestions[counter].question,
+            answerOptions: this.quizQuestions[counter].answers,
             answer: ''
         });
     }
@@ -108,9 +185,10 @@ class TestQuiz extends Component {
                 <Quiz
                     answer={this.state.answer}
                     answerOptions={this.state.answerOptions}
+                    counter={this.state.counter}
                     question={this.state.question}
                     questionId={this.state.questionId}
-                    questionTotal={quizQuestions.length}
+                    questionTotal={this.quizQuestions.length}
                     onAnswerSelected={this.handleAnswerSelected}
                 />
             </div>
@@ -119,7 +197,7 @@ class TestQuiz extends Component {
 
     renderResult() {
         return (
-            <Result quizResult={this.state.result} numCorrect={this.state.answersCount.true} numQuestions={quizQuestions.length}/>
+            <Result quizResult={this.state.result} numCorrect={this.state.answersCount.true} numQuestions={this.quizQuestions.length}/>
         );
     }
 
@@ -128,4 +206,4 @@ class TestQuiz extends Component {
     }
 }
 
-export default TestQuiz;
+export default TakeQuiz;

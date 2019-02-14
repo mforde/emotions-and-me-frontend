@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import thunk from 'redux-thunk';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './App.css';
-import reducer from './reducers'
+import { handleLoginAttempt, handleSignupAttempt, handleCheckToken } from './actions';
 import NavBar from './components/NavBar.js';
 import Home from  './containers/Home.js';
 import Webcam from './containers/Webcam.js';
@@ -17,46 +16,59 @@ import AudioList from './components/AudioList.js'
 import PictureList from './components/PictureList.js'
 import DemoCarousel from './components/PictureCarousel.js'
 import AudioPlayer from './components/AudioPlayer.js';
+import RequestStatus from './constants/RequestStatus';
 import AssignmentCreator from "./containers/AssignmentCreator";
 import QuizMakerPage from "./containers/QuizMakerPage";
 import TasklistCreator from "./containers/TasklistCreator";
 import MyAssignments from "./containers/MyAssignments";
-import TestQuiz from "./containers/TestQuiz";
+import TakeQuiz from "./containers/TakeQuiz";
 import IFrame from './components/Iframe.js';
 
 const ModalOptions = {
   NONE: "NONE",
   LOGIN: "LOGIN",
   SIGNUP: "SIGNUP",
-}
+};
 
 class App extends Component {
+  static propTypes = {
+    loginRequestStatus: PropTypes.string.isRequired,
+    signupRequestStatus: PropTypes.string.isRequired,
+    currentUserRequestStatus: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    user: PropTypes.object.isRequired,
+    handleLoginAttempt: PropTypes.func.isRequired,
+    handleSignupAttempt: PropTypes.func.isRequired,
+    handleCheckToken: PropTypes.func.isRequired,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: localStorage.getItem('loggedIn') ? true : false,
+      isLoggedIn: localStorage.getItem('token') ? true : false,
       openModal: ModalOptions.NONE,
-    }
-    this.handleLoginAttempt = this.handleLoginAttempt.bind(this);
-    this.handleSignupAttempt = this.handleLoginAttempt.bind(this);
+    };
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  handleLoginAttempt(e) {
-    e.preventDefault();
-    localStorage.setItem('loggedIn', true);
-    this.setState({ isLoggedIn: true, openModal: ModalOptions.NONE })
+  componentDidMount() {
+    if(this.state.isLoggedIn) {
+      this.props.handleCheckToken();
+    }
   }
 
-  handleSignupAttempt(e) {
-    e.preventDefault();
-    localStorage.setItem('loggedIn', true);
-    this.setState({ isLoggedIn: true, openModal: ModalOptions.NONE });
+  componentDidUpdate(prevProps) {
+    if (this.props.token !== prevProps.token) {
+      if (this.props.token) {
+        this.setState({ isLoggedIn: true, openModal: ModalOptions.NONE });
+      }
+    }
   }
 
   handleSignout() {
-    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token');
     this.setState({ isLoggedIn: false });
   }
 
@@ -87,36 +99,34 @@ class App extends Component {
         <Route path="/assignmentcreator/quizmaker" component={QuizMakerPage} />
         <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
         <Route path="/myassignments" component={MyAssignments} />
-        <Route path="/testQuiz" component={TestQuiz} />
+        <Route path="/takequiz" component={TakeQuiz} />
       </div>
     )
   }
 
   render() {
-    const middleware = [ thunk ]
-    const store = createStore(reducer, applyMiddleware(...middleware));
-
     const { isLoggedIn, openModal } = this.state;
 
     return (
-      <Provider store={store}>
         <Router>
           <div>
-            <Login
-              showModal={openModal === ModalOptions.LOGIN}
+            <Login 
+              showModal={openModal === ModalOptions.LOGIN} 
               handleClose={this.handleCloseModal}
-              handleLoginAttempt={this.handleLoginAttempt}
+              handleLoginAttempt={this.props.handleLoginAttempt}
+              hasFailed={this.props.loginRequestStatus === RequestStatus.FAILED}
             />
-            <Signup
-              showModal={openModal === ModalOptions.SIGNUP}
+            <Signup 
+              showModal={openModal === ModalOptions.SIGNUP} 
               handleClose={this.handleCloseModal}
-              handleSignupAttempt={this.handleSignupAttempt}
+              handleSignupAttempt={this.props.handleSignupAttempt}
+              hasFailed={this.props.signupRequestStatus === RequestStatus.FAILED}
             />
             <header>
-                <NavBar
-                  isLoggedIn={isLoggedIn}
-                  onClickLogin={() => this.setState({ openModal: ModalOptions.LOGIN })}
-                  onClickSignup={() => this.setState({ openModal: ModalOptions.SIGNUP })}
+                <NavBar 
+                  isLoggedIn={isLoggedIn} 
+                  onClickLogin={() => this.setState({ openModal: ModalOptions.LOGIN })} 
+                  onClickSignup={() => this.setState({ openModal: ModalOptions.SIGNUP })} 
                   onClickSignout={() => this.handleSignout()}
                 />
             </header>
@@ -125,9 +135,21 @@ class App extends Component {
             </div>
           </div>
         </Router>
-      </Provider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return state.userInfo
+};
+
+const mapDispatchToProps = {
+  handleLoginAttempt,
+  handleSignupAttempt,
+  handleCheckToken,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
