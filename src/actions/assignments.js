@@ -55,14 +55,12 @@ export const fetchAssignments = () => {
 
 export const sendAssignment = (students, data) => {
     return (dispatch) => {
-        alert("saving");
         dispatch(saveAssignment());
 
         let studentQuery = '';
         students.forEach(function (student) {
             studentQuery = studentQuery + ',' + student;
         });
-        alert(studentQuery);
 
         fetch(LOCAL_ENDPOINT + 'assignments/save?teacher=username&students=' + studentQuery, {
             method: 'POST',
@@ -70,7 +68,7 @@ export const sendAssignment = (students, data) => {
                 'Content-Type': 'application/json',
 //                'Authorization': `JWT ${localStorage.getItem('token')}`,
             },
-            body: JSON.stringify(data)
+            body: data
         })
             .then(response => response.json())
             .then(json => dispatch(successfulSave(json)),

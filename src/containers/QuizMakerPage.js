@@ -40,19 +40,11 @@ class QuizMakerPage extends Component {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
         await sleep(300);
 
-        alert(JSON.stringify({
-            'teacher'       : this.state.teacher,
-            'students'      : this.state.selectedStudents,
-            'quizName'      : values.quizName,
-            'quizData'      : values.questions
-        }));
-
         let studentUsers = [];
         this.state.selectedStudents.forEach(function (student) {
             studentUsers.push(student.id);
         });
 
-        alert(studentUsers);
         this.props.sendAssignment(studentUsers, JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
