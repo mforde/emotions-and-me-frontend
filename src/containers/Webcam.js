@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getWebcamStream } from '../actions';
 
 class Webcam extends Component {
     constructor(props) {
@@ -268,7 +265,7 @@ class Webcam extends Component {
             for(var i=0; i<dets.length; ++i)
             {
                 // is this detection assigned to a cluster?
-                if(assignments[i]==0)
+                if(assignments[i]===0)
                 {
                     // it is not:
                     // now we make a cluster out of it and see whether some other detections belong to it
@@ -494,9 +491,4 @@ class Webcam extends Component {
     }
 }
 
-const mapDispatchToProps = {
-    getWebcamStream,
-}
-
-export default connect(
-)(Webcam);
+export default Webcam;
