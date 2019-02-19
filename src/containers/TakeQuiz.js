@@ -19,18 +19,18 @@ class TakeQuiz extends Component {
                 true: 0
             },
             result: '',
-            quizData: ''
+            quizData: this.props.location.state.quizData
         };
 
         this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
-        this.quizQuestions = this.getQuizData(this.props.location.state.quizName);
+        this.quizQuestions = this.getQuizData(this.props.location.state.quizData);
     }
 
-    getQuizData(name) {
+    getQuizData(data) {
         let newData = [];
 
-        let tempData =
-            {
+        let tempData = data;
+/*            {
                 "teacher": "testTeacher",
                 "quizName": "Quiz 1",
                 "questions": [
@@ -51,7 +51,7 @@ class TakeQuiz extends Component {
                         "correct": "D"
                     }
                 ]
-            };
+            };*/
 
         let idx = 0;
         tempData.questions.forEach(function(question) {

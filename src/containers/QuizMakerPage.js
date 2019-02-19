@@ -51,6 +51,7 @@ class QuizMakerPage extends Component {
             'quizName'      : values.quizName,
             'quizData'      : values.questions
         }));
+        alert(this.state.saveData);
     };
 
     QuizForm = () => {
