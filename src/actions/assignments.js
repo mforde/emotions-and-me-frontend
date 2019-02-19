@@ -58,8 +58,15 @@ export const sendAssignment = (students, data) => {
         dispatch(saveAssignment());
 
         let studentQuery = '';
+        let idx = 0;
         students.forEach(function (student) {
-            studentQuery = studentQuery + ',' + student;
+            if (idx === 0) {
+                studentQuery = student;
+            }
+            else {
+                studentQuery = studentQuery + ',' + student;
+            }
+            idx = idx + 1;
         });
 
         fetch(LOCAL_ENDPOINT + 'assignments/save?teacher=username&students=' + studentQuery, {
