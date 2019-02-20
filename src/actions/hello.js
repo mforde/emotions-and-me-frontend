@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://localhost:8000/'
+const LOCAL_ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/'
 
 export const REQUEST_ALL_NAMES = 'REQUEST_ALL_NAMES';
 export const RECEIVE_ALL_NAMES = 'RECEIVE_ALL_NAMES';
