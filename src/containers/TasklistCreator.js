@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
-import MultiSelect from "@kenshooui/react-multi-select";
+//import MultiSelect from "@kenshooui/react-multi-select";
 
 class TasklistCreator extends Component {
     constructor(props) {
@@ -29,6 +29,25 @@ class TasklistCreator extends Component {
         this.setState({ selectedStudents });
     }
 
+
+    handleSubmit = async values => {
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+        await sleep(300);
+
+        let studentUsers = [];
+        this.state.selectedStudents.forEach(function (student) {
+            studentUsers.push(student.id);
+        });
+
+        this.props.sendAssignment(studentUsers, JSON.stringify({
+            'teacher'       : this.state.teacher,
+            'students'      : this.state.selectedStudents,
+            'quizName'      : values.quizName,
+            'quizData'      : values.questions
+        }));
+        alert(this.state.saveData);
+    };
+
     tasklistCreator = (tasks, addWebcamTask, addVideoTask, addAudioTask, addQuizTask, addBrowseTask, removeTask) => {
         const {students, selectedStudents} = this.state;
         return (
@@ -50,18 +69,12 @@ class TasklistCreator extends Component {
                     <button type="button" className="w3-button w3-theme" id="removeBtn" onClick={removeTask}>Remove Task</button>
                     <div className="w3-container w3-padding-top">
                         <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                        <MultiSelect
-                            items={students}
-                            selectedItems={selectedStudents}
-                            onChange={this.handleChange}
-                            id="student-select"
-                        />
                     </div>
                     <button type="button" className="w3-button w3-theme w3-bar" id="btn">Save & Send Tasklist</button>
                 </form>
             </div>
         );
-    }
+    };
 
     render() {
         return (

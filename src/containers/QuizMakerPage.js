@@ -3,9 +3,10 @@ import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import '../App.css';
-import MultiSelect from '@kenshooui/react-multi-select';
+//import MultiSelect from '@kenshooui/react-multi-select';
 import {sendAssignment} from '../actions/assignments';
 import {connect} from "react-redux";
+import {fetchStudents} from "../actions/getUsers";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class QuizMakerPage extends Component {
 
         this.state = {
             teacher : 'Teacher Name',
-            students : [
+            students : fetchStudents(),  /*[
                 {id: "student0", label: "Zach Morris"},
                 {id: "student1", label: "Kelly Kapowski"},
                 {id: "student2", label: "A.C. Slater"},
@@ -24,7 +25,7 @@ class QuizMakerPage extends Component {
                 {id: "student4", label: "Jessie Spano"},
                 {id: "student5", label: "Samuel Powers"},
                 {id: "student6", label: "Tori Scott"},
-            ],
+            ],*/
             selectedStudents: [],
             saveData: this.props.hasSaved,
             isSaving: this.props.isSaving,
@@ -241,12 +242,7 @@ class QuizMakerPage extends Component {
                                 </div>
                                 <div className="w3-container w3-padding-top">
                                     <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                                    <MultiSelect
-                                        items={students}
-                                        selectedItems={selectedStudents}
-                                        onChange={this.handleChange}
-                                        id="student-select"
-                                    />
+
                                 </div>
                                 <div className="buttons">
                                     <button type="submit" className="w3-button w3-theme w3-bar w3-half"
