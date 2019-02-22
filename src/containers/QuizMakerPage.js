@@ -50,7 +50,7 @@ class QuizMakerPage extends Component {
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
             'quizName'      : values.quizName,
-            'quizData'      : values.questions
+            'quizData'      : values.questions,
         }));
         alert(this.state.saveData);
     };

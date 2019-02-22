@@ -4,6 +4,7 @@ import webcamStream from './webcam';
 import userInfo from './userInfo';
 import assignments from './assignments';
 import videostream from './videostreaming';
+import users from './getUsers';
 
 export default combineReducers({
     allNames,
@@ -11,4 +12,5 @@ export default combineReducers({
     userInfo,
     assignments,
     videostream,
+    users,
 })

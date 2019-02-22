@@ -73,7 +73,7 @@ export const fetchStudents = () => {
 export const fetchTeacher = () => {
     return (dispatch) => {
         dispatch(requestTeacher());
-        fetch(LOCAL_ENDPOINT + 'assignments/student/getTeachers?student=studentUser1', {
+        fetch(LOCAL_ENDPOINT + 'assignments/student/getTeachers?student=', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

@@ -23,6 +23,8 @@ import TasklistCreator from "./containers/TasklistCreator";
 import MyAssignments from "./containers/MyAssignments";
 import TakeQuiz from "./containers/TakeQuiz";
 import IFrame from './components/Iframe.js';
+import MyAccount from "./containers/MyAccount";
+import HowToPage from "./containers/HowToPage";
 
 const ModalOptions = {
   NONE: "NONE",
@@ -100,6 +102,8 @@ class App extends Component {
         <Route path="/assignmentcreator/tasklistcreator" component={TasklistCreator} />
         <Route path="/myassignments" component={MyAssignments} />
         <Route path="/takequiz" component={TakeQuiz} />
+        <Route path="/myaccount" component={MyAccount}/>
+        <Route path="/howto" component={HowToPage} />
       </div>
     )
   }
