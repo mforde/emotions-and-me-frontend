@@ -1,34 +1,47 @@
 import React, { Component } from 'react';
 import '../App.css';
-//import MultiSelect from "@kenshooui/react-multi-select";
+import FilteredMultiSelect from "react-filtered-multiselect";
 
 class TasklistCreator extends Component {
     constructor(props) {
         super(props);
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleDeselect = this.handleDeselect.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
 
         this.state = {
             numtasks: 1,
             tasks: [],
             teacher: 'Teacher Name',
             students: [
-                {id: 0, label: "Zach Morris"},
-                {id: 1, label: "Kelly Kapowski"},
-                {id: 2, label: "A.C. Slater"},
-                {id: 3, label: "Lisa Turtle"},
-                {id: 4, label: "Jessie Spano"},
-                {id: 5, label: "Samuel Powers"},
-                {id: 6, label: "Tori Scott"},
+                {value: "student2", label: "A.C. Slater"},
+                {value: "student4", label: "Jessie Spano"},
+                {value: "student1", label: "Kelly Kapowski"},
+                {value: "student3", label: "Lisa Turtle"},
+                {value: "student5", label: "Samuel Powers"},
+                {value: "student6", label: "Tori Scott"},
+                {value: "student0", label: "Zach Morris"},
             ],
             selectedStudents: []
         };
     }
 
-    handleChange(selectedStudents) {
-        this.setState({ selectedStudents });
-    }
+    handleDeselect = (deselectedStudent) => {
+        let selectedStudents = this.state.selectedStudents.slice();
+        deselectedStudent.forEach(option => {
+            selectedStudents.splice(selectedStudents.indexOf(option), 1)
+        });
+        this.setState({selectedStudents});
+    };
 
+    handleSelect = (selectedStudents) => {
+        selectedStudents.sort(function(a, b){
+            if(a.label < b.label) { return -1; }
+            if(a.label > b.label) { return 1; }
+            return 0;
+        });
+        this.setState({selectedStudents})
+    };
 
     handleSubmit = async values => {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -69,6 +82,37 @@ class TasklistCreator extends Component {
                     <button type="button" className="w3-button w3-theme" id="removeBtn" onClick={removeTask}>Remove Task</button>
                     <div className="w3-container w3-padding-top">
                         <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                        <div className="w3-row">
+                            <div className="w3-half">
+                                <FilteredMultiSelect
+                                    buttonText="Add"
+                                    classNames={{
+                                        filter: 'form-control',
+                                        select: 'form-control',
+                                        button: 'btn btn btn-block btn-default',
+                                        buttonActive: 'btn btn btn-block btn-danger'
+                                    }}
+                                    onChange={this.handleSelect}
+                                    options={students}
+                                    selectedOptions={selectedStudents}
+                                    textProp="label"
+                                />
+                            </div>
+                            <div className="w3-half">
+                                <FilteredMultiSelect
+                                    buttonText="Remove"
+                                    classNames={{
+                                        filter: 'form-control',
+                                        select: 'form-control',
+                                        button: 'btn btn btn-block btn-default',
+                                        buttonActive: 'btn btn btn-block btn-danger'
+                                    }}
+                                    onChange={this.handleDeselect}
+                                    options={selectedStudents}
+                                    textProp="label"
+                                />
+                            </div>
+                        </div>
                     </div>
                     <button type="button" className="w3-button w3-theme w3-bar" id="btn">Save & Send Tasklist</button>
                 </form>
