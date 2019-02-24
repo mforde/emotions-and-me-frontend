@@ -19,10 +19,23 @@ const users = ( state = defaultState, action) => {
                 isFetching: true,
             };
         case RECEIVE_STUDENTS:
+            let studentList = [];
+            action.data.students.forEach(function(student) {
+                let temp = {
+                    value: student[0],
+                    label: student[1]
+                };
+                studentList.push(temp);
+            });
+            studentList = studentList.sort(function(a, b){
+                if(a.label < b.label) { return -1; }
+                if(a.label > b.label) { return 1; }
+                return 0;
+            });
             return {
                 ...state,
                 isFetching: false,
-                students: action.data,
+                students: studentList,
             };
         case FAILED_RECEIVE_STUDENTS:
             return {

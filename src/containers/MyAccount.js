@@ -7,13 +7,17 @@ class MyAccount extends Component {
     constructor(props) {
         super(props);
 
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
         this.state = {
             isFetching: this.props.isFetching,
             hasFailed: this.props.hasFailed,
             isAdding: this.props.isAdding,
             added: this.props.added,
             students: this.props.students,
-            teacher: this.props.teacher
+            teacher: this.props.teacher,
+            addStudent: ''
         }
     }
 
@@ -22,8 +26,17 @@ class MyAccount extends Component {
         //this.props.fetchTeacher();
     }
 
+    handleChange(e) {
+        this.setState({addStudent: e.target.value});
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.addStudentToTeacher(this.state.addStudent);
+    };
+
     myAccount() {
-        if ((this.props.isFetching === true)) {
+        if (this.props.isFetching === true) {
             return (
                 <div className="w3-container">
                     <h1 className="w3-center w3-margin-bottom">My Account</h1>
@@ -40,10 +53,15 @@ class MyAccount extends Component {
             )
         }
         else {
-            alert(this.state.students);
+            //alert(this.state.students);
             return (
                 <div className="w3-container">
                     <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                    <form>
+                        <label className="w3-padding" htmlFor="addStudent">Add Student by Username</label>
+                        <input type="text" id="addStudent" value={this.state.addStudent} onChange={this.handleChange} />
+                        <input className="w3-button w3-theme w3-margin" type="submit" value="Add Student" onClick={this.handleSubmit} />
+                    </form>
                 </div>
             )
         }

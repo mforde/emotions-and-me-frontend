@@ -93,9 +93,9 @@ export const addStudentToTeacher = (students) => {
     return (dispatch) => {
         dispatch(addStudent());
 
-        let studentQuery = '';
+        let studentQuery = students;
         let idx = 0;
-        students.forEach(function (student) {
+        /*students.forEach(function (student) {
             if (idx === 0) {
                 studentQuery = student;
             }
@@ -103,7 +103,7 @@ export const addStudentToTeacher = (students) => {
                 studentQuery = studentQuery + ',' + student;
             }
             idx = idx + 1;
-        });
+        });*/
 
         fetch(LOCAL_ENDPOINT + 'assignments/teacher/addStudents?teacher=username&students=' + studentQuery, {
             method: 'POST',

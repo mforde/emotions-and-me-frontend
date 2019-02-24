@@ -82,7 +82,7 @@ class TasklistCreator extends Component {
                     <button type="button" className="w3-button w3-theme" id="removeBtn" onClick={removeTask}>Remove Task</button>
                     <div className="w3-container w3-padding-top">
                         <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                        <div className="w3-row">
+                        <div className="w3-row" id="student-select">
                             <div className="w3-half">
                                 <FilteredMultiSelect
                                     buttonText="Add"
