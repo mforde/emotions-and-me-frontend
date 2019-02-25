@@ -1,6 +1,8 @@
-const LOGIN_ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/token-auth/';
-const SIGNUP_ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/core/users/';
-const CURRENT_USER_ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/core/current_user/';
+import BaseUrl from "../constants/BaseUrl";
+
+const LOGIN_ENDPOINT = BaseUrl +  'token-auth/';
+const SIGNUP_ENDPOINT = BaseUrl + '/core/users/';
+const CURRENT_USER_ENDPOINT = BaseUrl + '/core/current_user/';
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';

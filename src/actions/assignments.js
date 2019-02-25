@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/';
+import BaseUrl from "../constants/BaseUrl";
 
 export const REQUEST_ASSIGNMENTS = 'REQUEST_ASSIGNMENTS';
 export const RECEIVE_ASSIGNMENTS = 'RECEIVE_ASSIGNMENTS';
@@ -37,7 +37,7 @@ export const failedSave =() => ({
 export const fetchAssignments = () => {
     return (dispatch) => {
         dispatch(requestAssignments())
-        fetch(LOCAL_ENDPOINT + 'assignments/teacher?teacher=username', {
+        fetch(BaseUrl + 'assignments/teacher?teacher=username', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -62,7 +62,7 @@ export const sendAssignment = (students, data) => {
             studentQuery = studentQuery + ',' + student;
         });
 
-        fetch(LOCAL_ENDPOINT + 'assignments/save?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save?teacher=username&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

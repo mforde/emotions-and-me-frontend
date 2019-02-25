@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-const ENDPOINT = 'http://backend-env.jcjy3gnd92.us-east-2.elasticbeanstalk.com/';
-//const ENDPOINT = 'http://127.0.0.1:8000/'
+import BaseUrl from '../constants/BaseUrl';
 
 class Webcam extends Component {
     constructor(props) {
@@ -435,7 +433,7 @@ class Webcam extends Component {
                     ctx2.putImageData(imgData,0, 0);
 
                     var imageJSON = {"image": JSON.stringify(data)};
-                    fetch(ENDPOINT + 'analyze_emotion', {
+                    fetch(BaseUrl + 'analyze_emotion', {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
