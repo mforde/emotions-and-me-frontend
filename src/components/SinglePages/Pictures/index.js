@@ -1,7 +1,7 @@
-export * from './angryAudio';
-export * from './confusedAudio';
-export * from './disgustAudio';
-export * from './fearAudio';
-export * from './happyAudio';
-export * from './neutralAudio';
+export * from './angryPicture.js';
+export * from './confusedPicture';
+export * from './disgustPicture';
+export * from './fearPicture';
+export * from './happyPicture';
+export * from './neutralPicture';
 

@@ -1,5 +1,7 @@
-export * from './hello';
-export * from './webcam';
-export * from './authentication';
-export * from './assignments';
-export * from './videostreaming';
+export * from './angryAudio';
+export * from './confusedAudio';
+export * from './disgustAudio';
+export * from './fearAudio';
+export * from './happyAudio';
+export * from './neutralAudio';
+
