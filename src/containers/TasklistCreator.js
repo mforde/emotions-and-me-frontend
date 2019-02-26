@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import FilteredMultiSelect from "react-filtered-multiselect";
-import {fetchStudents, sendAssignment} from "../actions";
+import {fetchAssignments, fetchStudents, sendTasklist} from "../actions";
 import {connect} from "react-redux";
 import {Field, Form} from "react-final-form";
 import arrayMutators from "final-form-arrays";
@@ -27,6 +27,7 @@ class TasklistCreator extends Component {
 
     async componentDidMount() {
         this.props.fetchStudents();
+        this.props.fetchAssignments();
     }
 
     handleDeselect = (deselectedStudent) => {
@@ -38,9 +39,13 @@ class TasklistCreator extends Component {
     };
 
     handleSelect = (selectedStudents) => {
-        selectedStudents.sort(function(a, b){
-            if(a.label < b.label) { return -1; }
-            if(a.label > b.label) { return 1; }
+        selectedStudents.sort(function (a, b) {
+            if (a.label < b.label) {
+                return -1;
+            }
+            if (a.label > b.label) {
+                return 1;
+            }
             return 0;
         });
         this.setState({selectedStudents})
@@ -52,16 +57,21 @@ class TasklistCreator extends Component {
 
         let studentUsers = [];
         this.state.selectedStudents.forEach(function (student) {
-            studentUsers.push(student.id);
+            studentUsers.push(student.value);
         });
 
-        /*this.props.sendAssignment(studentUsers, JSON.stringify({
+        this.props.sendTasklist(studentUsers, JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
             'tasklistName'      : values.tasklistName,
-            'tasklistData'      : values.tasklistList
-        }));*/
-        alert(JSON.stringify(values));
+            'tasklistData'      : this.convertTasklistData(values)
+        }));
+        alert(JSON.stringify({
+            'teacher'       : this.state.teacher,
+            'students'      : this.state.selectedStudents,
+            'tasklistName'      : values.tasklistName,
+            'tasklistData'      : this.convertTasklistData(values)
+        }));
     };
 
     tasklistCreator = () => {
@@ -126,7 +136,8 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Video Streaming Task {index + 1}:</label>
+                                                <label className="w3-padding-top">Video Streaming
+                                                    Task {index + 1}:</label>
                                                 {this.VideoTask(name)}
                                             </div>
                                         ))}
@@ -151,7 +162,8 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Audio Recording Task {index + 1}:</label>
+                                                <label className="w3-padding-top">Audio Recording
+                                                    Task {index + 1}:</label>
                                                 {this.AudioTask(name)}
                                             </div>
                                         ))}
@@ -176,7 +188,8 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Browse Photos & Audio Task {index + 1}:</label>
+                                                <label className="w3-padding-top">Browse Photos & Audio
+                                                    Task {index + 1}:</label>
                                                 {this.BrowseTask(name)}
                                             </div>
                                         ))}
@@ -239,7 +252,7 @@ class TasklistCreator extends Component {
     };
 
     multiStudentSelect() {
-        if (this.props.isFetching === true) {
+        if (this.props.isFetchingUser === true) {
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -248,8 +261,7 @@ class TasklistCreator extends Component {
                     </div>
                 </div>
             )
-        }
-        else if (this.props.studentHasFailed === true) {
+        } else if (this.props.studentHasFailed === true) {
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -258,8 +270,7 @@ class TasklistCreator extends Component {
                     </div>
                 </div>
             )
-        }
-        else if (this.props.students !== null){
+        } else if (this.props.students !== null) {
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -386,34 +397,96 @@ class TasklistCreator extends Component {
             <div className="w3-group w3-padding">
                 <p>Pick a quiz for the student to complete</p>
                 <label className="w3-margin-right">Quizzes: </label>
-                <Field component="select" className="w3-select" name={`${name}.quiz`}>
-                    <option/>
-                    <option value="anger">Anger</option>
-                    <option value="disgust">Disgust</option>
-                    <option value="happy">Happy</option>
-                    <option value="fear">Fear</option>
-                    <option value="sad">Sad</option>
-                    <option value="surprise">Surprise</option>
-                </Field>
+                {this.QuizSelect(name)}
             </div>
         );
+    };
+
+    QuizSelect = (name) => {
+        if (this.props.isFetching === true) {
+            return (
+                <p className="w3-center">Loading...</p>
+            )
+        } else if (this.props.hasFailed === true) {
+            return (
+                <p className="w3-center">Failed to Receive Students</p>
+            )
+        } else if (this.props.quizzes !== null) {
+            return (
+                <Field component="select" className="w3-select" name={`${name}.quiz`}>
+                    <option/>
+                    {
+                        this.props.quizzes.assignments.map(quiz => (
+                            <option key={quiz.quizName} value={quiz.quizName}>{quiz.quizName}</option>
+                        ))
+                    }
+                </Field>
+            );
+        }
+        return (
+            <p className="w3-center">Something Else Went Wrong???</p>
+        )
+    };
+
+    convertTasklistData = (values) => {
+        let tasks = [];
+        values.webcamTasks.map(task => {
+            let temp = {
+                type: "webcam",
+                emotion: task.emotion
+            };
+            tasks.push(temp)
+        });
+        values.videoTasks.map(task => {
+            let temp = {
+                type: "video",
+                url: task.url
+            };
+            tasks.push(temp)
+        });
+        values.audioTasks.map(task => {
+            let temp = {
+                type: "audio",
+                emotion: task.emotion
+            };
+            tasks.push(temp)
+        });
+        values.browseTasks.map(task => {
+            let temp = {
+                type: "browse",
+                emotion: task.emotion
+            };
+            tasks.push(temp)
+        });
+        values.quizTasks.map(task => {
+            let temp = {
+                type: "quiz",
+                quizName: task.quiz
+            };
+            tasks.push(temp)
+        });
+        return tasks;
     };
 }
 
 const mapStateToProps = state => {
     return {
-        saveData: state.assignments.hasSaved,
-        isSaving: state.assignments.isSaving,
+        saveData: state.tasklists.hasSaved,
+        isSaving: state.tasklists.isSaving,
+        failedSave: state.tasklists.hasFailed,
         hasFailed: state.assignments.hasFailed,
-        isFetching: state.users.isFetching,
+        quizzes: state.assignments.quizData,
+        isFetching: state.assignments.isFetching,
+        isFetchingUser: state.users.isFetching,
         studentHasFailed: state.users.hasFailed,
         students: state.users.students,
     }
 };
 
 const mapDispatchToProps = {
-    sendAssignment,
-    fetchStudents
+    sendTasklist,
+    fetchAssignments,
+    fetchStudents,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (TasklistCreator);
