@@ -28,10 +28,7 @@ class TakeQuiz extends Component {
     getQuizData(data) {
         let newData = [];
 
-        let tempData = data;
-
-        let idx = 0;
-        tempData.forEach(function(question) {
+        data.forEach(function(question) {
             let correct = question.correct;
             let A = false;
             let B = false;
@@ -73,7 +70,6 @@ class TakeQuiz extends Component {
                 ]
             };
             newData.push(newQ);
-            idx = idx + 1;
         });
 
         return newData;
