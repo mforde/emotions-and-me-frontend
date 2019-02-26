@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
+import Link from "react-router-dom/es/Link";
 
 function TasklistList(props) {
     return (
@@ -9,9 +10,14 @@ function TasklistList(props) {
             <>
                 {props.tasklists.map(tasklist => (
                     <div className="w3-row-padding w3-center" key={tasklist.tasklistName}>
-                        <div className="w3-theme w3-card w3-container w3-hover-shadow w3-hover-light-gray">
-                            <h4>{tasklist.tasklistName}</h4>
-                        </div>
+                        <Link to={{
+                            pathname: '/tasklistpage',
+                            state: {tasklistName: tasklist.tasklistName, tasklistData: tasklist.tasklistData}
+                        }} style={{textDecoration: 'none'}}>
+                            <div className="w3-theme w3-card w3-container w3-hover-shadow w3-hover-light-gray">
+                                <h4>{tasklist.tasklistName}</h4>
+                            </div>
+                        </Link>
                     </div>
                 ))}
             </>

@@ -25,7 +25,7 @@ const tasklists = ( state = defaultState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                quizData: action.data,
+                tasklistData: action.data,
             };
         case FAILED_RECEIVE_TASKLISTS:
             return {
