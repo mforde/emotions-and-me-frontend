@@ -11,33 +11,7 @@ class TasklistPage extends Component {
             tasklistData: this.props.location.state.tasklistData
         };
     }
-/*
-    getTasklistData(data) {
-        let newData = [];
 
-        data.forEach(function(task) {
-            if (task.type === "webcam") {
-
-            }
-            else if (task.type === "video") {
-
-            }
-            else if (task.type === "audio") {
-
-            }
-            else if (task.type === "browse") {
-
-            }
-            else if (task.type === "quiz") {
-
-            }
-
-
-        });
-
-        return newData;
-    }
-*/
     renderTasklist() {
         return (
             <div className="w3-container">

@@ -13,9 +13,9 @@ class TaskChecklist extends Component {
 
     checklist() {
         return (
-            <div className="w3-card">
-                {this.state.tasklistData.map(task => (
-                    <Tasks type={task.type} data={task} />
+            <div className="w3-card w3-center">
+                {this.state.tasklistData.map((task,i) => (
+                    <Tasks type={task.type} data={task} key={i}/>
                 ))}
             </div>
         );
