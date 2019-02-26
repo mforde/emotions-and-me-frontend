@@ -62,7 +62,6 @@ class QuizMakerPage extends Component {
             'quizName'      : values.quizName,
             'quizData'      : values.questions,
         }));
-        alert(this.state.saveData);
     };
 
     QuizForm = () => {
@@ -75,7 +74,7 @@ class QuizMakerPage extends Component {
                     }}
                     render={({
                                  handleSubmit,
-                                 mutators: {push, pop}, // injected from final-form-arrays above
+                                 mutators: {push, pop},
                                  pristine,
                                  reset,
                                  submitting,
@@ -310,7 +309,7 @@ class QuizMakerPage extends Component {
                                 options={this.props.students}
                                 selectedOptions={this.state.selectedStudents}
                                 textProp="label"
-                                placeholder="Type to filer students"
+                                placeholder="Type to filter students"
                             />
                         </div>
                         <div className="w3-half">
@@ -325,7 +324,7 @@ class QuizMakerPage extends Component {
                                 onChange={this.handleDeselect}
                                 options={this.state.selectedStudents}
                                 textProp="label"
-                                placeholder="Type to filer students"
+                                placeholder="Type to filter students"
                             />
                         </div>
                     </div>

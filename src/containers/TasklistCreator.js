@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import '../App.css';
 import FilteredMultiSelect from "react-filtered-multiselect";
+import {fetchStudents, sendAssignment} from "../actions";
+import {connect} from "react-redux";
+import {Field, Form} from "react-final-form";
+import arrayMutators from "final-form-arrays";
+import {FieldArray} from "react-final-form-arrays";
 
 class TasklistCreator extends Component {
     constructor(props) {
@@ -8,22 +13,20 @@ class TasklistCreator extends Component {
 
         this.handleDeselect = this.handleDeselect.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            numtasks: 1,
-            tasks: [],
             teacher: 'Teacher Name',
-            students: [
-                {value: "student2", label: "A.C. Slater"},
-                {value: "student4", label: "Jessie Spano"},
-                {value: "student1", label: "Kelly Kapowski"},
-                {value: "student3", label: "Lisa Turtle"},
-                {value: "student5", label: "Samuel Powers"},
-                {value: "student6", label: "Tori Scott"},
-                {value: "student0", label: "Zach Morris"},
-            ],
-            selectedStudents: []
+            students: this.props.students,
+            selectedStudents: [],
+            saveData: this.props.hasSaved,
+            isSaving: this.props.isSaving,
+            hasFailed: this.props.hasFailed,
         };
+    }
+
+    async componentDidMount() {
+        this.props.fetchStudents();
     }
 
     handleDeselect = (deselectedStudent) => {
@@ -52,219 +55,365 @@ class TasklistCreator extends Component {
             studentUsers.push(student.id);
         });
 
-        this.props.sendAssignment(studentUsers, JSON.stringify({
+        /*this.props.sendAssignment(studentUsers, JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
-            'quizName'      : values.quizName,
-            'quizData'      : values.questions
-        }));
-        alert(this.state.saveData);
+            'tasklistName'      : values.tasklistName,
+            'tasklistData'      : values.tasklistList
+        }));*/
+        alert(JSON.stringify(values));
     };
 
-    tasklistCreator = (tasks, addWebcamTask, addVideoTask, addAudioTask, addQuizTask, addBrowseTask, removeTask) => {
-        const {students, selectedStudents} = this.state;
+    tasklistCreator = () => {
         return (
             <div className="w3-container w3-margin">
-                <form>
-                    <div className="tasks" id="tasks">
-                        {tasks}
-                    </div>
-                    <div className="w3-dropdown-hover">
-                        <button className="w3-button w3-theme">Add a Task</button>
-                        <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                            <button type={"button"} className={"w3-button"} onClick={addWebcamTask}>Practice with the Webcam</button>
-                            <button type={"button"} className={"w3-button"} onClick={addVideoTask}>Watch Video</button>
-                            <button type={"button"} className={"w3-button"} onClick={addAudioTask}>Record Yourself</button>
-                            <button type={"button"} className={"w3-button"} onClick={addQuizTask}>Take a Quiz</button>
-                            <button type={"button"} className={"w3-button"} onClick={addBrowseTask}>Browse Photos & Audio Clips</button>
-                        </div>
-                    </div>
-                    <button type="button" className="w3-button w3-theme" id="removeBtn" onClick={removeTask}>Remove Task</button>
-                    <div className="w3-container w3-padding-top">
-                        <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                        <div className="w3-row" id="student-select">
-                            <div className="w3-half">
-                                <FilteredMultiSelect
-                                    buttonText="Add"
-                                    classNames={{
-                                        filter: 'form-control',
-                                        select: 'form-control',
-                                        button: 'btn btn btn-block btn-default',
-                                        buttonActive: 'btn btn btn-block btn-danger'
-                                    }}
-                                    onChange={this.handleSelect}
-                                    options={students}
-                                    selectedOptions={selectedStudents}
-                                    textProp="label"
-                                />
-                            </div>
-                            <div className="w3-half">
-                                <FilteredMultiSelect
-                                    buttonText="Remove"
-                                    classNames={{
-                                        filter: 'form-control',
-                                        select: 'form-control',
-                                        button: 'btn btn btn-block btn-default',
-                                        buttonActive: 'btn btn btn-block btn-danger'
-                                    }}
-                                    onChange={this.handleDeselect}
-                                    options={selectedStudents}
-                                    textProp="label"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" className="w3-button w3-theme w3-bar" id="btn">Save & Send Tasklist</button>
-                </form>
+                <Form
+                    onSubmit={this.handleSubmit}
+                    mutators={{
+                        ...arrayMutators
+                    }}
+                    render={({
+                                 handleSubmit,
+                                 mutators: {push, pop},
+                                 pristine,
+                                 reset,
+                                 submitting,
+                                 values
+                             }) => {
+                        return (
+                            <form onSubmit={handleSubmit}>
+                                <div className={"w3-group w3-card w3-padding w3-padding-24"}>
+                                    <label htmlFor="tasklistName">Tasklist Name:</label>
+                                    <Field
+                                        name="tasklistName"
+                                        component="input"
+                                        id="tasklistName"
+                                        className="w3-bar"
+                                    />
+                                </div>
+                                <FieldArray name="webcamTasks">
+                                    {({fields}) =>
+                                        fields.map((name, index) => (
+                                            <div key={name}
+                                                 className="w3-group w3-card w3-display-container w3-padding w3-padding-24">
+                                                <div
+                                                    onClick={() => fields.remove(index)}
+                                                    className="w3-display-topright w3-padding w3-padding-16"
+                                                    style={{cursor: 'pointer'}}>✖
+                                                </div>
+                                                <label className="w3-padding-top">Webcam Task {index + 1}:</label>
+                                                {this.WebcamTask(name)}
+                                            </div>
+                                        ))}
+                                </FieldArray>
+                                <div className="webcam-buttons w3-padding">
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => push('webcamTasks', undefined)}>
+                                        Add Webcam Task
+                                    </button>
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => pop('webcamTasks')}>
+                                        Remove Webcam Task
+                                    </button>
+                                </div>
+                                <FieldArray name="videoTasks">
+                                    {({fields}) =>
+                                        fields.map((name, index) => (
+                                            <div key={name}
+                                                 className="w3-group w3-card w3-display-container w3-padding w3-padding-24">
+                                                <div
+                                                    onClick={() => fields.remove(index)}
+                                                    className="w3-display-topright w3-padding w3-padding-16"
+                                                    style={{cursor: 'pointer'}}>✖
+                                                </div>
+                                                <label className="w3-padding-top">Video Streaming Task {index + 1}:</label>
+                                                {this.VideoTask(name)}
+                                            </div>
+                                        ))}
+                                </FieldArray>
+                                <div className="video-buttons w3-padding">
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => push('videoTasks', undefined)}>
+                                        Add Video Streaming Task
+                                    </button>
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => pop('videoTasks')}>
+                                        Remove Video Streaming Task
+                                    </button>
+                                </div>
+                                <FieldArray name="audioTasks">
+                                    {({fields}) =>
+                                        fields.map((name, index) => (
+                                            <div key={name}
+                                                 className="w3-group w3-card w3-display-container w3-padding w3-padding-24">
+                                                <div
+                                                    onClick={() => fields.remove(index)}
+                                                    className="w3-display-topright w3-padding w3-padding-16"
+                                                    style={{cursor: 'pointer'}}>✖
+                                                </div>
+                                                <label className="w3-padding-top">Audio Recording Task {index + 1}:</label>
+                                                {this.AudioTask(name)}
+                                            </div>
+                                        ))}
+                                </FieldArray>
+                                <div className="audio-buttons w3-padding">
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => push('audioTasks', undefined)}>
+                                        Add Audio Recording Task
+                                    </button>
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => pop('audioTasks')}>
+                                        Remove Audio Recording Task
+                                    </button>
+                                </div>
+                                <FieldArray name="browseTasks">
+                                    {({fields}) =>
+                                        fields.map((name, index) => (
+                                            <div key={name}
+                                                 className="w3-group w3-card w3-display-container w3-padding w3-padding-24">
+                                                <div
+                                                    onClick={() => fields.remove(index)}
+                                                    className="w3-display-topright w3-padding w3-padding-16"
+                                                    style={{cursor: 'pointer'}}>✖
+                                                </div>
+                                                <label className="w3-padding-top">Browse Photos & Audio Task {index + 1}:</label>
+                                                {this.BrowseTask(name)}
+                                            </div>
+                                        ))}
+                                </FieldArray>
+                                <div className="browse-buttons w3-padding">
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => push('browseTasks', undefined)}>
+                                        Add Browse Photos & Audio Task
+                                    </button>
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => pop('browseTasks')}>
+                                        Remove Browse Photos & Audio Task
+                                    </button>
+                                </div>
+                                <FieldArray name="quizTasks">
+                                    {({fields}) =>
+                                        fields.map((name, index) => (
+                                            <div key={name}
+                                                 className="w3-group w3-card w3-display-container w3-padding w3-padding-24">
+                                                <div
+                                                    onClick={() => fields.remove(index)}
+                                                    className="w3-display-topright w3-padding w3-padding-16"
+                                                    style={{cursor: 'pointer'}}>✖
+                                                </div>
+                                                <label className="w3-padding-top">Quiz Task {index + 1}:</label>
+                                                {this.QuizTask(name)}
+                                            </div>
+                                        ))}
+                                </FieldArray>
+                                <div className="quiz-buttons w3-padding">
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => push('quizTasks', undefined)}>
+                                        Add Quiz Task
+                                    </button>
+                                    <button type="button" className="w3-button w3-theme"
+                                            onClick={() => pop('quizTasks')}>
+                                        Remove Quiz Task
+                                    </button>
+                                </div>
+                                {this.multiStudentSelect()}
+                                <div className="buttons w3-padding-top">
+                                    <button type="submit" className="w3-button w3-theme w3-bar w3-half"
+                                            disabled={submitting || pristine}>
+                                        Save & Send Tasklist
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={reset}
+                                        className="w3-button w3-theme w3-bar w3-half"
+                                        disabled={submitting || pristine}>
+                                        Clear
+                                    </button>
+                                </div>
+                            </form>
+                        )
+                    }}
+                />
             </div>
         );
     };
 
-    render() {
-        return (
-            this.tasklistCreator(this.state.tasks, this.onAddWebcamTask, this.onAddVideoTask, this.onAddAudioTask,
-                this.onAddQuizTask, this.onAddBrowseTask, this.onRemoveTask)
-        );
-    }
-
-    onRemoveTask = () => {
-        let tempTasks = this.state.tasks;
-        let newNum = this.state.numtasks;
-        tempTasks.pop();
-        if(this.state.numtasks > 1) {
-            newNum -= 1;
+    multiStudentSelect() {
+        if (this.props.isFetching === true) {
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <p className="w3-center">Loading...</p>
+                    </div>
+                </div>
+            )
         }
-
-        this.setState({
-            numtasks: newNum,
-            tasks: tempTasks
-        });
-    };
-
-    onAddWebcamTask = () => {
-        let tempTasks = this.state.tasks;
-        tempTasks.push(<AddWebcamTask />);
-
-        this.setState( {
-            numtasks: this.state.numtasks + 1,
-            tasks: tempTasks
-        });
-    };
-
-    onAddVideoTask = () => {
-        let tempTasks = this.state.tasks;
-        tempTasks.push(<AddVideoTask />);
-
-        this.setState( {
-            numtasks: this.state.numtasks + 1,
-            tasks: tempTasks
-        });
-    };
-
-    onAddAudioTask = () => {
-        let tempTasks = this.state.tasks;
-        tempTasks.push(<AddAudioTask/>);
-
-        this.setState( {
-            numtasks: this.state.numtasks + 1,
-            tasks: tempTasks
-        });
-    };
-
-    onAddQuizTask = () => {
-        let tempTasks = this.state.tasks;
-        tempTasks.push(<AddQuizTask />);
-
-        this.setState( {
-            numtasks: this.state.numtasks + 1,
-            tasks: tempTasks
-        });
-    };
-
-    onAddBrowseTask = () => {
-        let tempTasks = this.state.tasks;
-        tempTasks.push(<AddBrowseTask />);
-
-        this.setState( {
-            numtasks: this.state.numtasks + 1,
-            tasks: tempTasks
-        });
+        else if (this.props.studentHasFailed === true) {
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <p className="w3-center">Failed to Receive Students</p>
+                    </div>
+                </div>
+            )
+        }
+        else if (this.props.students !== null){
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <div className="w3-half">
+                            <FilteredMultiSelect
+                                buttonText="Add"
+                                classNames={{
+                                    filter: 'form-control',
+                                    select: 'form-control',
+                                    button: 'w3-btn w3-btn btn-block btn-default',
+                                    buttonActive: 'w3-btn w3-btn btn-block w3-theme'
+                                }}
+                                onChange={this.handleSelect}
+                                options={this.props.students}
+                                selectedOptions={this.state.selectedStudents}
+                                textProp="label"
+                                placeholder="Type to filter students"
+                            />
+                        </div>
+                        <div className="w3-half">
+                            <FilteredMultiSelect
+                                buttonText="Remove"
+                                classNames={{
+                                    filter: 'form-control',
+                                    select: 'form-control',
+                                    button: 'w3-btn w3-btn btn-block btn-default',
+                                    buttonActive: 'w3-btn w3-btn btn-block w3-theme'
+                                }}
+                                onChange={this.handleDeselect}
+                                options={this.state.selectedStudents}
+                                textProp="label"
+                                placeholder="Type to filter students"
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return (
+            <div className="w3-container w3-padding-top">
+                <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                <div className="w3-row">
+                    <p className="w3-center">Something Else Failed???</p>
+                </div>
+            </div>
+        )
     }
+
+    render() {
+        return (this.tasklistCreator());
+    }
+
+    WebcamTask = (name) => {
+        return (
+            <div className="w3-group w3-padding">
+                <p>Pick an emotion for the student to practice in the webcam feature</p>
+                <label className="w3-margin-right">Emotion: </label>
+                <Field component="select" className="w3-select" name={`${name}.emotion`}>
+                    <option/>
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happy">Happy</option>
+                    <option value="fear">Fear</option>
+                    <option value="sad">Sad</option>
+                    <option value="surprise">Surprise</option>
+                </Field>
+            </div>
+        );
+    };
+
+    VideoTask = (name) => {
+        return (
+            <div className="w3-group w3-padding">
+                <p>Insert URL/link for a YouTube Video for the student to watch</p>
+                <label className="w3-margin-right">YouTube Link: </label>
+                <Field
+                    name={`${name}.url`}
+                    component="input"
+                    className="w3-bar"
+                />
+            </div>
+        );
+    };
+
+    AudioTask = (name) => {
+        return (
+            <div className="w3-group w3-padding">
+                <p>Pick an emotion for the student to practice in the record audio feature</p>
+                <label className="w3-margin-right">Emotion: </label>
+                <Field component="select" className="w3-select" name={`${name}.emotion`}>
+                    <option/>
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happy">Happy</option>
+                    <option value="fear">Fear</option>
+                    <option value="sad">Sad</option>
+                    <option value="surprise">Surprise</option>
+                </Field>
+            </div>
+        );
+    };
+
+    BrowseTask = (name) => {
+        return (
+            <div className="w3-group w3-padding">
+                <p>Pick an emotion for the student to browse photos and audio clips of in the browse feature</p>
+                <label className="w3-margin-right">Emotion: </label>
+                <Field component="select" className="w3-select" name={`${name}.emotion`}>
+                    <option/>
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happy">Happy</option>
+                    <option value="fear">Fear</option>
+                    <option value="sad">Sad</option>
+                    <option value="surprise">Surprise</option>
+                </Field>
+            </div>
+        );
+    };
+
+    QuizTask = (name) => {
+        return (
+            <div className="w3-group w3-padding">
+                <p>Pick a quiz for the student to complete</p>
+                <label className="w3-margin-right">Quizzes: </label>
+                <Field component="select" className="w3-select" name={`${name}.quiz`}>
+                    <option/>
+                    <option value="anger">Anger</option>
+                    <option value="disgust">Disgust</option>
+                    <option value="happy">Happy</option>
+                    <option value="fear">Fear</option>
+                    <option value="sad">Sad</option>
+                    <option value="surprise">Surprise</option>
+                </Field>
+            </div>
+        );
+    };
 }
 
-const AddWebcamTask = () => {
-    return (
-        <div className={"w3-group w3-card w3-padding"}>
-            <h3>Webcam Task</h3>
-            <p>Go to the Webcam feature and practice expressing
-                <select>Pick Emotion
-                    <option value="anger">Anger</option>
-                    <option value="disgust">Disgust</option>
-                    <option value="happiness">Happiness</option>
-                    <option value="fear">Fear</option>
-                    <option value="sadness">Sadness</option>
-                    <option value="surprise">Surprise</option>
-                </select>
-            .</p>
-        </div>
-    );
+const mapStateToProps = state => {
+    return {
+        saveData: state.assignments.hasSaved,
+        isSaving: state.assignments.isSaving,
+        hasFailed: state.assignments.hasFailed,
+        isFetching: state.users.isFetching,
+        studentHasFailed: state.users.hasFailed,
+        students: state.users.students,
+    }
 };
 
-const AddVideoTask = () => {
-    return (
-        <div className={"w3-group w3-card w3-padding"}>
-            <h3>Watch Video Task</h3>
-            <p>Go to the Video Streaming feature and watch this video.</p>
-            <a href={"#"}/>
-        </div>
-    );
+const mapDispatchToProps = {
+    sendAssignment,
+    fetchStudents
 };
 
-const AddAudioTask = () => {
-    return (
-        <div className={"w3-group w3-card w3-padding w3-padding"}>
-            <h3>Record Audio Task</h3>
-            <p>Go to the Record Audio feature and practice expressing
-                <select>Pick Emotion
-                    <option value="anger">Anger</option>
-                    <option value="disgust">Disgust</option>
-                    <option value="happiness">Happiness</option>
-                    <option value="fear">Fear</option>
-                    <option value="sadness">Sadness</option>
-                    <option value="surprise">Surprise</option>
-                </select>
-            </p>
-        </div>
-    );
-};
-
-const AddQuizTask = () => {
-    return (
-        <div className={"w3-group w3-card w3-padding"}>
-            <h3>Complete Quiz Task</h3>
-            <p>Complete this quiz.</p>
-            <a href={"#"}/>
-        </div>
-    );
-};
-
-const AddBrowseTask = () => {
-    return (
-        <div className={"w3-group w3-card w3-padding"}>
-            <h3>Browse Photos & Audio Task</h3>
-            <p>Go to the Browse Photos & Audio feature and look through the clips under
-                <select>Pick Emotion
-                    <option value="anger">Anger</option>
-                    <option value="disgust">Disgust</option>
-                    <option value="happiness">Happiness</option>
-                    <option value="fear">Fear</option>
-                    <option value="sadness">Sadness</option>
-                    <option value="surprise">Surprise</option>
-                </select>
-             .</p>
-            <a href={"#"}/>
-        </div>
-    );
-};
-
-export default TasklistCreator;
+export default connect(mapStateToProps, mapDispatchToProps) (TasklistCreator);
