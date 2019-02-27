@@ -4,20 +4,9 @@ import  PictureList from '../components/PictureList.js'
 import Nav from '../components/nav';
 import { withRouter } from 'react-router-dom';
 
-
-
 import '../App.css';
 
-
-
-
-
-
-
-
-
-
-   export default class Browse extends React.Component {
+export default class Browse extends React.Component {
     render() {
       return (
         <div className="browse">

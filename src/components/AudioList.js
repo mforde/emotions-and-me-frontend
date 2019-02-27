@@ -12,7 +12,7 @@ export default  class AudioList extends React.Component  {
     // This creates a JSX element for every name in the list.
     return this.nameArr.map(name =>
                         <div className="text-center">
-                            <Link to={"/audioplayer"}><h3>{name}</h3></Link>
+                            <Link to={"/audio/" + String(name)}><h3>{name}</h3></Link>
                         </div>
                         );
   }
