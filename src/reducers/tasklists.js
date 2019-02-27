@@ -1,39 +1,39 @@
 import {
-    REQUEST_ASSIGNMENTS,
-    RECEIVE_ASSIGNMENTS,
-    FAILED_RECEIVE_ASSIGNMENTS,
-    SAVE_ASSIGNMENT,
-    SUCCESSFUL_SAVE, FAILED_SAVE
-} from "../actions/assignments";
+    FAILED_RECEIVE_TASKLISTS, FAILED_SAVE,
+    RECEIVE_TASKLISTS,
+    REQUEST_TASKLISTS,
+    SAVE_TASKLIST,
+    SUCCESSFUL_SAVE
+} from "../actions/tasklists";
 
 const defaultState = {
     isFetching: false,
     isSaving: false,
     hasSaved: null,
     hasFailed: false,
-    quizData: null,
+    tasklistData: null,
 };
 
-const assignments = ( state = defaultState, action) => {
+const tasklists = ( state = defaultState, action) => {
     switch (action.type) {
-        case REQUEST_ASSIGNMENTS:
+        case REQUEST_TASKLISTS:
             return {
                 ...state,
                 isFetching: true,
             };
-        case RECEIVE_ASSIGNMENTS:
+        case RECEIVE_TASKLISTS:
             return {
                 ...state,
                 isFetching: false,
-                quizData: action.data,
+                tasklistData: action.data,
             };
-        case FAILED_RECEIVE_ASSIGNMENTS:
+        case FAILED_RECEIVE_TASKLISTS:
             return {
                 ...state,
                 isFetching: false,
                 hasFailed: true,
             };
-        case SAVE_ASSIGNMENT:
+        case SAVE_TASKLIST:
             return {
                 ...state,
                 isSaving: true,
@@ -54,4 +54,4 @@ const assignments = ( state = defaultState, action) => {
     }
 };
 
-export default assignments;
+export default tasklists;

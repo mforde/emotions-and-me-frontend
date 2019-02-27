@@ -15,7 +15,7 @@ function Quiz(props) {
                     answerType={key.type}
                     answer={props.answer}
                     questionId={props.questionId}
-                    onAnswerSelected={props.onAnswerSelected}
+                    onAnswerChange={props.onAnswerChange}
                 />
             </div>
         );
@@ -30,6 +30,8 @@ function Quiz(props) {
             <QuestionNum
                 counter={props.questionId}
                 total={props.questionTotal}
+                onNext={props.onNextQ}
+                onPrev={props.onPrevQ}
             />
         </div>
     );
@@ -42,7 +44,9 @@ Quiz.propTypes = {
     question: PropTypes.string.isRequired,
     questionId: PropTypes.number.isRequired,
     questionTotal: PropTypes.number.isRequired,
-    onAnswerSelected: PropTypes.func.isRequired
+    onAnswerChange: PropTypes.func.isRequired,
+    onNextQ: PropTypes.func.isRequired,
+    onPrevQ: PropTypes.func.isRequired
 };
 
 export default Quiz;

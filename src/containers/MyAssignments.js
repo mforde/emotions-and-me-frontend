@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
-import {fetchAssignments} from "../actions/assignments";
 import QuizList from "../components/QuizList";
 import TasklistList from "../components/TasklistList";
 import {connect} from "react-redux";
+import {fetchAssignments, fetchTasklists} from "../actions";
 
 class MyAssignments extends Component {
     constructor(props) {
@@ -14,6 +14,7 @@ class MyAssignments extends Component {
 
         this.state = {
             quizData: this.props.quizData,
+            tasklistData: this.props.tasklistData,
             isFetching: this.props.isFetching,
             hasFailed: this.props.hasFailed,
         }
@@ -21,10 +22,12 @@ class MyAssignments extends Component {
 
     async componentDidMount() {
         this.props.fetchAssignments();
+        this.props.fetchTasklists();
     }
 
     myAssignments() {
-       if ((this.props.isFetching === true) || (this.props.data === null)) {
+       if (((this.props.isFetchingQuiz === true) && (this.props.isFetchingTasklist === true))
+           || (this.props.quizData === null) || (this.props.tasklistData === null)) {
             return (
                 <div className="w3-container">
                     <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
@@ -32,7 +35,7 @@ class MyAssignments extends Component {
                 </div>
             )
         }
-        else if (this.props.hasFailed === true) {
+        else if ((this.props.quizHasFailed === true) || (this.props.tasklistHasFailed === true)) {
             return (
                 <div className="w3-container">
                     <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
@@ -44,8 +47,8 @@ class MyAssignments extends Component {
             return (
                 <div className="w3-container">
                     <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
-                    <QuizList quizzes={this.props.data}/>
-                    <TasklistList tasklists={this.tasklistList}/>
+                    <QuizList quizzes={this.props.quizData}/>
+                    <TasklistList tasklists={this.props.tasklistData.tasklists}/>
                 </div>
             )
         }
@@ -58,14 +61,18 @@ class MyAssignments extends Component {
 
 const mapStateToProps = state => {
     return {
-        data: state.assignments.quizData,
-        isFetching: state.assignments.isFetching,
-        hasFailed: state.assignments.hasFailed,
+        quizData: state.assignments.quizData,
+        isFetchingQuiz: state.assignments.isFetching,
+        quizHasFailed: state.assignments.hasFailed,
+        tasklistData: state.tasklists.tasklistData,
+        isFetchingTasklist: state.tasklists.isFetching,
+        tasklistHasFailed: state.tasklists.hasFailed,
     }
 };
 
 const mapDispatchToProps = {
     fetchAssignments,
+    fetchTasklists,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (MyAssignments);

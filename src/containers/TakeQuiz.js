@@ -14,47 +14,21 @@ class TakeQuiz extends Component {
             question: '',
             answerOptions: [],
             answer: '',
-            answersCount: {
-                false: 0,
-                true: 0
-            },
+            answersCount: {},
             result: '',
-            quizData: ''
+            quizData: this.props.location.state.quizData
         };
 
-        this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
-        this.quizQuestions = this.getQuizData(this.props.location.state.quizName);
+        this.handleNextQuestion = this.handleNextQuestion.bind(this);
+        this.handlePrevQuestion = this.handlePrevQuestion.bind(this);
+        this.setUserAnswer = this.setUserAnswer.bind(this);
+        this.quizQuestions = this.getQuizData(this.props.location.state.quizData);
     }
 
-    getQuizData(name) {
+    getQuizData(data) {
         let newData = [];
 
-        let tempData =
-            {
-                "teacher": "testTeacher",
-                "quizName": "Quiz 1",
-                "questions": [
-                    {
-                        "Q": "Question 1",
-                        "A": "Answer A",
-                        "B": "Answer B",
-                        "C": "Answer C",
-                        "D": "Answer D",
-                        "correct": "B"
-                    },
-                    {
-                        "Q": "Question 2",
-                        "A": "Answer A2",
-                        "B": "Answer B2",
-                        "C": "Answer C2",
-                        "D": "Answer D2",
-                        "correct": "D"
-                    }
-                ]
-            };
-
-        let idx = 0;
-        tempData.questions.forEach(function(question) {
+        data.forEach(function(question) {
             let correct = question.correct;
             let A = false;
             let B = false;
@@ -96,7 +70,6 @@ class TakeQuiz extends Component {
                 ]
             };
             newData.push(newQ);
-            idx = idx + 1;
         });
 
         return newData;
@@ -130,8 +103,7 @@ class TakeQuiz extends Component {
         return array;
     };
 
-    handleAnswerSelected(event) {
-        this.setUserAnswer(event.currentTarget.value);
+    handleNextQuestion() {
         if (this.state.questionId < this.quizQuestions.length) {
             setTimeout(() => this.setNextQuestion(), 300);
         } else {
@@ -139,11 +111,16 @@ class TakeQuiz extends Component {
         }
     }
 
-    setUserAnswer(answer) {
+    handlePrevQuestion() {
+        setTimeout(() => this.setPrevQuestion(), 300);
+    }
+
+    setUserAnswer(event) {
+        let answer = event.currentTarget.value;
         this.setState((state) => ({
             answersCount: {
                 ...state.answersCount,
-                [answer]: state.answersCount[answer] + 1
+                [state.questionId]: answer,
             },
             answer: answer
         }));
@@ -161,21 +138,34 @@ class TakeQuiz extends Component {
         });
     }
 
-    getResults() {
-        const answersCount = this.state.answersCount;
-        const answersCountKeys = Object.keys(answersCount);
-        const answersCountValues = answersCountKeys.map((key) => answersCount[key]);
-        const maxAnswerCount = Math.max.apply(null, answersCountValues);
+    setPrevQuestion() {
+        const counter = this.state.counter - 1;
+        const questionId = this.state.questionId - 1;
+        this.setState({
+            counter: counter,
+            questionId: questionId,
+            question: this.quizQuestions[counter].question,
+            answerOptions: this.quizQuestions[counter].answers,
+            answer: ''
+        });
+    }
 
-        return answersCountKeys.filter((key) => answersCount[key] === maxAnswerCount);
+    getResults() {
+        let result = 0;
+        const answersCount = this.state.answersCount;
+        const answersCountValues = Object.keys(answersCount).map((key) => answersCount[key]);
+        answersCountValues.forEach( function(value) {
+            if (value === "true") {
+                result = result + 1;
+            }
+        });
+        return result;
     }
 
     setResults (result) {
-        if (result.length === 1) {
-            this.setState({ result: result[0] });
-        } else {
-            this.setState({ result: 'Undetermined' });
-        }
+        this.setState({
+            result: result,
+        });
     }
 
     renderQuiz() {
@@ -189,7 +179,9 @@ class TakeQuiz extends Component {
                     question={this.state.question}
                     questionId={this.state.questionId}
                     questionTotal={this.quizQuestions.length}
-                    onAnswerSelected={this.handleAnswerSelected}
+                    onAnswerChange={this.setUserAnswer}
+                    onNextQ={this.handleNextQuestion}
+                    onPrevQ={this.handlePrevQuestion}
                 />
             </div>
         );
@@ -197,7 +189,7 @@ class TakeQuiz extends Component {
 
     renderResult() {
         return (
-            <Result quizResult={this.state.result} numCorrect={this.state.answersCount.true} numQuestions={this.quizQuestions.length}/>
+            <Result numCorrect={this.state.result} numQuestions={this.quizQuestions.length}/>
         );
     }
 

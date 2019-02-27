@@ -11,7 +11,6 @@ function Result(props) {
 }
 
 Result.propTypes = {
-    quizResult: PropTypes.string.isRequired,
     numCorrect: PropTypes.number.isRequired,
     numQuestions: PropTypes.number.isRequired,
 };

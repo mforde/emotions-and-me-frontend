@@ -3,28 +3,22 @@ import { Form, Field } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { FieldArray } from 'react-final-form-arrays';
 import '../App.css';
-import MultiSelect from '@kenshooui/react-multi-select';
 import {sendAssignment} from '../actions/assignments';
 import {connect} from "react-redux";
+import {fetchStudents} from "../actions/getUsers";
+import FilteredMultiSelect from "react-filtered-multiselect";
 
 class QuizMakerPage extends Component {
     constructor(props) {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+        this.handleDeselect = this.handleDeselect.bind(this);
 
         this.state = {
             teacher : 'Teacher Name',
-            students : [
-                {id: "student0", label: "Zach Morris"},
-                {id: "student1", label: "Kelly Kapowski"},
-                {id: "student2", label: "A.C. Slater"},
-                {id: "student3", label: "Lisa Turtle"},
-                {id: "student4", label: "Jessie Spano"},
-                {id: "student5", label: "Samuel Powers"},
-                {id: "student6", label: "Tori Scott"},
-            ],
+            students : this.props.students,
             selectedStudents: [],
             saveData: this.props.hasSaved,
             isSaving: this.props.isSaving,
@@ -32,9 +26,26 @@ class QuizMakerPage extends Component {
         }
     }
 
-    handleChange(selectedStudents) {
-        this.setState({ selectedStudents });
+    async componentDidMount() {
+        this.props.fetchStudents();
     }
+
+    handleDeselect = (deselectedStudent) => {
+        let selectedStudents = this.state.selectedStudents.slice();
+        deselectedStudent.forEach(option => {
+            selectedStudents.splice(selectedStudents.indexOf(option), 1)
+        });
+        this.setState({selectedStudents});
+    };
+
+    handleSelect = (selectedStudents) => {
+        selectedStudents.sort(function(a, b){
+            if(a.label < b.label) { return -1; }
+            if(a.label > b.label) { return 1; }
+            return 0;
+        });
+        this.setState({selectedStudents})
+    };
 
     handleSubmit = async values => {
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -42,19 +53,18 @@ class QuizMakerPage extends Component {
 
         let studentUsers = [];
         this.state.selectedStudents.forEach(function (student) {
-            studentUsers.push(student.id);
+            studentUsers.push(student.value);
         });
 
         this.props.sendAssignment(studentUsers, JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
             'quizName'      : values.quizName,
-            'quizData'      : values.questions
+            'quizData'      : values.questions,
         }));
     };
 
     QuizForm = () => {
-        const {students, selectedStudents} = this.state;
         return (
             <div className="w3-container w3-margin">
                 <Form
@@ -64,7 +74,7 @@ class QuizMakerPage extends Component {
                     }}
                     render={({
                                  handleSubmit,
-                                 mutators: {push, pop}, // injected from final-form-arrays above
+                                 mutators: {push, pop},
                                  pristine,
                                  reset,
                                  submitting,
@@ -238,16 +248,8 @@ class QuizMakerPage extends Component {
                                         Remove Question
                                     </button>
                                 </div>
-                                <div className="w3-container w3-padding-top">
-                                    <label htmlFor="student-select" className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                                    <MultiSelect
-                                        items={students}
-                                        selectedItems={selectedStudents}
-                                        onChange={this.handleChange}
-                                        id="student-select"
-                                    />
-                                </div>
-                                <div className="buttons">
+                                {this.multiStudentSelect()}
+                                <div className="buttons w3-padding-top">
                                     <button type="submit" className="w3-button w3-theme w3-bar w3-half"
                                             disabled={submitting || pristine}>
                                         Save & Send Quiz
@@ -268,6 +270,77 @@ class QuizMakerPage extends Component {
         );
     };
 
+    multiStudentSelect() {
+        if (this.props.isFetching === true) {
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <p className="w3-center">Loading...</p>
+                    </div>
+                </div>
+            )
+        }
+        else if (this.props.studentHasFailed === true) {
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <p className="w3-center">Failed to Receive Students</p>
+                    </div>
+                </div>
+            )
+        }
+        else if (this.props.students !== null){
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <div className="w3-half">
+                            <FilteredMultiSelect
+                                buttonText="Add"
+                                classNames={{
+                                    filter: 'form-control',
+                                    select: 'form-control',
+                                    button: 'w3-btn w3-btn btn-block btn-default',
+                                    buttonActive: 'w3-btn w3-btn btn-block w3-theme'
+                                }}
+                                onChange={this.handleSelect}
+                                options={this.props.students}
+                                selectedOptions={this.state.selectedStudents}
+                                textProp="label"
+                                placeholder="Type to filter students"
+                            />
+                        </div>
+                        <div className="w3-half">
+                            <FilteredMultiSelect
+                                buttonText="Remove"
+                                classNames={{
+                                    filter: 'form-control',
+                                    select: 'form-control',
+                                    button: 'w3-btn w3-btn btn-block btn-default',
+                                    buttonActive: 'w3-btn w3-btn btn-block w3-theme'
+                                }}
+                                onChange={this.handleDeselect}
+                                options={this.state.selectedStudents}
+                                textProp="label"
+                                placeholder="Type to filter students"
+                            />
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        return (
+            <div className="w3-container w3-padding-top">
+                <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                <div className="w3-row">
+                    <p className="w3-center">Something Else Failed???</p>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         return (this.QuizForm());
     }
@@ -275,14 +348,18 @@ class QuizMakerPage extends Component {
 
 const mapStateToProps = state => {
     return {
-        saveData: state.hasSaved,
-        isSaving: state.isSaving,
-        hasFailed: state.hasFailed,
+        saveData: state.assignments.hasSaved,
+        isSaving: state.assignments.isSaving,
+        hasFailed: state.assignments.hasFailed,
+        isFetching: state.users.isFetching,
+        studentHasFailed: state.users.hasFailed,
+        students: state.users.students,
     }
 };
 
 const mapDispatchToProps = {
     sendAssignment,
+    fetchStudents
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (QuizMakerPage);

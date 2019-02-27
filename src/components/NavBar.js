@@ -13,7 +13,7 @@ class NavBar extends Component {
     featuresDropdown() {
         return (
             <div className="w3-dropdown-hover">
-                <button className="w3-button w3-padding-16 w3-animate-left">
+                <button className="w3-button w3-padding-16">
                     Features
                 </button>
                 <div className="w3-dropdown-content w3-card-4 w3-bar-block">
@@ -28,10 +28,26 @@ class NavBar extends Component {
         );
     }
 
+    howToButton() {
+        return (
+            <div className="w3-bar-item w3-button w3-padding-16">
+                <a href="/howto">How-To Page</a>
+            </div>
+        )
+    }
+
+    myAccountButton() {
+        return (
+            <div className="w3-bar-item-right w3-button w3-padding-16">
+                <a href="/myaccount">My Account</a>
+            </div>
+        )
+    }
+
     signoutButton() {
         const { onClickSignout } = this.props;
         return (
-            <div onClick={onClickSignout} className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Sign Out</div>
+            <div onClick={onClickSignout} className="w3-bar-item-right w3-button w3-padding-16">Sign Out</div>
         )
     }
 
@@ -39,8 +55,8 @@ class NavBar extends Component {
         const { onClickSignup, onClickLogin } = this.props;
         return (
             <div>
-                <div onClick={onClickSignup} className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Sign Up</div>
-                <div onClick={onClickLogin} className="w3-bar-item-right w3-button w3-padding-16 w3-animate-left">Login</div>
+                <div onClick={onClickSignup} className="w3-bar-item-right w3-button w3-padding-16">Sign Up</div>
+                <div onClick={onClickLogin} className="w3-bar-item-right w3-button w3-padding-16">Login</div>
             </div>
         )
     }
@@ -50,9 +66,11 @@ class NavBar extends Component {
 
         return (
             <div className="w3-bar w3-theme">
-                <a href="/" className="w3-bar-item w3-button w3-padding-16 w3-animate-left">Home</a>
+                <a href="/" className="w3-bar-item w3-button w3-padding-16">Home</a>
                 {isLoggedIn ? this.featuresDropdown() : null}
+                {isLoggedIn ? this.howToButton() : null}
                 {isLoggedIn ? this.signoutButton() : null}
+                {isLoggedIn ? this.myAccountButton() : null}
                 {isLoggedIn ? null : this.loginAndSignupButtons()}
             </div>
         )

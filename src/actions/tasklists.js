@@ -1,28 +1,28 @@
-import BaseUrl from "../constants/BaseUrl";
+const LOCAL_ENDPOINT = 'http://localhost:8000/';
 
-export const REQUEST_ASSIGNMENTS = 'REQUEST_ASSIGNMENTS';
-export const RECEIVE_ASSIGNMENTS = 'RECEIVE_ASSIGNMENTS';
-export const FAILED_RECEIVE_ASSIGNMENTS = 'FAILED_RECEIVE_ASSIGNMENTS';
+export const REQUEST_TASKLISTS = 'REQUEST_TASKLISTS';
+export const RECEIVE_TASKLISTS = 'RECEIVE_TASKLISTS';
+export const FAILED_RECEIVE_TASKLISTS = 'FAILED_RECEIVE_TASKLISTS';
 
-export const SAVE_ASSIGNMENT = 'SAVE_ASSIGNMENT';
+export const SAVE_TASKLIST = 'SAVE_TASKLIST';
 export const FAILED_SAVE = 'FAILED_SAVE';
 export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
 
-export const requestAssignments = () => ({
-    type : REQUEST_ASSIGNMENTS
+export const requestTasklists = () => ({
+    type : REQUEST_TASKLISTS
 });
 
-export const receiveAssignments = json => ({
-    type: RECEIVE_ASSIGNMENTS,
+export const receiveTasklists = json => ({
+    type: RECEIVE_TASKLISTS,
     data: json,
 });
 
-export const failedToReceiveAssignments = () => ({
-    type: FAILED_RECEIVE_ASSIGNMENTS,
+export const failedToReceiveTasklists = () => ({
+    type: FAILED_RECEIVE_TASKLISTS,
 });
 
-export const saveAssignment = () => ({
-    type : SAVE_ASSIGNMENT
+export const saveTasklist = () => ({
+    type : SAVE_TASKLIST
 });
 
 export const successfulSave = (data) => ({
@@ -34,11 +34,10 @@ export const failedSave =() => ({
     type: FAILED_SAVE
 });
 
-export const fetchAssignments = () => {
+export const fetchTasklists = () => {
     return (dispatch) => {
-        dispatch(requestAssignments())
-
-        fetch(BaseUrl + 'assignments/teacher?teacher=username', {
+        dispatch(requestTasklists());
+        fetch(LOCAL_ENDPOINT + 'assignments/teacher/tasklists?teacher=username', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -46,17 +45,17 @@ export const fetchAssignments = () => {
             },
         })
             .then(response => response.json())
-            .then(json => dispatch(receiveAssignments(json)),
-                () => dispatch(failedToReceiveAssignments()))
+            .then(json => dispatch(receiveTasklists(json)),
+                () => dispatch(failedToReceiveTasklists()))
             .catch(function(error) {
                 console.error(error);
             });
     }
 };
 
-export const sendAssignment = (students, data) => {
+export const sendTasklist = (students, data) => {
     return (dispatch) => {
-        dispatch(saveAssignment());
+        dispatch(saveTasklist());
 
         let studentQuery = '';
         let idx = 0;
@@ -70,7 +69,7 @@ export const sendAssignment = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(BaseUrl + 'assignments/save?teacher=username&students=' + studentQuery, {
+        fetch(LOCAL_ENDPOINT + 'assignments/save/tasklist?teacher=username&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
