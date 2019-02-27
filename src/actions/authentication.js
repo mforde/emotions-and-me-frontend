@@ -1,6 +1,8 @@
-const LOGIN_ENDPOINT = 'http://localhost:8000/token-auth/';
-const SIGNUP_ENDPOINT = 'http://localhost:8000/core/users/';
-const CURRENT_USER_ENDPOINT = 'http://localhost:8000/core/current_user/';
+import BaseUrl from "../constants/BaseUrl";
+
+const LOGIN_ENDPOINT = BaseUrl +  'token-auth/';
+const SIGNUP_ENDPOINT = BaseUrl + '/core/users/';
+const CURRENT_USER_ENDPOINT = BaseUrl + '/core/current_user/';
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
