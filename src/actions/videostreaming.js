@@ -25,7 +25,7 @@ export const fetchurl = (video_url) => {
               'Content-Type': 'application/json',
 
           },
-          body: JSON.stringify({debug:video_url.toString()})
+          body: JSON.stringify({url:video_url.toString()})
         })
           .then(function(response) {
         return response.json(); // parses json
