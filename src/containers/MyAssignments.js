@@ -9,9 +9,6 @@ class MyAssignments extends Component {
     constructor(props) {
         super(props);
 
-        this.quizList = [{quizName: 'Quiz Name #1'}, {quizName: 'Quiz Name #2'}];
-        this.tasklistList = [{tasklistName: 'Tasklist Name #1'}, {tasklistName: 'Tasklist Name #2'}];
-
         this.state = {
             quizData: this.props.quizData,
             tasklistData: this.props.tasklistData,
@@ -25,37 +22,46 @@ class MyAssignments extends Component {
         this.props.fetchTasklists();
     }
 
-    myAssignments() {
-       if (((this.props.isFetchingQuiz === true) && (this.props.isFetchingTasklist === true))
-           || (this.props.quizData === null) || (this.props.tasklistData === null)) {
+    myQuizzes() {
+        if ((this.props.isFetchingQuiz === true) || (this.props.quizData === null)) {
             return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
-                    <p className="w3-center">Loading...</p>
-                </div>
+                <p className="w3-center">Loading Quizzes...</p>
+            )
+        } else if ((this.props.quizHasFailed === true) || (this.props.tasklistHasFailed === true)) {
+            return (
+                <p className="w3-center">Failed to Receive Quizzes</p>
+            )
+        } else {
+            return (
+                <QuizList quizzes={this.props.quizData}/>
             )
         }
-        else if ((this.props.quizHasFailed === true) || (this.props.tasklistHasFailed === true)) {
+    }
+
+    myTasklists() {
+        if ((this.props.isFetchingTasklist === true) || (this.props.tasklistData === null)) {
             return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
-                    <p className="w3-center">Failed to Receive Assignments</p>
-                </div>
+                <p className="w3-center">Loading Tasklists...</p>
             )
-        }
-        else {
+        } else if (this.props.tasklistHasFailed === true) {
             return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
-                    <QuizList quizzes={this.props.quizData}/>
-                    <TasklistList tasklists={this.props.tasklistData.tasklists}/>
-                </div>
+                <p className="w3-center">Failed to Receive Tasklists</p>
+            )
+        } else {
+            return (
+                <TasklistList tasklists={this.props.tasklistData.tasklists}/>
             )
         }
     }
 
     render() {
-        return (this.myAssignments());
+        return (
+            <div className="w3-container">
+                <h1 className="w3-center w3-margin-bottom">My Assignments</h1>
+                {this.myQuizzes()}
+                {this.myTasklists()}
+            </div>
+        )
     }
 }
 
