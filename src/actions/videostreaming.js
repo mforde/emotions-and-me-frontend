@@ -1,5 +1,4 @@
-
-const LOCAL_ENDPOINT = 'http://localhost:8000/'
+import BaseUrl from "../constants/BaseUrl";
 
 export const REQUEST_VIDEOURL = 'REQUEST_VIDEOURL';
 export const RECEIVE_VIDEOURL = 'RECEIVE_VIDEOURL';
@@ -20,7 +19,7 @@ export const receiveurl = (url) => {
 export const fetchurl = (video_url) => {
     return dispatch => {
 
-        fetch(LOCAL_ENDPOINT + 'get_video', {
+        fetch(BaseUrl + 'get_video', {
           method: "POST",
           headers: {
               'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://localhost:8000/'
+import BaseUrl from "../constants/BaseUrl";
 
 export const REQUEST_ALL_NAMES = 'REQUEST_ALL_NAMES';
 export const RECEIVE_ALL_NAMES = 'RECEIVE_ALL_NAMES';
@@ -18,7 +18,7 @@ export const fetchAllNames = () => {
     return dispatch => {
         dispatch(requestAllNames())
 
-        fetch(LOCAL_ENDPOINT, {
+        fetch(BaseUrl, {
           method: "GET",
           headers: {
             "Accept": "application/json"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BaseUrl from '../constants/BaseUrl';
 
 class Webcam extends Component {
     constructor(props) {
@@ -432,7 +433,7 @@ class Webcam extends Component {
                     ctx2.putImageData(imgData,0, 0);
 
                     var imageJSON = {"image": JSON.stringify(data)};
-                    fetch('http://127.0.0.1:8000/analyze_emotion', {
+                    fetch(BaseUrl + 'analyze_emotion', {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
