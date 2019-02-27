@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://localhost:8000/';
+import BaseUrl from "../constants/BaseUrl";
 
 export const REQUEST_TASKLISTS = 'REQUEST_TASKLISTS';
 export const RECEIVE_TASKLISTS = 'RECEIVE_TASKLISTS';
@@ -37,7 +37,7 @@ export const failedSave =() => ({
 export const fetchTasklists = () => {
     return (dispatch) => {
         dispatch(requestTasklists());
-        fetch(LOCAL_ENDPOINT + 'assignments/teacher/tasklists?teacher=username', {
+        fetch(BaseUrl + 'assignments/teacher/tasklists?teacher=username', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -69,7 +69,7 @@ export const sendTasklist = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(LOCAL_ENDPOINT + 'assignments/save/tasklist?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save/tasklist?teacher=username&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

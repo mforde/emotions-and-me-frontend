@@ -1,4 +1,4 @@
-const LOCAL_ENDPOINT = 'http://localhost:8000/';
+import BaseUrl from "../constants/BaseUrl";
 
 export const REQUEST_STUDENTS = 'REQUEST_STUDENTS';
 export const RECEIVE_STUDENTS = 'RECEIVE_STUDENTS';
@@ -54,7 +54,7 @@ export const failedAddStudent =() => ({
 export const fetchStudents = () => {
     return (dispatch) => {
         dispatch(requestStudents());
-        fetch(LOCAL_ENDPOINT + 'assignments/teacher/getStudents?teacher=username', {
+        fetch(BaseUrl + 'assignments/teacher/getStudents?teacher=username', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -73,7 +73,7 @@ export const fetchStudents = () => {
 export const fetchTeacher = () => {
     return (dispatch) => {
         dispatch(requestTeacher());
-        fetch(LOCAL_ENDPOINT + 'assignments/student/getTeachers?student=', {
+        fetch(BaseUrl + 'assignments/student/getTeachers?student=', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -94,8 +94,8 @@ export const addStudentToTeacher = (students) => {
         dispatch(addStudent());
 
         let studentQuery = students;
-        let idx = 0;
-        /*students.forEach(function (student) {
+        /*let idx = 0;
+        students.forEach(function (student) {
             if (idx === 0) {
                 studentQuery = student;
             }
@@ -105,7 +105,7 @@ export const addStudentToTeacher = (students) => {
             idx = idx + 1;
         });*/
 
-        fetch(LOCAL_ENDPOINT + 'assignments/teacher/addStudents?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/teacher/addStudents?teacher=username&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
