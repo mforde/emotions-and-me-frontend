@@ -409,7 +409,7 @@ class TasklistCreator extends Component {
             )
         } else if (this.props.hasFailed === true) {
             return (
-                <p className="w3-center">Failed to Receive Students</p>
+                <p className="w3-center">Failed to Receive Quizzes</p>
             )
         } else if (this.props.quizzes !== null) {
             return (

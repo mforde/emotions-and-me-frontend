@@ -38,7 +38,7 @@ export const fetchAssignments = () => {
     return (dispatch) => {
         dispatch(requestAssignments())
 
-        fetch(BaseUrl + 'assignments/teacher?teacher=username', {
+        fetch(BaseUrl + 'assignments/teacher/quizzes?teacher=username', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -70,7 +70,7 @@ export const sendAssignment = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(BaseUrl + 'assignments/save?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save/quiz?teacher=username&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
