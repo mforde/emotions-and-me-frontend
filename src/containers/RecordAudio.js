@@ -54,7 +54,7 @@ class RecordAudio extends React.Component {
 
   saveAudio() {
     // convert saved chunks to blob
-    const blob = new Blob(this.chunks, {type: audioType});
+    const blob = new Blob(this.chunks, { 'type' : 'audio/wav' });
     // send video  blob backend
     const audioURL = window.URL.createObjectURL(blob);
     // append videoURL to list of saved videos for rendering
