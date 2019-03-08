@@ -13,8 +13,13 @@ export  class disgustPictureCarousel extends Component {
     minSwipeThreshold={40}
     swipeTimeThreshold={200}
     images={[
-        "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12225919/Pembroke-Welsh-Corgi-On-White-01.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Welchcorgipembroke.JPG/1200px-Welchcorgipembroke.JPG"
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/5.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/6.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/1.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/2.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/3.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/DISGUST/4.jpg",
+
         ]}
     /></div>
 

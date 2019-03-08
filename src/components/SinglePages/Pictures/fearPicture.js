@@ -13,8 +13,13 @@ export  class fearPictureCarousel extends Component {
     minSwipeThreshold={40}
     swipeTimeThreshold={200}
     images={[
-        "http://www.prolifehumanists.org/wp-content/uploads/2015/12/Home-alone-xmas-panic.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Welchcorgipembroke.JPG/1200px-Welchcorgipembroke.JPG"
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/1.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/2.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/3.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/4.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/6.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/FEAR/7.jpg",
+
         ]}
     /></div>
 
