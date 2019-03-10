@@ -121,10 +121,6 @@ class TasklistCreator extends Component {
                                             onClick={() => push('webcamTasks', undefined)}>
                                         Add Webcam Task
                                     </button>
-                                    <button type="button" className="w3-button w3-theme"
-                                            onClick={() => pop('webcamTasks')}>
-                                        Remove Webcam Task
-                                    </button>
                                 </div>
                                 <FieldArray name="videoTasks">
                                     {({fields}) =>
@@ -146,10 +142,6 @@ class TasklistCreator extends Component {
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('videoTasks', undefined)}>
                                         Add Video Streaming Task
-                                    </button>
-                                    <button type="button" className="w3-button w3-theme"
-                                            onClick={() => pop('videoTasks')}>
-                                        Remove Video Streaming Task
                                     </button>
                                 </div>
                                 <FieldArray name="audioTasks">
@@ -173,10 +165,6 @@ class TasklistCreator extends Component {
                                             onClick={() => push('audioTasks', undefined)}>
                                         Add Audio Recording Task
                                     </button>
-                                    <button type="button" className="w3-button w3-theme"
-                                            onClick={() => pop('audioTasks')}>
-                                        Remove Audio Recording Task
-                                    </button>
                                 </div>
                                 <FieldArray name="browseTasks">
                                     {({fields}) =>
@@ -199,10 +187,6 @@ class TasklistCreator extends Component {
                                             onClick={() => push('browseTasks', undefined)}>
                                         Add Browse Photos & Audio Task
                                     </button>
-                                    <button type="button" className="w3-button w3-theme"
-                                            onClick={() => pop('browseTasks')}>
-                                        Remove Browse Photos & Audio Task
-                                    </button>
                                 </div>
                                 <FieldArray name="quizTasks">
                                     {({fields}) =>
@@ -223,10 +207,6 @@ class TasklistCreator extends Component {
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('quizTasks', undefined)}>
                                         Add Quiz Task
-                                    </button>
-                                    <button type="button" className="w3-button w3-theme"
-                                            onClick={() => pop('quizTasks')}>
-                                        Remove Quiz Task
                                     </button>
                                 </div>
                                 {this.multiStudentSelect()}
@@ -430,41 +410,51 @@ class TasklistCreator extends Component {
 
     convertTasklistData = (values) => {
         let tasks = [];
-        values.webcamTasks.map(task => {
-            let temp = {
-                type: "webcam",
-                emotion: task.emotion
-            };
-            tasks.push(temp)
-        });
-        values.videoTasks.map(task => {
-            let temp = {
-                type: "video",
-                url: task.url
-            };
-            tasks.push(temp)
-        });
-        values.audioTasks.map(task => {
-            let temp = {
-                type: "audio",
-                emotion: task.emotion
-            };
-            tasks.push(temp)
-        });
-        values.browseTasks.map(task => {
-            let temp = {
-                type: "browse",
-                emotion: task.emotion
-            };
-            tasks.push(temp)
-        });
-        values.quizTasks.map(task => {
-            let temp = {
-                type: "quiz",
-                quizName: task.quiz
-            };
-            tasks.push(temp)
-        });
+        if ('webcamTasks' in values) {
+            values.webcamTasks.forEach(task => {
+                let temp = {
+                    type: "webcam",
+                    emotion: task.emotion
+                };
+                tasks.push(temp)
+            });
+        }
+        if ('videoTasks' in values) {
+            values.videoTasks.forEach(task => {
+                let temp = {
+                    type: "video",
+                    url: task.url
+                };
+                tasks.push(temp)
+            });
+        }
+        if ('audioTasks' in values) {
+            values.audioTasks.forEach(task => {
+                let temp = {
+                    type: "audio",
+                    emotion: task.emotion
+                };
+                tasks.push(temp)
+            });
+        }
+        if ('browseTasks' in values) {
+            values.browseTasks.forEach(task => {
+                let temp = {
+                    type: "browse",
+                    emotion: task.emotion
+                };
+                tasks.push(temp)
+            });
+        }
+        if ('quizTasks' in values) {
+            values.quizTasks.forEach(task => {
+                let temp = {
+                    type: "quiz",
+                    quizName: task.quiz
+                };
+                tasks.push(temp)
+            });
+        }
         return tasks;
     };
 }
