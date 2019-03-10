@@ -2,9 +2,10 @@ import {
     FAILED_RECEIVE_TASKLISTS, FAILED_SAVE,
     RECEIVE_TASKLISTS, REQUEST_TASKLISTS,
     SAVE_TASKLIST, SUCCESSFUL_SAVE,
-    REMOVE_TASKLIST,
+    RESET_SAVE, REMOVE_TASKLIST,
     SUCCESSFUL_REMOVE, FAILED_REMOVE
 } from "../actions/tasklists";
+import {SAVE_ASSIGNMENT} from "../actions";
 
 const defaultState = {
     isFetching: false,
@@ -14,6 +15,7 @@ const defaultState = {
     hasRemoved: null,
     hasFailed: false,
     tasklistData: null,
+    showModal: false,
 };
 
 const tasklists = ( state = defaultState, action) => {
@@ -39,17 +41,25 @@ const tasklists = ( state = defaultState, action) => {
             return {
                 ...state,
                 isSaving: true,
+                showModal: true,
             };
         case SUCCESSFUL_SAVE:
             return {
                 ...state,
                 isSaving: false,
                 hasSaved: action.data,
+                showModal: true,
             };
         case FAILED_SAVE:
             return {
                 ...state,
                 hasFailed: true,
+                showModal: true,
+            };
+        case RESET_SAVE:
+            return {
+                ...state,
+                showModal: false,
             };
         case REMOVE_TASKLIST:
             return {

@@ -7,6 +7,7 @@ export const FAILED_RECEIVE_TASKLISTS = 'FAILED_RECEIVE_TASKLISTS';
 export const SAVE_TASKLIST = 'SAVE_TASKLIST';
 export const FAILED_SAVE = 'FAILED_SAVE';
 export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
+export const RESET_SAVE = 'RESET_SAVE';
 
 export const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
 export const FAILED_REMOVE = 'FAILED_REMOVE';
@@ -36,6 +37,10 @@ export const successfulSave = (data) => ({
 
 export const failedSave =() => ({
     type: FAILED_SAVE
+});
+
+export const resetSave = () => ({
+    type: RESET_SAVE
 });
 
 export const removeTasklist = () => ({
@@ -100,6 +105,12 @@ export const sendTasklist = (students, data) => {
             .catch(function(error) {
                 console.error(error);
             });
+    }
+};
+
+export const resetSaveTasklist = () => {
+    return (dispatch) => {
+        dispatch(resetSave());
     }
 };
 

@@ -7,10 +7,12 @@ export const FAILED_RECEIVE_ASSIGNMENTS = 'FAILED_RECEIVE_ASSIGNMENTS';
 export const SAVE_ASSIGNMENT = 'SAVE_ASSIGNMENT';
 export const FAILED_SAVE = 'FAILED_SAVE';
 export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
+export const RESET_SAVE = "RESERT_SAVE";
 
 export const REMOVE_ASSIGNMENT = 'REMOVE_ASSIGNMENT';
 export const FAILED_REMOVE = 'FAILED_REMOVE';
 export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
+
 
 export const requestAssignments = () => ({
     type : REQUEST_ASSIGNMENTS
@@ -36,6 +38,10 @@ export const successfulSave = (data) => ({
 
 export const failedSave = () => ({
     type: FAILED_SAVE
+});
+
+export const resetSaveAssignment = () => ({
+    type: RESET_SAVE
 });
 
 export const removeAssignment = () => ({
@@ -101,6 +107,12 @@ export const sendAssignment = (students, data) => {
             .catch(function(error) {
                 console.error(error);
             });
+    }
+};
+
+export const resetSaveQuiz = () => {
+    return (dispatch) => {
+        dispatch(resetSaveAssignment());
     }
 };
 

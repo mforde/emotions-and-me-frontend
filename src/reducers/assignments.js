@@ -4,7 +4,7 @@ import {
     FAILED_RECEIVE_ASSIGNMENTS,
     SAVE_ASSIGNMENT,
     SUCCESSFUL_SAVE, FAILED_SAVE,
-    REMOVE_ASSIGNMENT,
+    RESET_SAVE, REMOVE_ASSIGNMENT,
     SUCCESSFUL_REMOVE, FAILED_REMOVE
 } from "../actions/assignments";
 
@@ -16,6 +16,7 @@ const defaultState = {
     hasRemoved: null,
     hasFailed: false,
     quizData: null,
+    showModal: false,
 };
 
 const assignments = ( state = defaultState, action) => {
@@ -41,17 +42,25 @@ const assignments = ( state = defaultState, action) => {
             return {
                 ...state,
                 isSaving: true,
+                showModal: true,
             };
         case SUCCESSFUL_SAVE:
             return {
                 ...state,
                 isSaving: false,
                 hasSaved: action.data,
+                showModal: true,
             };
         case FAILED_SAVE:
             return {
                 ...state,
                 hasFailed: true,
+                showModal: true,
+            };
+        case RESET_SAVE:
+            return {
+                ...state,
+                showModal: false,
             };
         case REMOVE_ASSIGNMENT:
             return {

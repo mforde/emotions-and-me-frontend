@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {Field, Form} from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import {FieldArray} from "react-final-form-arrays";
+import Redirect from "./QuizMakerPage";
 
 class TasklistCreator extends Component {
     constructor(props) {
@@ -61,12 +62,6 @@ class TasklistCreator extends Component {
         });
 
         this.props.sendTasklist(studentUsers, JSON.stringify({
-            'teacher'       : this.state.teacher,
-            'students'      : this.state.selectedStudents,
-            'tasklistName'      : values.tasklistName,
-            'tasklistData'      : this.convertTasklistData(values)
-        }));
-        alert(JSON.stringify({
             'teacher'       : this.state.teacher,
             'students'      : this.state.selectedStudents,
             'tasklistName'      : values.tasklistName,
@@ -301,6 +296,11 @@ class TasklistCreator extends Component {
     }
 
     render() {
+        if (this.props.showModal) {
+            return (
+                <Redirect to={'/assignmentcreator'}/>
+            );
+        }
         return (this.tasklistCreator());
     }
 
@@ -464,6 +464,7 @@ const mapStateToProps = state => {
         saveData: state.tasklists.hasSaved,
         isSaving: state.tasklists.isSaving,
         failedSave: state.tasklists.hasFailed,
+        showModal: state.tasklists.showModal,
         hasFailed: state.assignments.hasFailed,
         quizzes: state.assignments.quizData,
         isFetching: state.assignments.isFetching,
