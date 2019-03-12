@@ -7,8 +7,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reducer from './reducers'
+import {JWTMiddleware} from "./middleware/tokenMiddleware";
 
-const middleware = [ thunk ]
+
+const middleware = [ JWTMiddleware, thunk ]
 const store = createStore(reducer, applyMiddleware(...middleware));
 
 ReactDOM.render(
