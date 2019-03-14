@@ -29,7 +29,8 @@ export const requestLogin = () => ({
 export const receiveLogin = json => {
     return {
         type: RECEIVE_LOGIN,
-        data: json,
+        token: json.token,
+        user: json.user,
     }
 };
 
@@ -52,7 +53,8 @@ export const requestToken = (tokenPromise) => ({
 
 export const receiveToken = (json) => ({
     type: RECEIVE_TOKEN,
-    data: json,
+    token: json.token,
+    user: json.user,
 });
 
 export const failedToken = () => ({
@@ -60,16 +62,10 @@ export const failedToken = () => ({
 });
 
 export const receiveSignup = json => {
-    localStorage.setItem('token', json.token);
     return {
         type: RECEIVE_SIGNUP,
         token: json.token,
-        user: {
-            username: json.email,
-            first_name: json.first_name,
-            last_name: json.last_name,
-            email: json.email,
-        },
+        user: json.user,
     }
 };
 
@@ -88,13 +84,8 @@ export const requestCurrentUser = () => ({
 export const receiveCurrentUser = json => {
     return {
         type: RECEIVE_CURRENT_USER,
-        token: localStorage.getItem('token'),
-        user: {
-            username: json.email,
-            first_name: json.first_name,
-            last_name: json.last_name,
-            email: json.email,
-        },
+        token: json.token,
+        user: json.user,
     }
 };
 
