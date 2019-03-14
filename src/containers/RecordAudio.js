@@ -1,5 +1,8 @@
 import React from 'react';
-const audioType = 'audio/*';
+import BaseUrl from "../constants/BaseUrl";
+
+//const audioType = 'audio/*';
+const audioType = 'audio/wav';
 
 class RecordAudio extends React.Component {
   constructor(props) {
@@ -14,9 +17,9 @@ class RecordAudio extends React.Component {
     const stream = await navigator.mediaDevices.getUserMedia({audio: true});
     // show it to user
     try {
-        this.srcObject = stream;
+      this.srcObject = stream;
     } catch (error) {
-        this.src = window.URL.createObjectURL(stream);
+      this.src = window.URL.createObjectURL(stream);
     }
     this.audio.play();
     // init recording
@@ -54,9 +57,22 @@ class RecordAudio extends React.Component {
 
   saveAudio() {
     // convert saved chunks to blob
-    const blob = new Blob(this.chunks, {type: audioType});
-    // send video  blob backend
-    const audioURL = window.URL.createObjectURL(blob);
+    var myblob = new Blob(this.chunks, {type: audioType});
+
+    // send audio blob to backend
+    let adata = new FormData();
+    adata.append('file', myblob, 'audio.wav')
+
+    fetch(BaseUrl + 'audio_emotions', {
+      method: "POST",
+      body: adata,
+      mode: "no-cors",
+      data: adata,
+    }).then(function(response) {
+      //console.log(response);
+    });
+    
+    const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
     const audios = this.state.audios.concat([audioURL]);
     this.setState({audios});
@@ -72,32 +88,32 @@ class RecordAudio extends React.Component {
     const {recording, audios} = this.state;
 
     return (
-      <div className="camera" class="middle_align">
-        <audio
+        <div className="camera" class="middle_align">
+          <audio
 
 
-          style={{width: 400}}
-          ref={a => {
-            this.audio = a;
-          }}>
-         <p>Audio stream not available. </p>
-        </audio>
-        <div>
-          {!recording && <button onClick={e => this.startRecording(e)}>Record</button>}
-          {recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}
+              style={{width: 400}}
+              ref={a => {
+                this.audio = a;
+              }}>
+            <p>Audio stream not available. </p>
+          </audio>
+          <div>
+            {!recording && <button onClick={e => this.startRecording(e)}>Record</button>}
+            {recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}
+          </div>
+          <div>
+            <h3>Recorded audios:</h3>
+            {audios.map((audioURL, i) => (
+                <div key={`audio_${i}`}>
+                  <audio controls style={{width: 200}} src={audioURL}   />
+                  <div>
+                    <button onClick={() => this.deleteAudio(audioURL)}>Delete</button>
+                  </div>
+                </div>
+            ))}
+          </div>
         </div>
-        <div>
-          <h3>Recorded audios:</h3>
-          {audios.map((audioURL, i) => (
-            <div key={`audio_${i}`}>
-              <audio controls style={{width: 200}} src={audioURL}   />
-              <div>
-                <button onClick={() => this.deleteAudio(audioURL)}>Delete</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
     );
   }
 }
