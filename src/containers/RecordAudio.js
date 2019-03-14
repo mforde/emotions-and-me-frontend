@@ -71,7 +71,7 @@ class RecordAudio extends React.Component {
     }).then(function(response) {
       //console.log(response);
     });
-    
+
     const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
     const audios = this.state.audios.concat([audioURL]);
