@@ -79,6 +79,7 @@ class App extends Component {
   }
 
   handleCloseModal() {
+    alert("closing?");
     this.setState({ openModal: ModalOptions.NONE })
   }
 
@@ -130,49 +131,49 @@ class App extends Component {
   render() {
     const { isLoggedIn, openModal } = this.state;
 
-    return (
-        <Router>
-          <div>
-            <Login 
-              showModal={openModal === ModalOptions.LOGIN} 
-              handleClose={this.handleCloseModal}
-              handleLoginAttempt={this.props.handleLoginAttempt}
-              hasFailed={this.props.loginRequestStatus === RequestStatus.FAILED}
-            />
-            <Signup 
-              showModal={openModal === ModalOptions.SIGNUP} 
-              handleClose={this.handleCloseModal}
-              handleSignupAttempt={this.props.handleSignupAttempt}
-              hasFailed={this.props.signupRequestStatus === RequestStatus.FAILED}
-            />
-            <header>
-                <NavBar 
-                  isLoggedIn={isLoggedIn} 
-                  onClickLogin={() => this.setState({ openModal: ModalOptions.LOGIN })} 
-                  onClickSignup={() => this.setState({ openModal: ModalOptions.SIGNUP })} 
-                  onClickSignout={() => this.handleSignout()}
-                />
-            </header>
-            <div>
-                {this.renderRoutes({ isLoggedIn })}
-            </div>
-          </div>
-        </Router>
-    );
-  }
+        return (
+            <Router>
+                <div>
+                    <Login
+                        showModal={openModal === ModalOptions.LOGIN}
+                        handleClose={this.handleCloseModal}
+                        handleLoginAttempt={this.props.handleLoginAttempt}
+                        hasFailed={this.props.loginRequestStatus === RequestStatus.FAILED}
+                    />
+                    <Signup
+                        showModal={openModal === ModalOptions.SIGNUP}
+                        handleClose={this.handleCloseModal}
+                        handleSignupAttempt={this.props.handleSignupAttempt}
+                        hasFailed={this.props.signupRequestStatus === RequestStatus.FAILED}
+                    />
+                    <header>
+                        <NavBar
+                            isLoggedIn={isLoggedIn}
+                            onClickLogin={() => this.setState({openModal: ModalOptions.LOGIN})}
+                            onClickSignup={() => this.setState({openModal: ModalOptions.SIGNUP})}
+                            onClickSignout={() => this.handleSignout()}
+                        />
+                    </header>
+                    <div>
+                        {this.renderRoutes({isLoggedIn})}
+                    </div>
+                </div>
+            </Router>
+        );
+    }
 }
 
 const mapStateToProps = state => {
-  return state.userInfo
+    return state.userInfo
 };
 
 const mapDispatchToProps = {
-  handleLoginAttempt,
-  handleSignupAttempt,
-  handleCheckToken,
+    handleLoginAttempt,
+    handleSignupAttempt,
+    handleCheckToken,
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+    mapStateToProps,
+    mapDispatchToProps
+) (App);

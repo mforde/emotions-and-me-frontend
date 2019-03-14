@@ -15,6 +15,7 @@ class NavBar extends Component {
             <div className="w3-dropdown-hover">
                 <button className="w3-button w3-padding-16">
                     Features
+                    <span className="caret"/>
                 </button>
                 <div className="w3-dropdown-content w3-card-4 w3-bar-block">
                     <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>

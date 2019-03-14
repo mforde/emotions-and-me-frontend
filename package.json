@@ -6,6 +6,7 @@
     "fetch": "^1.1.0",
     "final-form": "^4.11.0",
     "final-form-arrays": "^1.1.1",
+    "moment": "^2.24.0",
     "node-pico": "^2.1.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",

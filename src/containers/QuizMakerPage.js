@@ -7,6 +7,7 @@ import {sendAssignment} from '../actions/assignments';
 import {connect} from "react-redux";
 import {fetchStudents} from "../actions/getUsers";
 import FilteredMultiSelect from "react-filtered-multiselect";
+import Redirect from "react-router-dom/es/Redirect";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -342,6 +343,11 @@ class QuizMakerPage extends Component {
     }
 
     render() {
+        if (this.props.showModal) {
+            return (
+                <Redirect to={'/assignmentcreator'}/>
+            );
+        }
         return (this.QuizForm());
     }
 }
@@ -351,6 +357,7 @@ const mapStateToProps = state => {
         saveData: state.assignments.hasSaved,
         isSaving: state.assignments.isSaving,
         hasFailed: state.assignments.hasFailed,
+        showModal: state.assignments.showModal,
         isFetching: state.users.isFetching,
         studentHasFailed: state.users.hasFailed,
         students: state.users.students,

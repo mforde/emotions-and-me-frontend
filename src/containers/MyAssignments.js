@@ -3,7 +3,12 @@ import '../App.css';
 import QuizList from "../components/QuizList";
 import TasklistList from "../components/TasklistList";
 import {connect} from "react-redux";
-import {fetchAssignments, fetchTasklists} from "../actions";
+import {
+    deleteAssignment,
+    deleteTasklist,
+    fetchAssignments,
+    fetchTasklists,
+} from "../actions";
 
 class MyAssignments extends Component {
     constructor(props) {
@@ -12,8 +17,14 @@ class MyAssignments extends Component {
         this.state = {
             quizData: this.props.quizData,
             tasklistData: this.props.tasklistData,
-            isFetching: this.props.isFetching,
-            hasFailed: this.props.hasFailed,
+            isFetchingQuiz: this.props.isFetchingQuiz,
+            quizHasFailed: this.props.quizHasFailed,
+            removingQuiz: this.props.removingQuiz,
+            removedQuiz: this.props.removedQuiz,
+            isFetchingTasklist: this.props.isFetchingTasklist,
+            tasklistHasFailed: this.props.tasklistHasFailed,
+            removingTasklist: this.props.removingTasklist,
+            removedTasklist: this.props.removedTasklist,
         }
     }
 
@@ -21,6 +32,14 @@ class MyAssignments extends Component {
         this.props.fetchAssignments();
         this.props.fetchTasklists();
     }
+
+    removeQuiz = (quizName) => {
+        this.props.deleteAssignment(quizName);
+    };
+
+    removeTasklist = (tasklistName) => {
+        this.props.deleteTasklist(tasklistName);
+    };
 
     myQuizzes() {
         if ((this.props.isFetchingQuiz === true) || (this.props.quizData === null)) {
@@ -33,7 +52,7 @@ class MyAssignments extends Component {
             )
         } else {
             return (
-                <QuizList quizzes={this.props.quizData}/>
+                <QuizList quizzes={this.props.quizData.assignments} remove={this.removeQuiz}/>
             )
         }
     }
@@ -49,7 +68,7 @@ class MyAssignments extends Component {
             )
         } else {
             return (
-                <TasklistList tasklists={this.props.tasklistData.tasklists}/>
+                <TasklistList tasklists={this.props.tasklistData.tasklists} remove={this.removeTasklist}/>
             )
         }
     }
@@ -70,15 +89,21 @@ const mapStateToProps = state => {
         quizData: state.assignments.quizData,
         isFetchingQuiz: state.assignments.isFetching,
         quizHasFailed: state.assignments.hasFailed,
+        removingQuiz: state.assignments.isRemoving,
+        removedQuiz: state.assignments.hasRemoved,
         tasklistData: state.tasklists.tasklistData,
         isFetchingTasklist: state.tasklists.isFetching,
         tasklistHasFailed: state.tasklists.hasFailed,
+        removingTasklist: state.tasklists.isRemoving,
+        removedTasklist: state.tasklists.hasRemoved,
     }
 };
 
 const mapDispatchToProps = {
     fetchAssignments,
     fetchTasklists,
+    deleteAssignment,
+    deleteTasklist,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps) (MyAssignments);
