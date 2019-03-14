@@ -51,7 +51,6 @@ const userInfo = ( state = defaultState, action) => {
         case RECEIVE_LOGIN:
         case RECEIVE_SIGNUP:
         case RECEIVE_TOKEN:
-        case RECEIVE_CURRENT_USER:
             localStorage.setItem('token', action.token);
             return setRequestStatus(
                 action.type,
@@ -60,6 +59,15 @@ const userInfo = ( state = defaultState, action) => {
                     ...state,
                     token: action.token,
                     expiration: moment().add(1, 'h'),
+                    user: action.user,
+                }
+            );
+        case RECEIVE_CURRENT_USER:
+            return setRequestStatus(
+                action.type,
+                RequestStatus.SUCCEEDED,
+                {
+                    ...state,
                     user: action.user,
                 }
             );
