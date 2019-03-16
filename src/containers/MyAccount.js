@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../App.css';
 import {connect} from "react-redux";
 import {addStudentToTeacher, fetchStudents, fetchTeacher} from "../actions/getUsers";
+import RequestStatus from "../constants/RequestStatus";
+import AddStudentTeacher from "../components/AddStudentTeacher";
 
 class MyAccount extends Component {
     constructor(props) {
@@ -11,19 +13,19 @@ class MyAccount extends Component {
         this.handleChange = this.handleChange.bind(this);
 
         this.state = {
-            isFetching: this.props.isFetching,
-            hasFailed: this.props.hasFailed,
-            isAdding: this.props.isAdding,
-            added: this.props.added,
-            students: this.props.students,
-            teacher: this.props.teacher,
             addStudent: ''
         }
     }
 
-    async componentDidMount() {
-        this.props.fetchStudents();
-        //this.props.fetchTeacher();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            if (nextProps.user.type === 'teacher') {
+                this.props.fetchStudents();
+            }
+            else if (nextProps.user.type === 'student') {
+                this.props.fetchTeacher();
+            }
+        }
     }
 
     handleChange(e) {
@@ -36,34 +38,41 @@ class MyAccount extends Component {
     };
 
     myAccount() {
-        if (this.props.isFetching === true) {
-            return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Account</h1>
-                    <p className="w3-center">Loading...</p>
-                </div>
-            )
-        }
-        else if (this.props.hasFailed === true) {
-            return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Account</h1>
-                    <p className="w3-center">Failed to Receive User Info</p>
-                </div>
-            )
-        }
-        else {
-            //alert(this.state.students);
-            return (
-                <div className="w3-container">
-                    <h1 className="w3-center w3-margin-bottom">My Account</h1>
-                    <form>
-                        <label className="w3-padding" htmlFor="addStudent">Add Student by Username</label>
-                        <input type="text" id="addStudent" value={this.state.addStudent} onChange={this.handleChange} />
-                        <input className="w3-button w3-theme w3-margin" type="submit" value="Add Student" onClick={this.handleSubmit} />
-                    </form>
-                </div>
-            )
+        switch (this.props.userRequestStatus) {
+            case RequestStatus.SUCCEEDED:
+                return (
+                    <div className="w3-container">
+                        <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                        <AddStudentTeacher
+                            username={this.props.user.username}
+                            firstName={this.props.user.first_name}
+                            lastName={this.props.user.last_name}
+                            email={this.props.user.email}
+                            accountType={this.props.user.type}
+                            addAccount={this.state.addAccount}
+                            handleChange={this.handleChange}
+                            handleSubmit={this.handleSubmit}
+                            accountList={this.props.students}
+                            hasFailed={this.props.hasFailed}
+                            isFetching={this.props.isFetching}
+                        />
+                    </div>
+                );
+            case RequestStatus.FAILED:
+                return (
+                    <div className="w3-container">
+                        <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                        <p className="w3-center">Failed to Receive User Info</p>
+                    </div>
+                );
+            case RequestStatus.PENDING:
+            default:
+                return (
+                    <div className="w3-container">
+                        <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                        <p className="w3-center">Loading...</p>
+                    </div>
+                );
         }
     }
 
@@ -79,7 +88,9 @@ const mapStateToProps = state => {
         isAdding: state.users.isAdding,
         added: state.users.added,
         students: state.users.students,
-        teacher: state.users.teacher
+        teacher: state.users.teacher,
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
     }
 };
 

@@ -1,5 +1,6 @@
 import {refreshJWTToken} from "../actions";
 import {isAuthenticated} from "../reducers";
+import {applyMiddleware as dispatch} from "redux";
 
 
 export const JWTMiddleware = store => next => action => {
@@ -10,10 +11,10 @@ export const JWTMiddleware = store => next => action => {
     if (!excludedActions.includes(action.type)) {
         if (getState.userInfo && getState.userInfo.token) {
             if (getState.userInfo.expiration && isAuthenticated) {
-                refreshJWTToken(localStorage.getItem('token')).then(() => next(action));
+                return refreshJWTToken(dispatch).then(() => next(action));
             }
         }
     }
 
-    next(action);
+    return next(action);
 };

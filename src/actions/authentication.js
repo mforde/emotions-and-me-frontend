@@ -84,8 +84,7 @@ export const requestCurrentUser = () => ({
 export const receiveCurrentUser = json => {
     return {
         type: RECEIVE_CURRENT_USER,
-        token: json.token,
-        user: json.user,
+        user: json,
     }
 };
 

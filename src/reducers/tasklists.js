@@ -5,7 +5,6 @@ import {
     RESET_SAVE, REMOVE_TASKLIST,
     SUCCESSFUL_REMOVE, FAILED_REMOVE
 } from "../actions/tasklists";
-import {SAVE_ASSIGNMENT} from "../actions";
 
 const defaultState = {
     isFetching: false,
