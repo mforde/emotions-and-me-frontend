@@ -56,10 +56,17 @@ export const failedRemove = () => ({
     type : FAILED_REMOVE
 });
 
-export const fetchTasklists = () => {
+export const fetchTasklists = (username, type) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/tasklists?teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/tasklists?student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(requestTasklists());
-        fetch(BaseUrl + 'assignments/teacher/tasklists?teacher=username', {
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -75,7 +82,7 @@ export const fetchTasklists = () => {
     }
 };
 
-export const sendTasklist = (students, data) => {
+export const sendTasklist = (username, students, data) => {
     return (dispatch) => {
         dispatch(saveTasklist());
 
@@ -91,7 +98,7 @@ export const sendTasklist = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(BaseUrl + 'assignments/save/tasklist?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save/tasklist?teacher=' + username + '&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,11 +121,18 @@ export const resetSaveTasklist = () => {
     }
 };
 
-export const deleteTasklist = (tasklistName) => {
+export const deleteTasklist = (username, type, tasklistName) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/remove/tasklist?tasklistName=' + tasklistName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/remove/tasklist?tasklistName=' + tasklistName + '&student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(removeTasklist());
 
-        fetch(BaseUrl + 'assignments/remove/tasklist?tasklistName=' + tasklistName, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

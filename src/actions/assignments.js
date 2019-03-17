@@ -57,11 +57,18 @@ export const failedRemove = () => ({
     type : FAILED_REMOVE
 });
 
-export const fetchAssignments = () => {
+export const fetchAssignments = (username, type) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/quizzes?teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/quizzes?student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(requestAssignments());
 
-        fetch(BaseUrl + 'assignments/teacher/quizzes?teacher=username', {
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -71,13 +78,13 @@ export const fetchAssignments = () => {
             .then(response => response.json())
             .then(json => dispatch(receiveAssignments(json)),
                 () => dispatch(failedToReceiveAssignments()))
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error(error);
             });
     }
 };
 
-export const sendAssignment = (students, data) => {
+export const sendAssignment = (username, students, data) => {
     return (dispatch) => {
         dispatch(saveAssignment());
 
@@ -93,7 +100,7 @@ export const sendAssignment = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(BaseUrl + 'assignments/save/quiz?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save/quiz?teacher=' + username + '&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -116,11 +123,18 @@ export const resetSaveQuiz = () => {
     }
 };
 
-export const deleteAssignment = (quizName) => {
+export const deleteAssignment = (username, type, quizName) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/remove/quiz?quizName=' + quizName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/remove/quiz?quizName=' + quizName + '&student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(removeAssignment());
 
-        fetch(BaseUrl + 'assignments/teacher/remove/quiz?teacher=username&quizName=' + quizName, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -20,10 +20,10 @@ class MyAccount extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.user !== nextProps.user) {
             if (nextProps.user.type === 'teacher') {
-                this.props.fetchStudents();
+                this.props.fetchStudents(nextProps.user.username);
             }
             else if (nextProps.user.type === 'student') {
-                this.props.fetchTeacher();
+                this.props.fetchTeacher(nextProps.user.username);
             }
         }
     }
@@ -34,7 +34,7 @@ class MyAccount extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.addStudentToTeacher(this.state.addStudent);
+        this.props.addStudentToTeacher(this.props.user.username, this.state.addStudent);
     };
 
     myAccount() {

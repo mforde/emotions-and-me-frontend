@@ -18,17 +18,16 @@ class QuizMakerPage extends Component {
         this.handleDeselect = this.handleDeselect.bind(this);
 
         this.state = {
-            teacher : 'Teacher Name',
-            students : this.props.students,
             selectedStudents: [],
-            saveData: this.props.hasSaved,
-            isSaving: this.props.isSaving,
-            hasFailed: this.props.hasFailed,
         }
     }
 
-    async componentDidMount() {
-        this.props.fetchStudents();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            if (nextProps.user.type === 'teacher') {
+                this.props.fetchStudents(nextProps.user.username);
+            }
+        }
     }
 
     handleDeselect = (deselectedStudent) => {
@@ -57,8 +56,8 @@ class QuizMakerPage extends Component {
             studentUsers.push(student.value);
         });
 
-        this.props.sendAssignment(studentUsers, JSON.stringify({
-            'teacher'       : this.state.teacher,
+        this.props.sendAssignment(this.props.user.username, studentUsers, JSON.stringify({
+            'teacher'       : this.props.user.username,
             'students'      : this.state.selectedStudents,
             'quizName'      : values.quizName,
             'quizData'      : values.questions,
@@ -272,17 +271,7 @@ class QuizMakerPage extends Component {
     };
 
     multiStudentSelect() {
-        if (this.props.isFetching === true) {
-            return (
-                <div className="w3-container w3-padding-top">
-                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                    <div className="w3-row">
-                        <p className="w3-center">Loading...</p>
-                    </div>
-                </div>
-            )
-        }
-        else if (this.props.studentHasFailed === true) {
+        if (this.props.studentHasFailed === true) {
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -292,7 +281,17 @@ class QuizMakerPage extends Component {
                 </div>
             )
         }
-        else if (this.props.students !== null){
+        else if (this.props.isFetching === true || this.props.students === null) {
+            return (
+                <div className="w3-container w3-padding-top">
+                    <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
+                    <div className="w3-row">
+                        <p className="w3-center">Loading...</p>
+                    </div>
+                </div>
+            )
+        }
+        else {//if (this.props.students !== null){
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -332,14 +331,14 @@ class QuizMakerPage extends Component {
                 </div>
             );
         }
-        return (
+        /*return (
             <div className="w3-container w3-padding-top">
                 <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
                 <div className="w3-row">
                     <p className="w3-center">Something Else Failed???</p>
                 </div>
             </div>
-        )
+        )*/
     }
 
     render() {
@@ -361,6 +360,8 @@ const mapStateToProps = state => {
         isFetching: state.users.isFetching,
         studentHasFailed: state.users.hasFailed,
         students: state.users.students,
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
     }
 };
 

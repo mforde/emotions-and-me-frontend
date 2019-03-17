@@ -17,18 +17,18 @@ class TasklistCreator extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            teacher: 'Teacher Name',
             students: this.props.students,
             selectedStudents: [],
-            saveData: this.props.hasSaved,
-            isSaving: this.props.isSaving,
-            hasFailed: this.props.hasFailed,
         };
     }
 
-    async componentDidMount() {
-        this.props.fetchStudents();
-        this.props.fetchAssignments();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            if (nextProps.user.type === 'teacher') {
+                this.props.fetchStudents(nextProps.user.username);
+                this.props.fetchAssignments(nextProps.user.username, nextProps.user.type);
+            }
+        }
     }
 
     handleDeselect = (deselectedStudent) => {
@@ -61,8 +61,8 @@ class TasklistCreator extends Component {
             studentUsers.push(student.value);
         });
 
-        this.props.sendTasklist(studentUsers, JSON.stringify({
-            'teacher'       : this.state.teacher,
+        this.props.sendTasklist(this.props.user.username, studentUsers, JSON.stringify({
+            'teacher'       : this.props.user.username,
             'students'      : this.state.selectedStudents,
             'tasklistName'      : values.tasklistName,
             'tasklistData'      : this.convertTasklistData(values)
@@ -471,6 +471,8 @@ const mapStateToProps = state => {
         isFetchingUser: state.users.isFetching,
         studentHasFailed: state.users.hasFailed,
         students: state.users.students,
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
     }
 };
 

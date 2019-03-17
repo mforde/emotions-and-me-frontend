@@ -51,10 +51,10 @@ export const failedAddStudent =() => ({
     type: FAILED_ADD_STUDENT
 });
 
-export const fetchStudents = () => {
+export const fetchStudents = (username) => {
     return (dispatch) => {
         dispatch(requestStudents());
-        fetch(BaseUrl + 'assignments/teacher/getStudents?teacher=username', {
+        fetch(BaseUrl + 'assignments/teacher/getStudents?teacher=' + username, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -70,10 +70,10 @@ export const fetchStudents = () => {
     }
 };
 
-export const fetchTeacher = () => {
+export const fetchTeacher = (username) => {
     return (dispatch) => {
         dispatch(requestTeacher());
-        fetch(BaseUrl + 'assignments/student/getTeachers?student=', {
+        fetch(BaseUrl + 'assignments/student/getTeachers?student=' + username, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -89,23 +89,11 @@ export const fetchTeacher = () => {
     }
 };
 
-export const addStudentToTeacher = (students) => {
+export const addStudentToTeacher = (username, student) => {
     return (dispatch) => {
         dispatch(addStudent());
 
-        let studentQuery = students;
-        /*let idx = 0;
-        students.forEach(function (student) {
-            if (idx === 0) {
-                studentQuery = student;
-            }
-            else {
-                studentQuery = studentQuery + ',' + student;
-            }
-            idx = idx + 1;
-        });*/
-
-        fetch(BaseUrl + 'assignments/teacher/addStudents?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/teacher/addStudents?teacher=' + username + '&students=' + student, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

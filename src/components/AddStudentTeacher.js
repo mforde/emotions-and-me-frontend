@@ -72,7 +72,7 @@ function AddStudentTeacher(props) {
             </div>
             {studentTeacherList()}
             <form>
-                <label className=" w3-large w3-padding" htmlFor="addStudent">Add Student by Username</label>
+                <label className=" w3-large w3-padding" htmlFor="addStudent">Add New Student by Username</label>
                 <input type="text" id="addStudent" value={props.addAccount} onChange={props.handleChange} />
                 <input className="w3-button w3-theme w3-margin" type="submit" value="Add Student" onClick={props.handleSubmit} />
             </form>
