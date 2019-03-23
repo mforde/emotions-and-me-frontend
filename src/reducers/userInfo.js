@@ -14,6 +14,7 @@ const defaultState = {
     token: null,
     expiration: moment(),
     user: {},
+    receivedUser: false
 };
 
 const setRequestStatus = (actionType, status, state) => {
@@ -46,6 +47,7 @@ const userInfo = ( state = defaultState, action) => {
                     token: null,
                     expiration: moment(),
                     user: {},
+                    receivedUser: false
                 }
             );
         case RECEIVE_LOGIN:
@@ -59,7 +61,14 @@ const userInfo = ( state = defaultState, action) => {
                     ...state,
                     token: action.token,
                     expiration: moment().add(1, 'h'),
-                    user: action.user,
+                    user: {
+                        username: action.user.username,
+                        first_name: action.user.first_name,
+                        last_name: action.user.last_name,
+                        email: action.user.email,
+                        type: action.user.profile.type
+                    },
+                    receivedUser: true
                 }
             );
         case RECEIVE_CURRENT_USER:
@@ -68,7 +77,14 @@ const userInfo = ( state = defaultState, action) => {
                 RequestStatus.SUCCEEDED,
                 {
                     ...state,
-                    user: action.user,
+                    user: {
+                        username: action.user.username,
+                        first_name: action.user.first_name,
+                        last_name: action.user.last_name,
+                        email: action.user.email,
+                        type: action.user.profile.type
+                    },
+                    receivedUser: true
                 }
             );
         case FAILED_LOGIN:

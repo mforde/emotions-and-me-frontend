@@ -40,24 +40,44 @@ class MyAccount extends Component {
     myAccount() {
         switch (this.props.userRequestStatus) {
             case RequestStatus.SUCCEEDED:
-                return (
-                    <div className="w3-container">
-                        <h1 className="w3-center w3-margin-bottom">My Account</h1>
-                        <AddStudentTeacher
-                            username={this.props.user.username}
-                            firstName={this.props.user.first_name}
-                            lastName={this.props.user.last_name}
-                            email={this.props.user.email}
-                            accountType={this.props.user.type}
-                            addAccount={this.state.addAccount}
-                            handleChange={this.handleChange}
-                            handleSubmit={this.handleSubmit}
-                            accountList={this.props.students}
-                            hasFailed={this.props.hasFailed}
-                            isFetching={this.props.isFetching}
-                        />
-                    </div>
-                );
+                if (this.props.user.type === 'teacher') {
+                    return (
+                        <div className="w3-container">
+                            <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                            <AddStudentTeacher
+                                username={this.props.user.username}
+                                firstName={this.props.user.first_name}
+                                lastName={this.props.user.last_name}
+                                email={this.props.user.email}
+                                accountType={this.props.user.type}
+                                handleChange={this.handleChange}
+                                handleSubmit={this.handleSubmit}
+                                accountList={this.props.students}
+                                hasFailed={this.props.hasFailed}
+                                isFetching={this.props.isFetching}
+                            />
+                        </div>
+                    );
+                }
+                else {
+                    return (
+                        <div className="w3-container">
+                            <h1 className="w3-center w3-margin-bottom">My Account</h1>
+                            <AddStudentTeacher
+                                username={this.props.user.username}
+                                firstName={this.props.user.first_name}
+                                lastName={this.props.user.last_name}
+                                email={this.props.user.email}
+                                accountType={this.props.user.type}
+                                handleChange={this.handleChange}
+                                handleSubmit={this.handleSubmit}
+                                accountList={this.props.teacher}
+                                hasFailed={this.props.hasFailed}
+                                isFetching={this.props.isFetching}
+                            />
+                        </div>
+                    );
+                }
             case RequestStatus.FAILED:
                 return (
                     <div className="w3-container">

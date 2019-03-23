@@ -7,13 +7,21 @@ function AddStudentTeacher(props) {
     function studentTeacherList() {
         if (props.accountType === 'teacher') {
             return (
-                <div className="w3-large w3-padding">
-                    <b>Students:</b>
-                    {nameList()}
+                <div>
+                    <div className="w3-large w3-padding">
+                        <b>Students:</b>
+                        {nameList()}
+                    </div>
+                    <form>
+                        <label className="w3-large w3-padding-large" htmlFor="addStudent">Add New Student by
+                            Username</label>
+                        <input type="text" id="addStudent" onChange={props.handleChange}/>
+                        <input className="w3-button w3-theme w3-margin" type="submit" value="Add Student"
+                               onClick={props.handleSubmit}/>
+                    </form>
                 </div>
             )
-        }
-        else {
+        } else {
             return (
                 <div className="w3-large w3-padding">
                     <b>Teacher:</b>
@@ -71,11 +79,6 @@ function AddStudentTeacher(props) {
                 <b>Account Type:</b> {props.accountType}
             </div>
             {studentTeacherList()}
-            <form>
-                <label className=" w3-large w3-padding" htmlFor="addStudent">Add New Student by Username</label>
-                <input type="text" id="addStudent" value={props.addAccount} onChange={props.handleChange} />
-                <input className="w3-button w3-theme w3-margin" type="submit" value="Add Student" onClick={props.handleSubmit} />
-            </form>
         </div>
     );
 }
@@ -86,7 +89,6 @@ AddStudentTeacher.propTypes = {
     lastName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     accountType: PropTypes.string.isRequired,
-    addAccount: PropTypes.func.isRequired,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     accountList: PropTypes.array.isRequired,

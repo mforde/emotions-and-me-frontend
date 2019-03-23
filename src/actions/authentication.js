@@ -96,7 +96,6 @@ export const failedCurrentUser = failedResponse => {
     }
 };
 
-
 export const handleLoginAttempt = (e, data) => {
     return dispatch => {
         dispatch(requestLogin());
@@ -104,19 +103,16 @@ export const handleLoginAttempt = (e, data) => {
         fetch(LOGIN_ENDPOINT, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-          if (response.ok) {
-            return response.json().then(responseJson => {
-              dispatch(receiveLogin(responseJson))
-            })
-          } else {
-            dispatch(failLogin(response))
-          }
-        })
+            .then(response => response.json())
+            .then(json => dispatch(receiveLogin(json)),
+                json => dispatch(failLogin(json)))
+            .catch(function (error) {
+                console.error(error);
+            });
     }
 };
 
@@ -144,23 +140,23 @@ export const handleSignupAttempt = (e, data) => {
 };
 
 export const handleCheckToken = () => {
-  return dispatch => {
-    dispatch(requestCurrentUser());
-    fetch(CURRENT_USER_ENDPOINT, {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
-      }
-    })
-    .then(response => {
-      if (response.ok) {
-        return response.json().then(responseJson => {
-          dispatch(receiveCurrentUser(responseJson))
+    return dispatch => {
+        dispatch(requestCurrentUser());
+        fetch(CURRENT_USER_ENDPOINT, {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
         })
-      } else {
-        dispatch(failedCurrentUser(response))
-      }
-    })
-  }
+            .then(response => {
+                if (response.ok) {
+                    return response.json().then(responseJson => {
+                        dispatch(receiveCurrentUser(responseJson))
+                    })
+                } else {
+                    dispatch(failedCurrentUser(response))
+                }
+            })
+    }
 };
 
 export const refreshJWTToken = (dispatch) => {
@@ -170,7 +166,7 @@ export const refreshJWTToken = (dispatch) => {
             'Content-Type': 'application/json',
         },
         body: {
-            token: localStorage.getItem('token'),
+            'token': JSON.stringify(localStorage.getItem('token'))
         }
     })
         .then(t => {
