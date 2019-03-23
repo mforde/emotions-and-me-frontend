@@ -13,8 +13,11 @@ export  class happyPictureCarousel extends Component {
     minSwipeThreshold={40}
     swipeTimeThreshold={200}
     images={[
-        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/BrowseAP/Happy/pictures/videoblocks-people-emotion-and-facial-expression-concept-face-of-happy-smiling-afro-american-man-with-dreadlocks-at-home_rydcbxjcl_thumbnail-full08.png",
-        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/BrowseAP/Happy/pictures/5.jpg\n"
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/HAPPY/1.png",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/HAPPY/2.png",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/HAPPY/3.png",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/HAPPY/4.png",
+
         ]}
     /></div>
 

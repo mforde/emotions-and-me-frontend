@@ -13,7 +13,11 @@ export  class neutralPictureCarousel extends Component {
     minSwipeThreshold={40}
     swipeTimeThreshold={200}
     images={[
-        "https://i.dailymail.co.uk/i/pix/2015/05/21/18/28F1429A00000578-3091126-Alicia_s_neutral_face_was_guessed_at_41_years_old_which_is_her_a-a-5_1432229758662.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/NEUTRAL/1.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/NEUTRAL/2.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/NEUTRAL/3.jpg",
+        "https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Pictures/NEUTRAL/4.jpg",
+
         ]}
     /></div>
 
