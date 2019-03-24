@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 import {fetchStudents} from "../actions/getUsers";
 import FilteredMultiSelect from "react-filtered-multiselect";
 import Redirect from "react-router-dom/es/Redirect";
+import AddPhoto from "./modals/AddPhoto";
+import AddAudio from "./modals/AddAudio";
 
 class QuizMakerPage extends Component {
     constructor(props) {
@@ -19,6 +21,13 @@ class QuizMakerPage extends Component {
 
         this.state = {
             selectedStudents: [],
+            showAddPhoto: false,
+            showAddAudio: false,
+            numQuestion: "",
+            currentPhoto: "none",
+            currentAudio: "none",
+            selectedPhotos: [],
+            selectedAudio: [],
         }
     }
 
@@ -29,6 +38,64 @@ class QuizMakerPage extends Component {
             }
         }
     }
+
+    onAddPhoto = (numQ) => {
+        this.setState({
+            showAddPhoto: true,
+            numQuestion: numQ,
+        })
+    };
+
+    onAddAudio = (numQ) => {
+        this.setState({
+            showAddAudio: true,
+            numQuesiton: numQ,
+        })
+    };
+
+    onClosePhoto = () => {
+        this.setState({
+            showAddPhoto: false,
+        })
+    };
+
+    onCloseAudio = () => {
+        this.setState({
+            showAddAudio: false,
+        })
+    };
+
+    onChoosePhoto = (eventKey, label, questionId) => {
+        let photo = {
+            label: label,
+            url: eventKey,
+            questionId: questionId,
+        };
+        let photos = this.state.selectedPhotos.concat(photo);
+        this.setState({
+            currentPhoto: label,
+            selectedPhotos: photos,
+        });
+        alert(label);
+        alert(eventKey);
+        alert(questionId);
+    };
+
+    onChooseAudio = (eventKey, label, questionId) => {
+        let audio = {
+            label: label,
+            url: eventKey,
+            questionId: questionId,
+        };
+        let audios = this.state.selectedAudio.concat(audio);
+        this.setState({
+            currentAudio: label,
+            selectedAudio: audios,
+        });
+        alert(label);
+        alert(eventKey);
+        alert(questionId);
+    };
 
     handleDeselect = (deselectedStudent) => {
         let selectedStudents = this.state.selectedStudents.slice();
@@ -67,6 +134,20 @@ class QuizMakerPage extends Component {
     QuizForm = () => {
         return (
             <div className="w3-container w3-margin">
+                <AddPhoto
+                    showModal={this.state.showAddPhoto}
+                    handleClose={this.onClosePhoto}
+                    numQuestion={this.state.numQuestion}
+                    onChoosePhoto={this.onChoosePhoto}
+                    selectedPhoto={this.state.currentPhoto}
+                />
+                <AddAudio
+                    showModal={this.state.showAddAudio}
+                    handleClose={this.onCloseAudio}
+                    numQuestion={this.state.numQuestion}
+                    onChooseAudio={this.onChooseAudio}
+                    selectedAudio={this.state.currentAudio}
+                />
                 <Form
                     onSubmit={this.handleSubmit}
                     mutators={{
@@ -104,11 +185,19 @@ class QuizMakerPage extends Component {
                                                 <div className="w3-padding-top">
                                                     <label>Question {index + 1}:</label>
                                                     <div className="w3-container w3-right">
-                                                        <button type="button" className="w3-button"
-                                                                id={"photoQ" + index}>Add Photo
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"photoQ" + index}
+                                                            onClick={() => this.onAddPhoto(index + "Q")}
+                                                        >Add Photo
                                                         </button>
-                                                        <button type="button" className="w3-button"
-                                                                id={"audioQ" + index}>Add Audio
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"audioQ" + index}
+                                                            onClick={() => this.onAddAudio(index + "Q")}
+                                                        >Add Audio
                                                         </button>
                                                     </div>
                                                 </div>
@@ -121,11 +210,19 @@ class QuizMakerPage extends Component {
                                                 <div className="w3-padding-top">
                                                     <label>Answer A:</label>
                                                     <div className="w3-container w3-right">
-                                                        <button type="button" className="w3-button"
-                                                                id={"photoA" + index}>Add Photo
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"photoA" + index}
+                                                            onClick={() => this.onAddPhoto(index + "A")}
+                                                        >Add Photo
                                                         </button>
-                                                        <button type="button" className="w3-button"
-                                                                id={"audioA" + index}>Add Audio
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"audioA" + index}
+                                                            onClick={() => this.onAddAudio(index + "A")}
+                                                        >Add Audio
                                                         </button>
                                                     </div>
                                                     <Field
@@ -138,11 +235,19 @@ class QuizMakerPage extends Component {
                                                 <div className="w3-padding-top">
                                                     <label>Answer B:</label>
                                                     <div className="w3-container w3-right">
-                                                        <button type="button" className="w3-button"
-                                                                id={"photoB" + index}>Add Photo
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"photoB" + index}
+                                                            onClick={() => this.onAddPhoto(index + "B")}
+                                                        >Add Photo
                                                         </button>
-                                                        <button type="button" className="w3-button"
-                                                                id={"audioB" + index}>Add Audio
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"audioB" + index}
+                                                            onClick={() => this.onAddAudio(index + "B")}
+                                                        >Add Audio
                                                         </button>
                                                     </div>
                                                     <Field
@@ -155,11 +260,19 @@ class QuizMakerPage extends Component {
                                                 <div className="w3-padding-top">
                                                     <label>Answer C:</label>
                                                     <div className="w3-container w3-right">
-                                                        <button type="button" className="w3-button"
-                                                                id={"photoC" + index}>Add Photo
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"photoC" + index}
+                                                            onClick={() => this.onAddPhoto(index + "C")}
+                                                        >Add Photo
                                                         </button>
-                                                        <button type="button" className="w3-button"
-                                                                id={"audioC" + index}>Add Audio
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"audioC" + index}
+                                                            onClick={() => this.onAddAudio(index + "C")}
+                                                        >Add Audio
                                                         </button>
                                                     </div>
                                                     <Field
@@ -172,11 +285,19 @@ class QuizMakerPage extends Component {
                                                 <div className="w3-padding-top">
                                                     <label>Answer D:</label>
                                                     <div className="w3-container w3-right">
-                                                        <button type="button" className="w3-button"
-                                                                id={"photoD" + index}>Add Photo
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"photoD" + index}
+                                                            onClick={() => this.onAddPhoto(index + "D")}
+                                                        >Add Photo
                                                         </button>
-                                                        <button type="button" className="w3-button"
-                                                                id={"audioD" + index}>Add Audio
+                                                        <button
+                                                            type="button"
+                                                            className="w3-button"
+                                                            id={"audioD" + index}
+                                                            onClick={() => this.onAddAudio(index + "D")}
+                                                        >Add Audio
                                                         </button>
                                                     </div>
                                                     <Field
@@ -280,8 +401,7 @@ class QuizMakerPage extends Component {
                     </div>
                 </div>
             )
-        }
-        else if (this.props.isFetching === true || this.props.students === null) {
+        } else if (this.props.isFetching === true || this.props.students === null) {
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
@@ -290,8 +410,7 @@ class QuizMakerPage extends Component {
                     </div>
                 </div>
             )
-        }
-        else {//if (this.props.students !== null){
+        } else {//if (this.props.students !== null){
             return (
                 <div className="w3-container w3-padding-top">
                     <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
