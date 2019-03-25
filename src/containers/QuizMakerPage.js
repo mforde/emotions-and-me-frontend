@@ -24,10 +24,8 @@ class QuizMakerPage extends Component {
             showAddPhoto: false,
             showAddAudio: false,
             numQuestion: "",
-            currentPhoto: "none",
-            currentAudio: "none",
-            selectedPhotos: [],
-            selectedAudio: [],
+            selectedPhotos: {},
+            selectedAudio: {},
         }
     }
 
@@ -49,7 +47,7 @@ class QuizMakerPage extends Component {
     onAddAudio = (numQ) => {
         this.setState({
             showAddAudio: true,
-            numQuesiton: numQ,
+            numQuestion: numQ,
         })
     };
 
@@ -66,35 +64,41 @@ class QuizMakerPage extends Component {
     };
 
     onChoosePhoto = (eventKey, label, questionId) => {
-        let photo = {
+        let num = questionId.split("")[0];
+        let id = questionId.split("")[1];
+        let photos = this.state.selectedPhotos;
+
+        if (!(num in photos)) {
+            photos[num] = {};
+        }
+        photos[num][id] = {
             label: label,
             url: eventKey,
-            questionId: questionId,
         };
-        let photos = this.state.selectedPhotos.concat(photo);
+
         this.setState({
             currentPhoto: label,
             selectedPhotos: photos,
         });
-        alert(label);
-        alert(eventKey);
-        alert(questionId);
     };
 
     onChooseAudio = (eventKey, label, questionId) => {
-        let audio = {
+        let num = questionId.split("")[0];
+        let id = questionId.split("")[1];
+        let audio = this.state.selectedAudio;
+
+        if (!(num in audio)) {
+            audio[num] = {};
+        }
+        audio[num][id] = {
             label: label,
             url: eventKey,
-            questionId: questionId,
         };
-        let audios = this.state.selectedAudio.concat(audio);
+
         this.setState({
             currentAudio: label,
-            selectedAudio: audios,
+            selectedAudio: audio,
         });
-        alert(label);
-        alert(eventKey);
-        alert(questionId);
     };
 
     handleDeselect = (deselectedStudent) => {
@@ -123,11 +127,40 @@ class QuizMakerPage extends Component {
             studentUsers.push(student.value);
         });
 
+        let quizData = [];
+        values.questions.forEach(function(q) {
+            let urls = {
+                photos: {},
+                audio: {},
+            };
+            quizData.push({...q,...urls});
+        });
+
+        let idx = 0;
+        let selPhotos = this.state.selectedPhotos;
+        quizData.forEach(function (question) {
+            let qNum = idx.toString();
+            if (qNum in selPhotos) {
+                question.photos = {...question.photos, ...selPhotos[qNum]};
+            }
+            idx = idx + 1;
+        });
+
+        idx = 0;
+        let selAudio = this.state.selectedAudio;
+        quizData.forEach(function (question) {
+            let qNum = idx.toString();
+            if (qNum in selAudio) {
+                question.audio = {...question.audio, ...selAudio[qNum]};
+            }
+            idx = idx + 1;
+        });
+
         this.props.sendAssignment(this.props.user.username, studentUsers, JSON.stringify({
             'teacher'       : this.props.user.username,
             'students'      : this.state.selectedStudents,
             'quizName'      : values.quizName,
-            'quizData'      : values.questions,
+            'quizData'      : quizData,
         }));
     };
 
@@ -139,14 +172,14 @@ class QuizMakerPage extends Component {
                     handleClose={this.onClosePhoto}
                     numQuestion={this.state.numQuestion}
                     onChoosePhoto={this.onChoosePhoto}
-                    selectedPhoto={this.state.currentPhoto}
+                    selectedPhoto={this.state.selectedPhotos}
                 />
                 <AddAudio
                     showModal={this.state.showAddAudio}
                     handleClose={this.onCloseAudio}
                     numQuestion={this.state.numQuestion}
                     onChooseAudio={this.onChooseAudio}
-                    selectedAudio={this.state.currentAudio}
+                    selectedAudio={this.state.selectedAudio}
                 />
                 <Form
                     onSubmit={this.handleSubmit}
@@ -450,14 +483,6 @@ class QuizMakerPage extends Component {
                 </div>
             );
         }
-        /*return (
-            <div className="w3-container w3-padding-top">
-                <label className="w3-padding w3-medium">Select Students to Receive Quiz</label>
-                <div className="w3-row">
-                    <p className="w3-center">Something Else Failed???</p>
-                </div>
-            </div>
-        )*/
     }
 
     render() {

@@ -209,10 +209,6 @@ const fearAudio = [
         label: 'A Little Fearful - "It\'s 11 o\'clock"',
         url: 'https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Audio/FEAR/1006.wav'
     },
-    {
-        label: 'A Little Fearful - "That is exactly what happened"',
-        url: 'https://s3.us-east-2.amazonaws.com/emotions-and-me-bucket/Audio/FEAR/1018.wav'
-    }
 ];
 
 const happyAudio = [

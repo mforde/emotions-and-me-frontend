@@ -20,7 +20,7 @@ class AddAudio extends Component {
         handleClose: PropTypes.func.isRequired,
         numQuestion: PropTypes.string.isRequired,
         onChooseAudio: PropTypes.func.isRequired,
-        selectedAudio: PropTypes.string.isRequired,
+        selectedAudio: PropTypes.object.isRequired,
     };
 
     onClick = (eventKey, event) => {
@@ -82,6 +82,15 @@ class AddAudio extends Component {
     render() {
         const {showModal, handleClose} = this.props;
 
+        let num = this.props.numQuestion.split("")[0];
+        let id = this.props.numQuestion.split("")[1];
+        let selection = "none";
+        if (num in this.props.selectedPhoto){
+            if(id in this.props.selectedPhoto[num]) {
+                selection = this.props.selectedPhoto[num][id]["label"];
+            }
+        }
+
         return (
             <div>
                 <Modal show={showModal} onHide={handleClose}>
@@ -103,7 +112,7 @@ class AddAudio extends Component {
                             Selected Emotion: {this.state.selectedEmotion}
                         </div>
                         <div>
-                            Selected Photo: {this.props.selectedAudio}
+                            Selected Photo: {selection}
                         </div>
                     </Modal.Body>
                 </Modal>
