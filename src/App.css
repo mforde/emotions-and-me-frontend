@@ -334,3 +334,8 @@ hr {border: 0;border-top: 1px solid #eee;margin: 20px 0}
 .w3-hover-theme:hover {color:#fff !important; background-color:#009688 !important}
 .w3-hover-text-theme:hover {color:#009688 !important}
 .w3-hover-border-theme:hover {border-color:#009688 !important}
+
+#playlist,audio{background:#666;width:400px;padding:20px;}
+.active a{color:#5DB0E6;text-decoration:none;}
+li a{color:#eeeedd;background:#333;padding:5px;display:block;}
+li a:hover{text-decoration:none;}
