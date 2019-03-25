@@ -90,7 +90,7 @@ class AddPhoto extends Component {
                 selection = this.props.selectedPhoto[num][id]["label"];
             }
         }
-        
+
         return (
             <div>
                 <Modal show={showModal} onHide={handleClose}>

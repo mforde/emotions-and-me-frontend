@@ -48,29 +48,89 @@ class TakeQuiz extends Component {
                 D = true;
             }
 
+            let photos = question.photos;
+            let photoQ = {};
+            let photoA = {};
+            let photoB = {};
+            let photoC = {};
+            let photoD = {};
+            let audio = question.audio;
+            let audioQ = {};
+            let audioA = {};
+            let audioB = {};
+            let audioC = {};
+            let audioD = {};
+
+            if ('Q' in photos) {
+                photoQ = photos.Q;
+            }
+            if ('A' in photos) {
+                photoA = photos.A;
+            }
+            if ('B' in photos) {
+                photoB = photos.B;
+            }
+            if ('C' in photos) {
+                photoC = photos.C;
+            }
+            if ('D' in photos) {
+                photoD = photos.D;
+            }
+
+
+            if ('Q' in audio) {
+                audioQ = audio.Q;
+            }
+            if ('A' in audio) {
+                audioA = audio.A;
+            }
+            if ('B' in audio) {
+                audioB = audio.B;
+            }
+            if ('C' in audio) {
+                audioC = audio.C;
+            }
+            if ('D' in audio) {
+                audioD = audio.D;
+            }
+
             let newQ = {
-                question: question.Q,
+                question: {
+                    content: question.Q,
+                    photo: photoQ,
+                    audio: audioQ,
+                },
                 answers: [
                     {
                         type: A,
-                        content: question.A
+                        content: question.A,
+                        photo: photoA,
+                        audio: audioA,
                     },
                     {
                         type: B,
-                        content: question.B
+                        content: question.B,
+                        photo: photoB,
+                        audio: audioB,
                     },
                     {
                         type: C,
-                        content: question.C
+                        content: question.C,
+                        photo: photoC,
+                        audio: audioC,
                     },
                     {
                         type: D,
-                        content: question.D
+                        content: question.D,
+                        photo: photoD,
+                        audio: audioD,
                     },
                 ]
             };
             newData.push(newQ);
         });
+
+        alert(JSON.stringify(newData));
 
         return newData;
     }
