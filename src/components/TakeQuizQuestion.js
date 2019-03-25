@@ -6,9 +6,13 @@ function Question(props) {
     if ('url' in props.photo) {
         return (
             <div className="w3-container">
-                <div className="w3-card">
-                    <img src={props.photo.url} alt={props.photo.label}/>
-                </div>
+                <img
+                    className="w3-image w3-card center-img"
+                    src={props.photo.url}
+                    alt={props.photo.label}
+                    height="400"
+                    width="600"
+                />
                 <h4 className="question w3-center">{props.content}</h4>
             </div>
         );
@@ -17,7 +21,7 @@ function Question(props) {
     if ('url' in props.audio) {
         return (
             <div className="w3-container">
-                <div className="w3-card">
+                <div className="w3-center">
                     <audio controls>
                         <source src={props.audio.url} type="audio/wav" id={props.audio.label}/>
                         Your browser does not support the audio element.

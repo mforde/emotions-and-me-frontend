@@ -7,9 +7,6 @@ function QuizAnswers(props) {
         return (
             <div className="w3-container">
                 <li className="answerOption">
-                    <div className="w3-card">
-                        <img src={props.photo.url} alt={props.photo.label}/>
-                    </div>
                     <label className="w3-padding w3-large">
                         <input
                             type="radio"
@@ -21,6 +18,13 @@ function QuizAnswers(props) {
                         />{' '}
                         {props.answerContent}
                     </label>
+                    <img
+                        className="w3-image w3-card w3-margin-left"
+                        src={props.photo.url}
+                        alt={props.photo.label}
+                        height="250"
+                        style={{width: '50%'}}
+                    />
                 </li>
             </div>
         );
@@ -30,12 +34,6 @@ function QuizAnswers(props) {
         return (
             <div className="w3-container">
                 <li className="answerOption">
-                    <div className="w3-card">
-                        <audio controls>
-                            <source src={props.audio.url} type="audio/wav" id={props.audio.label}/>
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
                     <label className="w3-padding w3-large">
                         <input
                             type="radio"
@@ -47,6 +45,12 @@ function QuizAnswers(props) {
                         />{' '}
                         {props.answerContent}
                     </label>
+                    <div className="w3-center">
+                        <audio controls>
+                            <source src={props.audio.url} type="audio/wav" id={props.audio.label}/>
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
                 </li>
             </div>
         );

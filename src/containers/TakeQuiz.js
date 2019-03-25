@@ -130,8 +130,6 @@ class TakeQuiz extends Component {
             newData.push(newQ);
         });
 
-        alert(JSON.stringify(newData));
-
         return newData;
     }
 
