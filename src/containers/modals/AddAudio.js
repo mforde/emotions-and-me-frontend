@@ -85,9 +85,9 @@ class AddAudio extends Component {
         let num = this.props.numQuestion.split("")[0];
         let id = this.props.numQuestion.split("")[1];
         let selection = "none";
-        if (num in this.props.selectedPhoto){
-            if(id in this.props.selectedPhoto[num]) {
-                selection = this.props.selectedPhoto[num][id]["label"];
+        if (num in this.props.selectedAudio){
+            if(id in this.props.selectedAudio[num]) {
+                selection = this.props.selectedAudio[num][id]["label"];
             }
         }
 
