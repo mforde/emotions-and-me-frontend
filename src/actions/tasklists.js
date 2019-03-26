@@ -10,8 +10,8 @@ export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
 export const RESET_SAVE = 'RESET_SAVE';
 
 export const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
-export const FAILED_REMOVE = 'FAILED_REMOVE';
-export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
+export const FAILED_TASKLIST_REMOVE = 'FAILED_TASKLIST_REMOVE';
+export const SUCCESSFUL_TASKLIST_REMOVE = 'SUCCESSFUL_TASKLIST_REMOVE';
 
 export const UPDATE_TASKLIST = 'UPDATE_TASKLIST';
 export const FAILED_UPDATE = 'FAILED_UPDATE';
@@ -51,13 +51,13 @@ export const removeTasklist = () => ({
     type : REMOVE_TASKLIST
 });
 
-export const successfulRemove = (data) => ({
-    type : SUCCESSFUL_REMOVE,
+export const successfulTasklistRemove = (data) => ({
+    type : SUCCESSFUL_TASKLIST_REMOVE,
     data : data
 });
 
-export const failedRemove = () => ({
-    type : FAILED_REMOVE
+export const failedTasklistRemove = () => ({
+    type : FAILED_TASKLIST_REMOVE
 });
 
 export const updatingTasklist = () => ({
@@ -157,8 +157,8 @@ export const deleteTasklist = (username, type, tasklistName) => {
             },
         })
             .then(response => response.json())
-            .then(json => dispatch(successfulRemove(json)),
-                () => dispatch(failedRemove()))
+            .then(json => dispatch(successfulTasklistRemove(json)),
+                () => dispatch(failedTasklistRemove()))
             .catch(function(error) {
                 console.error(error);
             });

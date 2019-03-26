@@ -3,7 +3,7 @@ import {
     RECEIVE_TASKLISTS, REQUEST_TASKLISTS,
     SAVE_TASKLIST, SUCCESSFUL_SAVE,
     RESET_SAVE, REMOVE_TASKLIST,
-    SUCCESSFUL_REMOVE, FAILED_REMOVE,
+    SUCCESSFUL_TASKLIST_REMOVE, FAILED_TASKLIST_REMOVE,
     UPDATE_TASKLIST, FAILED_UPDATE,
     SUCCESSFUL_UPDATE
 } from "../actions/tasklists";
@@ -67,15 +67,17 @@ const tasklists = ( state = defaultState, action) => {
                 ...state,
                 isRemoving: true,
             };
-        case SUCCESSFUL_REMOVE:
+        case SUCCESSFUL_TASKLIST_REMOVE:
             return {
                 ...state,
                 isRemoving: false,
-                hasRemoved: action.data
+                hasRemoved: action.data,
+                tasklistData: action.data,
             };
-        case FAILED_REMOVE:
+        case FAILED_TASKLIST_REMOVE:
             return {
                 ...state,
+                isRemoving: false,
                 hasFailed: true
             };
         case UPDATE_TASKLIST:

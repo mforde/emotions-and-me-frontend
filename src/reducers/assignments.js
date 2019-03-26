@@ -74,11 +74,13 @@ const assignments = ( state = defaultState, action) => {
             return {
                 ...state,
                 isRemoving: false,
+                hasRemoved: action.data,
                 quizData: action.data
             };
         case FAILED_REMOVE:
             return {
                 ...state,
+                isRemoving: false,
                 hasFailed: true
             };
         case REQUEST_ASSIGNMENT:
