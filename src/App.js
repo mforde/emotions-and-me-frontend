@@ -26,6 +26,7 @@ import IFrame from './components/Iframe.js';
 import MyAccount from "./containers/MyAccount";
 import HowToPage from "./containers/HowToPage";
 import TasklistPage from "./containers/TasklistPage";
+import Footer from "./components/Footer";
 import {angryAudioPlayer, confusedAudioPlayer , disgustAudioPlayer, fearAudioPlayer, happyAudioPlayer, neutralAudioPlayer}  from './components/SinglePages/Audio';
 import {angryPictureCarousel , confusedPictureCarousel, disgustPictureCarousel, fearPictureCarousel, happyPictureCarousel, neutralPictureCarousel} from './components/SinglePages/Pictures';
 
@@ -133,7 +134,7 @@ class App extends Component {
 
         return (
             <Router>
-                <div>
+                <div id="container">
                     <Login
                         showModal={openModal === ModalOptions.LOGIN}
                         handleClose={this.handleCloseModal}
@@ -154,9 +155,10 @@ class App extends Component {
                             onClickSignout={() => this.handleSignout()}
                         />
                     </header>
-                    <div>
+                    <body>
                         {this.renderRoutes({isLoggedIn})}
-                    </div>
+                    </body>
+                    <Footer/>
                 </div>
             </Router>
         );
