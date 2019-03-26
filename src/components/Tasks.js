@@ -20,11 +20,19 @@ class Task extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    componentDidMount() {
+        if (this.props.user.type === 'teacher' || this.props.user.type === 'student') {
+            if (this.state.type === 'quiz') {
+                this.props.getSingleQuiz(this.props.user.username, this.props.user.type, this.state.data);
+            }
+        }
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.user.type !== prevProps.user.type) {
             if (this.props.user.type === 'teacher' || this.props.user.type === 'student') {
-                if (this.state.type === "quiz") {
-                    this.props.getSingleQuiz(this.props.user.username, this.props.user.type, this.state.data)
+                if (this.state.type === 'quiz') {
+                    this.props.getSingleQuiz(this.props.user.username, this.props.user.type, this.state.data);
                 }
             }
         }
@@ -70,7 +78,7 @@ class Task extends Component {
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onClick={this.handleClick}/> Go to the webcam
+                               onChange={this.handleClick}/> Go to the webcam
                         feature and show a <b>{this.state.data}</b> face!
                     </div>
                     <div className="w3-display-right w3-quarter">
@@ -88,7 +96,7 @@ class Task extends Component {
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onClick={this.handleClick}/> Go to the video
+                               onChange={this.handleClick}/> Go to the video
                         streaming feature and watch this video: <b>{this.state.data}</b>
                     </div>
                     <div className="w3-display-right w3-quarter">
@@ -104,7 +112,7 @@ class Task extends Component {
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onClick={this.handleClick}/> Go to the audio
+                               onChange={this.handleClick}/> Go to the audio
                         recording feature and use a <b>{this.state.data}</b> voice!
                     </div>
                     <div className="w3-display-right w3-quarter">
@@ -122,7 +130,7 @@ class Task extends Component {
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onClick={this.handleClick}/> Go to the browse photos
+                               onChange={this.handleClick}/> Go to the browse photos
                         & audio feature and browse <b>{this.state.data}</b> photos and clips!
                     </div>
                     <div className="w3-display-right w3-quarter">
@@ -140,7 +148,7 @@ class Task extends Component {
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onClick={this.handleClick}/> Go complete the quiz
+                               onChange={this.handleClick}/> Go complete the quiz
                         named <b>{this.state.data}</b>
                     </div>
                     <div className="w3-display-right w3-quarter">
