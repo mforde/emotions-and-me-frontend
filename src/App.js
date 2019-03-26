@@ -155,9 +155,9 @@ class App extends Component {
                             onClickSignout={() => this.handleSignout()}
                         />
                     </header>
-                    <body>
+                    <section>
                         {this.renderRoutes({isLoggedIn})}
-                    </body>
+                    </section>
                     <Footer/>
                 </div>
             </Router>
