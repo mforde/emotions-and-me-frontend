@@ -13,6 +13,10 @@ export const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
 export const FAILED_REMOVE = 'FAILED_REMOVE';
 export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
 
+export const UPDATE_TASKLIST = 'UPDATE_TASKLIST';
+export const FAILED_UPDATE = 'FAILED_UPDATE';
+export const SUCCESSFUL_UPDATE = 'SUCCESSFUL_UPDATE';
+
 export const requestTasklists = () => ({
     type : REQUEST_TASKLISTS
 });
@@ -54,6 +58,19 @@ export const successfulRemove = (data) => ({
 
 export const failedRemove = () => ({
     type : FAILED_REMOVE
+});
+
+export const updatingTasklist = () => ({
+    type: UPDATE_TASKLIST,
+});
+
+export const failedUpdate = () => ({
+    type: FAILED_UPDATE,
+});
+
+export const successfulUpdate = (data) => ({
+    type: SUCCESSFUL_UPDATE,
+    data: data,
 });
 
 export const fetchTasklists = (username, type) => {
@@ -142,6 +159,34 @@ export const deleteTasklist = (username, type, tasklistName) => {
             .then(response => response.json())
             .then(json => dispatch(successfulRemove(json)),
                 () => dispatch(failedRemove()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};
+
+export const updateTasklist = (username, type, tasklistName, data) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/updatetasklist?tasklistName=' + tasklistName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/updatetasklist?tasklistName=' + tasklistName + '&student=' + username;
+    }
+
+    return (dispatch) => {
+        dispatch(updatingTasklist());
+
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(json => dispatch(successfulUpdate(json)),
+                () => dispatch(failedUpdate()))
             .catch(function(error) {
                 console.error(error);
             });

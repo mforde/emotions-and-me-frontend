@@ -414,7 +414,8 @@ class TasklistCreator extends Component {
             values.webcamTasks.forEach(task => {
                 let temp = {
                     type: "webcam",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -423,7 +424,8 @@ class TasklistCreator extends Component {
             values.videoTasks.forEach(task => {
                 let temp = {
                     type: "video",
-                    url: task.url
+                    url: task.url,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -432,7 +434,8 @@ class TasklistCreator extends Component {
             values.audioTasks.forEach(task => {
                 let temp = {
                     type: "audio",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -441,7 +444,8 @@ class TasklistCreator extends Component {
             values.browseTasks.forEach(task => {
                 let temp = {
                     type: "browse",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -450,7 +454,8 @@ class TasklistCreator extends Component {
             values.quizTasks.forEach(task => {
                 let temp = {
                     type: "quiz",
-                    quizName: task.quiz
+                    quizName: task.quiz,
+                    checked: false,
                 };
                 tasks.push(temp)
             });

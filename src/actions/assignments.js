@@ -13,6 +13,10 @@ export const REMOVE_ASSIGNMENT = 'REMOVE_ASSIGNMENT';
 export const FAILED_REMOVE = 'FAILED_REMOVE';
 export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
 
+export const REQUEST_ASSIGNMENT = 'REQUEST_ASSIGNMENT';
+export const RECEIVE_ASSIGNMENT = 'RECEIVE_ASSIGNMENT';
+export const FAILED_RECEIVE_ASSIGNMENT = 'FAILED_RECEIVE_ASSIGNMENT';
+
 
 export const requestAssignments = () => ({
     type : REQUEST_ASSIGNMENTS
@@ -55,6 +59,19 @@ export const successfulRemove = (data) => ({
 
 export const failedRemove = () => ({
     type : FAILED_REMOVE
+});
+
+export const requestAssignment = () => ({
+    type : REQUEST_ASSIGNMENT
+});
+
+export const receiveAssignment = json => ({
+    type: RECEIVE_ASSIGNMENT,
+    data: json,
+});
+
+export const failedToReceiveAssignment = () => ({
+    type: FAILED_RECEIVE_ASSIGNMENT,
 });
 
 export const fetchAssignments = (username, type) => {
@@ -150,3 +167,29 @@ export const deleteAssignment = (username, type, quizName) => {
     }
 };
 
+export const getSingleQuiz = (username, type, quizName) => {
+    let url = '';
+    if (type === 'teacher') {
+        url = BaseUrl + 'assignments/teacher/getquiz?quizName=' + quizName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/getquiz?quizName=' + quizName + '&student=' + username;
+    }
+
+    return (dispatch) => {
+        dispatch(requestAssignment());
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+        })
+            .then(response => response.json())
+            .then(json => dispatch(receiveAssignment(json)),
+                () => dispatch(failedToReceiveAssignment()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};
