@@ -43,7 +43,7 @@ class RecordAudio extends React.Component {
     // say that we're recording
     this.setState({recording: true});
   }
-
+  //3.5 seconds of audio
   stopRecording(e) {
     e.preventDefault();
     // stop the recorder
@@ -69,7 +69,7 @@ class RecordAudio extends React.Component {
       mode: "no-cors",
       data: adata,
     }).then(function(response) {
-      //console.log(response);
+      console.log(response);
     });
 
     const audioURL = window.URL.createObjectURL(myblob);
