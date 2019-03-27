@@ -428,7 +428,7 @@ class Webcam extends Component {
                         imgData.data[k+2] = gray;
                         imgData.data[k+3] = pixeldata[k + 3];
                     }
-                    // ctx2.putImageData(imgData, -50, -50)
+
 
                     ctx2.putImageData(imgData,0, 0);
 
@@ -439,8 +439,9 @@ class Webcam extends Component {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify(imageJSON),
-                    }).then(response => response.json().then(function(data) {
+                    }).then(response => {console.log(response); response.json().then(function(data) {
                         console.log(data)
+                        //error in array
                         var maxConf = 0
                         var emot = ""
                         for (var k=0; k<7; k++) {
@@ -453,7 +454,7 @@ class Webcam extends Component {
                         // var resultStr = JSON.stringify(data);
                         var resultStr = emot;
                         this.setState({result: resultStr})
-                    }.bind(this)));
+                    }.bind(this))});
 
                     ctx.beginPath();
                     ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);

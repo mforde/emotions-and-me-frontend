@@ -10,6 +10,7 @@ class RecordAudio extends React.Component {
     this.state = {
       recording: false,
       audios: [],
+      result: "hi"
     };
   }
 
@@ -61,7 +62,7 @@ class RecordAudio extends React.Component {
 
     // send audio blob to backend
     let adata = new FormData();
-    adata.append('file', myblob, 'audio.wav')
+    adata.append('file', myblob, 'audio' + new Date() +'.wav')
 
     fetch(BaseUrl + 'audio_emotions', {
       method: "POST",
@@ -69,14 +70,36 @@ class RecordAudio extends React.Component {
       mode: "no-cors",
       data: adata,
     }).then(function(response) {
-      console.log(response);
+      console.log(response)
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    }).then(function(myJson) {
+      console.log(myJson);
     });
+
+    // .then(response => response.json().then(function(data) {
+    //   console.log(data);
+    //   var maxConf = 0;
+    //   var emot = "";
+    //   for (var k=0; k<8; k++) {
+    //     let conf = data[k][1];
+    //     if (conf > maxConf) {
+    //       maxConf = conf;
+    //       emot = data[k][0];
+    //     }
+    //   }
+    //   var resultStr = emot;
+    //   console.log(resultStr);
+    //   this.setState({result: resultStr})
+    // }.bind(this)));
 
     const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
     const audios = this.state.audios.concat([audioURL]);
     this.setState({audios});
-  }
+  };
 
   deleteAudio(audioURL) {
     // filter out current videoURL from the list of saved videos
@@ -113,7 +136,9 @@ class RecordAudio extends React.Component {
                 </div>
             ))}
           </div>
+          <div> <p>{this.state.result}</p> </div>
         </div>
+
     );
   }
 }
