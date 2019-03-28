@@ -7,6 +7,11 @@ export const FAILED_RECEIVE_TASKLISTS = 'FAILED_RECEIVE_TASKLISTS';
 export const SAVE_TASKLIST = 'SAVE_TASKLIST';
 export const FAILED_SAVE = 'FAILED_SAVE';
 export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
+export const RESET_SAVE = 'RESET_SAVE';
+
+export const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
+export const FAILED_REMOVE = 'FAILED_REMOVE';
+export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
 
 export const requestTasklists = () => ({
     type : REQUEST_TASKLISTS
@@ -32,6 +37,23 @@ export const successfulSave = (data) => ({
 
 export const failedSave =() => ({
     type: FAILED_SAVE
+});
+
+export const resetSave = () => ({
+    type: RESET_SAVE
+});
+
+export const removeTasklist = () => ({
+    type : REMOVE_TASKLIST
+});
+
+export const successfulRemove = (data) => ({
+    type : SUCCESSFUL_REMOVE,
+    data : data
+});
+
+export const failedRemove = () => ({
+    type : FAILED_REMOVE
 });
 
 export const fetchTasklists = () => {
@@ -86,3 +108,28 @@ export const sendTasklist = (students, data) => {
     }
 };
 
+export const resetSaveTasklist = () => {
+    return (dispatch) => {
+        dispatch(resetSave());
+    }
+};
+
+export const deleteTasklist = (tasklistName) => {
+    return (dispatch) => {
+        dispatch(removeTasklist());
+
+        fetch(BaseUrl + 'assignments/remove/tasklist?tasklistName=' + tasklistName, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+        })
+            .then(response => response.json())
+            .then(json => dispatch(successfulRemove(json)),
+                () => dispatch(failedRemove()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};

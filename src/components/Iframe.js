@@ -1,4 +1,4 @@
-import React, { Component, browserHistory } from 'react'
+import { Component, React } from 'react'
 import ReactPlayer from 'react-player'
 import { connect } from 'react-redux';
 import {fetchurl} from "../actions/videostreaming.js";

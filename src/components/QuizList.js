@@ -8,14 +8,18 @@ function QuizList(props) {
         <div className="quizList">
             <h3 className="w3-center w3-margin-bottom">Quizzes</h3>
             <>
-                {props.quizzes.assignments.map(quiz => (
-                    <div className="w3-row-padding w3-center" key={quiz.quizName}>
+                {props.quizzes.map(quiz => (
+                    <div className="w3-row-padding w3-center w3-display-container" key={quiz.quizName}>
                         <Link to={{pathname: '/takequiz', state: {quizName: quiz.quizName, quizData: quiz.quizData}}}
                               style={{textDecoration: 'none'}}>
-                            <div className="w3-theme w3-card w3-container w3-hover-shadow w3-hover-light-gray">
+                            <div className="w3-theme w3-card w3-container w3-hover-shadow w3-hover-light-gray w3-threequarter">
                                 <h4>{quiz.quizName}</h4>
                             </div>
                         </Link>
+                        <div className="w3-display-right w3-quarter">
+                            <button type="button" className="w3-button w3-hover-theme">Edit Quiz</button>
+                            <button type="button" className="w3-button w3-hover-red" onClick={() => props.remove(quiz.quizName)}>Remove Quiz</button>
+                        </div>
                     </div>
                 ))}
             </>
@@ -25,6 +29,7 @@ function QuizList(props) {
 
 QuizList.propTypes = {
     quizzes: PropTypes.array.isRequired,
+    remove: PropTypes.func.isRequired
 };
 
 export default QuizList;
