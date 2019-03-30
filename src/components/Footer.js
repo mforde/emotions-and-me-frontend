@@ -5,7 +5,7 @@ class Footer extends Component {
 
     footer() {
         return (
-            <footer className="w3-container w3-display-container w3-theme" id="footer">
+            <footer className="w3-container w3-display-container w3-theme-dark" id="footer">
                 <div className="w3-display-left">
                     <p className="footer-left-margin">
                         Created By: Jenny Cheung, Babatunde Egbantan,

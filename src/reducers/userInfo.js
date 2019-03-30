@@ -51,7 +51,6 @@ const userInfo = ( state = defaultState, action) => {
                 }
             );
         case RECEIVE_LOGIN:
-        case RECEIVE_SIGNUP:
         case RECEIVE_TOKEN:
             localStorage.setItem('token', action.token);
             return setRequestStatus(
@@ -66,7 +65,26 @@ const userInfo = ( state = defaultState, action) => {
                         first_name: action.user.first_name,
                         last_name: action.user.last_name,
                         email: action.user.email,
-                        type: action.user.profile.type
+                        type: action.user.account_type
+                    },
+                    receivedUser: true
+                }
+            );
+        case RECEIVE_SIGNUP:
+            localStorage.setItem('token', action.token);
+            return setRequestStatus(
+                action.type,
+                RequestStatus.SUCCEEDED,
+                {
+                    ...state,
+                    token: action.token,
+                    expiration: moment().add(1, 'h'),
+                    user: {
+                        username: action.username,
+                        first_name: action.first_name,
+                        last_name: action.last_name,
+                        email: action.email,
+                        type: action.account_type
                     },
                     receivedUser: true
                 }
@@ -82,7 +100,7 @@ const userInfo = ( state = defaultState, action) => {
                         first_name: action.user.first_name,
                         last_name: action.user.last_name,
                         email: action.user.email,
-                        type: action.user.profile.type
+                        type: action.user.account_type
                     },
                     receivedUser: true
                 }

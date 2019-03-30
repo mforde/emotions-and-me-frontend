@@ -5,7 +5,7 @@ import '../App.css';
 function AddStudentTeacher(props) {
 
     function studentTeacherList() {
-        if (props.accountType === 'teacher') {
+        if (props.accountType === 'TEACHER') {
             return (
                 <div>
                     <div className="w3-large w3-padding">

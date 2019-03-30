@@ -26,7 +26,7 @@ class Signup extends Component {
         const name = e.target.name;
         const value = e.target.value;
         this.setState(prevstate => {
-            const newState = { ...prevstate };
+            const newState = {...prevstate};
             newState[name] = value;
             return newState;
         });
@@ -47,12 +47,12 @@ class Signup extends Component {
                                 <label htmlFor="account_type">Account Type:</label>
                                 <br/>
                                 <span>
-                                    <input className="w3-radio" type="radio" name="account_type" value="student" onChange={this.handleChange} required />
+                                    <input className="w3-radio" type="radio" name="account_type" value="STUDENT" onChange={this.handleChange} required />
                                     &nbsp;Student
                                 </span>
                                 <br/>
                                 <span>
-                                    <input className="w3-radio" type="radio" name="account_type" value="teacher" onChange={this.handleChange} required />
+                                    <input className="w3-radio" type="radio" name="account_type" value="TEACHER" onChange={this.handleChange} required />
                                     &nbsp;Teacher
                                 </span>
                             </p>

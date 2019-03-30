@@ -31,7 +31,7 @@ class QuizMakerPage extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.user !== nextProps.user) {
-            if (nextProps.user.type === 'teacher') {
+            if (nextProps.user.type === 'TEACHER') {
                 this.props.fetchStudents(nextProps.user.username);
             }
         }

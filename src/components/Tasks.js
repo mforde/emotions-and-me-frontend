@@ -21,7 +21,7 @@ class Task extends Component {
     }
 
     componentDidMount() {
-        if (this.props.user.type === 'teacher' || this.props.user.type === 'student') {
+        if (this.props.user.type === 'TEACHER' || this.props.user.type === 'STUDENT') {
             if (this.state.type === 'quiz') {
                 this.props.getSingleQuiz(this.props.user.username, this.props.user.type, this.state.data);
             }
@@ -30,7 +30,7 @@ class Task extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.user.type !== prevProps.user.type) {
-            if (this.props.user.type === 'teacher' || this.props.user.type === 'student') {
+            if (this.props.user.type === 'TEACHER' || this.props.user.type === 'STUDENT') {
                 if (this.state.type === 'quiz') {
                     this.props.getSingleQuiz(this.props.user.username, this.props.user.type, this.state.data);
                 }

@@ -12,7 +12,7 @@ class NavBar extends Component {
     };
 
     featuresDropdown() {
-        if (this.props.user.type === 'teacher') {
+        if (this.props.user.type === 'TEACHER') {
             return (
                 <div className="w3-dropdown-hover">
                     <button className="w3-button w3-padding-16">
@@ -86,7 +86,7 @@ class NavBar extends Component {
         const { isLoggedIn } = this.props;
 
         return (
-            <div className="w3-bar w3-theme">
+            <div className="w3-bar w3-theme-dark">
                 <a href="/" className="w3-bar-item w3-button w3-padding-16">Home</a>
                 {isLoggedIn ? this.featuresDropdown() : null}
                 {isLoggedIn ? this.howToButton() : null}

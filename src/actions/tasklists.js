@@ -75,7 +75,7 @@ export const successfulUpdate = (data) => ({
 
 export const fetchTasklists = (username, type) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/tasklists?teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/tasklists?student=' + username;
@@ -140,7 +140,7 @@ export const resetSaveTasklist = () => {
 
 export const deleteTasklist = (username, type, tasklistName) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/remove/tasklist?tasklistName=' + tasklistName + '&teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/remove/tasklist?tasklistName=' + tasklistName + '&student=' + username;
@@ -167,7 +167,7 @@ export const deleteTasklist = (username, type, tasklistName) => {
 
 export const updateTasklist = (username, type, tasklistName, data) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/updatetasklist?tasklistName=' + tasklistName + '&teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/updatetasklist?tasklistName=' + tasklistName + '&student=' + username;

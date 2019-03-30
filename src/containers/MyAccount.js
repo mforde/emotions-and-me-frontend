@@ -19,10 +19,10 @@ class MyAccount extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.user !== nextProps.user) {
-            if (nextProps.user.type === 'teacher') {
+            if (nextProps.user.type === 'TEACHER') {
                 this.props.fetchStudents(nextProps.user.username);
             }
-            else if (nextProps.user.type === 'student') {
+            else if (nextProps.user.type === 'STUDENT') {
                 this.props.fetchTeacher(nextProps.user.username);
             }
         }
@@ -40,7 +40,7 @@ class MyAccount extends Component {
     myAccount() {
         switch (this.props.userRequestStatus) {
             case RequestStatus.SUCCEEDED:
-                if (this.props.user.type === 'teacher') {
+                if (this.props.user.type === 'TEACHER') {
                     return (
                         <div className="w3-container">
                             <h1 className="w3-center w3-margin-bottom">My Account</h1>

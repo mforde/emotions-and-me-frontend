@@ -76,7 +76,7 @@ export const failedToReceiveAssignment = () => ({
 
 export const fetchAssignments = (username, type) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/quizzes?teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/quizzes?student=' + username;
@@ -142,7 +142,7 @@ export const resetSaveQuiz = () => {
 
 export const deleteAssignment = (username, type, quizName) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/remove/quiz?quizName=' + quizName + '&teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/remove/quiz?quizName=' + quizName + '&student=' + username;
@@ -169,7 +169,7 @@ export const deleteAssignment = (username, type, quizName) => {
 
 export const getSingleQuiz = (username, type, quizName) => {
     let url = '';
-    if (type === 'teacher') {
+    if (type === 'TEACHER') {
         url = BaseUrl + 'assignments/teacher/getquiz?quizName=' + quizName + '&teacher=' + username;
     } else {
         url = BaseUrl + 'assignments/student/getquiz?quizName=' + quizName + '&student=' + username;
