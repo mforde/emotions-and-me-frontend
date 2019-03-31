@@ -61,11 +61,11 @@ class AddAudio extends Component {
         }
         if (this.state.selectedEmotion === "none") {
             return (
-                <DropdownButton id="dropdown-audio" title="Choose an Emotion" disabled={true}/>
+                <DropdownButton id="dropdown-audio" className="w3-margin-left w3-padding" title="Choose an Emotion" disabled={true}/>
             )
         } else {
             return (
-                <DropdownButton id={"dropdown-" + id} className="w3-padding" title="Choose an Audio Clip">
+                <DropdownButton id={"dropdown-" + id} className="w3-margin-left w3-padding" title="Choose an Audio Clip">
                     <>
                         {audios.map(audio => {
                             return (

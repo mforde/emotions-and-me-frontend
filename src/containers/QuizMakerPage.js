@@ -164,6 +164,26 @@ class QuizMakerPage extends Component {
         }));
     };
 
+    isPhotoSelected = (idx, id) => {
+        const index = idx.toString();
+        if (index in this.state.selectedPhotos) {
+            if (id in this.state.selectedPhotos[index]) {
+                return "Photo Selected"
+            }
+        }
+        return "Add Photo"
+    };
+
+    isAudioSelected = (idx, id) => {
+        const index = idx.toString();
+        if (index in this.state.selectedAudio) {
+            if (id in this.state.selectedAudio[index]) {
+                return "Audio Selected"
+            }
+        }
+        return "Add Audio"
+    };
+
     QuizForm = () => {
         return (
             <div className="w3-container w3-margin">
@@ -223,14 +243,14 @@ class QuizMakerPage extends Component {
                                                             className="w3-button"
                                                             id={"photoQ" + index}
                                                             onClick={() => this.onAddPhoto(index + "Q")}
-                                                        >Add Photo
+                                                        >{this.isPhotoSelected(index,'Q')}
                                                         </button>
                                                         <button
                                                             type="button"
                                                             className="w3-button"
                                                             id={"audioQ" + index}
                                                             onClick={() => this.onAddAudio(index + "Q")}
-                                                        >Add Audio
+                                                        >{this.isAudioSelected(index,'Q')}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -248,14 +268,14 @@ class QuizMakerPage extends Component {
                                                             className="w3-button"
                                                             id={"photoA" + index}
                                                             onClick={() => this.onAddPhoto(index + "A")}
-                                                        >Add Photo
+                                                        >{this.isPhotoSelected(index,'A')}
                                                         </button>
                                                         <button
                                                             type="button"
                                                             className="w3-button"
                                                             id={"audioA" + index}
                                                             onClick={() => this.onAddAudio(index + "A")}
-                                                        >Add Audio
+                                                        >{this.isAudioSelected(index,'A')}
                                                         </button>
                                                     </div>
                                                     <Field
@@ -273,14 +293,14 @@ class QuizMakerPage extends Component {
                                                             className="w3-button"
                                                             id={"photoB" + index}
                                                             onClick={() => this.onAddPhoto(index + "B")}
-                                                        >Add Photo
+                                                        >{this.isPhotoSelected(index,'B')}
                                                         </button>
                                                         <button
                                                             type="button"
                                                             className="w3-button"
                                                             id={"audioB" + index}
                                                             onClick={() => this.onAddAudio(index + "B")}
-                                                        >Add Audio
+                                                        >{this.isAudioSelected(index,'B')}
                                                         </button>
                                                     </div>
                                                     <Field
@@ -298,14 +318,14 @@ class QuizMakerPage extends Component {
                                                             className="w3-button"
                                                             id={"photoC" + index}
                                                             onClick={() => this.onAddPhoto(index + "C")}
-                                                        >Add Photo
+                                                        >{this.isPhotoSelected(index,'C')}
                                                         </button>
                                                         <button
                                                             type="button"
                                                             className="w3-button"
                                                             id={"audioC" + index}
                                                             onClick={() => this.onAddAudio(index + "C")}
-                                                        >Add Audio
+                                                        >{this.isAudioSelected(index,'C')}
                                                         </button>
                                                     </div>
                                                     <Field
@@ -323,14 +343,14 @@ class QuizMakerPage extends Component {
                                                             className="w3-button"
                                                             id={"photoD" + index}
                                                             onClick={() => this.onAddPhoto(index + "D")}
-                                                        >Add Photo
+                                                        >{this.isPhotoSelected(index,'D')}
                                                         </button>
                                                         <button
                                                             type="button"
                                                             className="w3-button"
                                                             id={"audioD" + index}
                                                             onClick={() => this.onAddAudio(index + "D")}
-                                                        >Add Audio
+                                                        >{this.isAudioSelected(index,'D')}
                                                         </button>
                                                     </div>
                                                     <Field

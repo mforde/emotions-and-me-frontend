@@ -61,11 +61,11 @@ class AddPhoto extends Component {
         }
         if (this.state.selectedEmotion === "none") {
             return (
-                <DropdownButton id="dropdown-photos" title="Choose an Emotion" disabled={true}/>
+                <DropdownButton id="dropdown-photos" className="w3-margin-left w3-padding" title="Choose an Emotion" disabled={true}/>
             )
         } else {
             return (
-                <DropdownButton id={"dropdown-" + id} className="w3-padding" title="Choose a Photo">
+                <DropdownButton id={"dropdown-" + id} className="w3-margin-left w3-padding" title="Choose a Photo">
                     <>
                         {photos.map(photo => {
                             return (
