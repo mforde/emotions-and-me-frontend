@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseUrl from "../constants/BaseUrl";
+import BaseUrl from '../constants/BaseUrl';
 //const audioType = 'audio/*';
 const audioType = 'audio/wav';
 
