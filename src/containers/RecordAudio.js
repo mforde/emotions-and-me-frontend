@@ -1,5 +1,7 @@
 import React from 'react';
-const audioType = 'audio/*';
+import BaseUrl from "../constants/BaseUrl";
+//const audioType = 'audio/*';
+const audioType = 'audio/wav';
 
 class RecordAudio extends React.Component {
   constructor(props) {
@@ -41,6 +43,7 @@ class RecordAudio extends React.Component {
     this.setState({recording: true});
   }
 
+  //record 3.5 seconds of audio
   stopRecording(e) {
     e.preventDefault();
     // stop the recorder
@@ -54,9 +57,21 @@ class RecordAudio extends React.Component {
 
   saveAudio() {
     // convert saved chunks to blob
-    const blob = new Blob(this.chunks, {type: audioType});
-    // send video  blob backend
-    const audioURL = window.URL.createObjectURL(blob);
+    var myblob = new Blob(this.chunks, {type: audioType});
+    // send audio blob to backend
+    let adata = new FormData();
+    adata.append('file', myblob, 'audio' + new Date() +'.wav')
+
+    fetch(BaseUrl + 'audio_emotions', {
+      method: "POST",
+      body: adata,
+      mode: "no-cors",
+      data: adata,
+    }).then(function(response) {
+      console.log(response);
+    });
+
+    const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
     const audios = this.state.audios.concat([audioURL]);
     this.setState({audios});
