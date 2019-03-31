@@ -67,9 +67,7 @@ class RecordAudio extends React.Component {
       body: adata,
       mode: "no-cors",
       data: adata,
-    }).then(function(response) {
-      console.log(response);
-    });
+    }).then(response => console.log(response));
 
     const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
