@@ -357,16 +357,22 @@ class TasklistCreator extends Component {
     BrowseTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion for the student to browse photos and audio clips of in the browse feature</p>
+                <p>Pick an emotion for the student to browse photos or audio clips of in the browse feature</p>
+                <label className="w3-margin-right">Photos or Audio Clips: </label>
+                <Field component="select" className="w3-select" name={`${name}.format`}>
+                    <option/>
+                    <option value="picture">Photos</option>
+                    <option value="audio">Audio Clips</option>
+                </Field>
                 <label className="w3-margin-right">Emotion: </label>
                 <Field component="select" className="w3-select" name={`${name}.emotion`}>
                     <option/>
-                    <option value="anger">Anger</option>
-                    <option value="disgust">Disgust</option>
-                    <option value="happy">Happy</option>
-                    <option value="fear">Fear</option>
-                    <option value="sad">Sad</option>
-                    <option value="surprise">Surprise</option>
+                    <option value="Angry">Anger</option>
+                    <option value="Disgust">Disgust</option>
+                    <option value="Happy">Happy</option>
+                    <option value="Fear">Fear</option>
+                    <option value="Confused">Confused</option>
+                    <option value="Neutral">Neutral</option>
                 </Field>
             </div>
         );
@@ -445,6 +451,7 @@ class TasklistCreator extends Component {
                 let temp = {
                     type: "browse",
                     emotion: task.emotion,
+                    format: task.format,
                     checked: false,
                 };
                 tasks.push(temp)

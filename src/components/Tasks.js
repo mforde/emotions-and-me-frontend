@@ -65,7 +65,10 @@ class Task extends Component {
             return data.emotion;
         }
         if (data.type === "browse") {
-            return data.emotion;
+            return {
+                emotion: data.emotion,
+                format: data.format,
+            };
         }
         if (data.type === "quiz") {
             return data.quizName;
@@ -100,9 +103,12 @@ class Task extends Component {
                         streaming feature and watch this video: <b>{this.state.data}</b>
                     </div>
                     <div className="w3-display-right w3-quarter">
-                        <button className="w3-button w3-green w3-margin-left go-btn-padding"
-                                onClick={this.props.onCheck}>GO!
-                        </button>
+                        <Link to={{pathname: '/videostreaming', state: {submitted: true, value: this.state.data}}}
+                              style={{textDecoration: 'none'}}>
+                            <button className="w3-button w3-green w3-margin-left go-btn-padding"
+                                    onClick={this.props.onCheck}>GO!
+                            </button>
+                        </Link>
                     </div>
                 </div>
             )
@@ -126,15 +132,16 @@ class Task extends Component {
             )
         }
         if (this.state.type === "browse") {
+            const url = '/' + this.state.data.format + '/' + this.state.data.emotion;
             return (
                 <div className="w3-row w3-padding w3-center w3-display-container">
                     <div className="w3-container w3-threequarter">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
-                               onChange={this.handleClick}/> Go to the browse photos
-                        & audio feature and browse <b>{this.state.data}</b> photos and clips!
+                               onChange={this.handleClick}/> Go to the browse <b>{this.state.data.format}</b> feature
+                        and look through <b>{this.state.data.emotion}</b> {this.state.data.format}!
                     </div>
                     <div className="w3-display-right w3-quarter">
-                        <Link to={{pathname: '/browse',}} style={{textDecoration: 'none'}}>
+                        <Link to={{pathname: url,}} style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-green w3-margin-left go-btn-padding"
                                     onClick={this.props.onCheck}>GO!
                             </button>

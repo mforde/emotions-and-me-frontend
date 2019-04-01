@@ -19,14 +19,14 @@ class IFrame extends Component {
     render() {
 
         return (
-            <div className='player-wrapper'>
+            <div className='player-wrapper w3-center w3-padding'>
                 <ReactPlayer
                     className='react-player'
                     url={this.props.emotion_url}
                     playing={true}
                     controls={true}
-                    width='50%'
-                    height='80%'
+                    width='100%'
+                    height='100%'
                 />
             </div>
         )
