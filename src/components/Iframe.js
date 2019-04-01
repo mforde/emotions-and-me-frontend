@@ -19,7 +19,7 @@ class IFrame extends Component {
         }
         if (this.props.hasFailed) {
             return (
-                <div>
+                <div className="w3-center w3-padding">
                     <h4>Failed to process video.</h4>
                 </div>
             )

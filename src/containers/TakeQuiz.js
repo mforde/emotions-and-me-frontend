@@ -16,7 +16,8 @@ class TakeQuiz extends Component {
             answer: '',
             answersCount: {},
             result: '',
-            quizData: this.props.location.state.quizData
+            quizData: this.props.location.state.quizData,
+            showCorrect: false,
         };
 
         this.handleNextQuestion = this.handleNextQuestion.bind(this);
@@ -161,11 +162,29 @@ class TakeQuiz extends Component {
         return array;
     };
 
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if ((prevState.showCorrect !== this.state.showCorrect) && this.state.showCorrect) {
+
+            if (this.state.questionId < this.quizQuestions.length) {
+                setTimeout(() => this.setNextQuestion(), 1000);
+            } else {
+                setTimeout(() => this.setResults(this.getResults()), 1000);
+            }
+        }
+    }
+
     handleNextQuestion() {
-        if (this.state.questionId < this.quizQuestions.length) {
-            setTimeout(() => this.setNextQuestion(), 300);
+        if (this.state.answer === "true") {
+            this.setState({
+                showCorrect: true,
+            })
         } else {
-            setTimeout(() => this.setResults(this.getResults()), 300);
+            if (this.state.questionId < this.quizQuestions.length) {
+                setTimeout(() => this.setNextQuestion(), 1000);
+            } else {
+                setTimeout(() => this.setResults(this.getResults()), 1000);
+            }
         }
     }
 
@@ -192,7 +211,8 @@ class TakeQuiz extends Component {
             questionId: questionId,
             question: this.quizQuestions[counter].question,
             answerOptions: this.quizQuestions[counter].answers,
-            answer: ''
+            answer: '',
+            showCorrect: false
         });
     }
 
@@ -204,7 +224,8 @@ class TakeQuiz extends Component {
             questionId: questionId,
             question: this.quizQuestions[counter].question,
             answerOptions: this.quizQuestions[counter].answers,
-            answer: ''
+            answer: '',
+            showCorrect: false
         });
     }
 
@@ -240,6 +261,7 @@ class TakeQuiz extends Component {
                     onAnswerChange={this.setUserAnswer}
                     onNextQ={this.handleNextQuestion}
                     onPrevQ={this.handlePrevQuestion}
+                    showCorrect={this.state.showCorrect}
                 />
             </div>
         );

@@ -42,7 +42,7 @@ class App extends Component {
         loginRequestStatus: PropTypes.string.isRequired,
         signupRequestStatus: PropTypes.string.isRequired,
         currentUserRequestStatus: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
+        //token: PropTypes.string.isRequired,
         user: PropTypes.object.isRequired,
         handleLoginAttempt: PropTypes.func.isRequired,
         handleSignupAttempt: PropTypes.func.isRequired,
