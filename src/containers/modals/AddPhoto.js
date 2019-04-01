@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Modal, DropdownButton, MenuItem} from 'react-bootstrap';
 import '../../App.css';
 import {angryPhotos, happyPhotos, neutralPhotos,
-    fearPhotos, disgustPhotos} from "../../constants/photoUrls";
+    fearPhotos, disgustPhotos} from "../../constants/PhotoUrls";
 
 class AddPhoto extends Component {
     constructor(props) {
