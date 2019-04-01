@@ -106,7 +106,7 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Webcam Task {index + 1}:</label>
+                                                <label className="w3-padding-top">"Emotions on Your Face" Task {index + 1}:</label>
                                                 {this.WebcamTask(name)}
                                             </div>
                                         ))}
@@ -114,7 +114,7 @@ class TasklistCreator extends Component {
                                 <div className="webcam-buttons w3-padding">
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('webcamTasks', undefined)}>
-                                        Add Webcam Task
+                                        Add "Emotions on Your Face" Task
                                     </button>
                                 </div>
                                 <FieldArray name="videoTasks">
@@ -127,7 +127,7 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Video Streaming
+                                                <label className="w3-padding-top">"Emotions on Their Faces"
                                                     Task {index + 1}:</label>
                                                 {this.VideoTask(name)}
                                             </div>
@@ -136,7 +136,7 @@ class TasklistCreator extends Component {
                                 <div className="video-buttons w3-padding">
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('videoTasks', undefined)}>
-                                        Add Video Streaming Task
+                                        Add "Emotions on Their Faces" Task
                                     </button>
                                 </div>
                                 <FieldArray name="audioTasks">
@@ -149,7 +149,7 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Audio Recording
+                                                <label className="w3-padding-top">"Emotions in Your Voice"
                                                     Task {index + 1}:</label>
                                                 {this.AudioTask(name)}
                                             </div>
@@ -158,7 +158,7 @@ class TasklistCreator extends Component {
                                 <div className="audio-buttons w3-padding">
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('audioTasks', undefined)}>
-                                        Add Audio Recording Task
+                                        Add "Emotions in Your Voice" Task
                                     </button>
                                 </div>
                                 <FieldArray name="browseTasks">
@@ -171,7 +171,7 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Browse Photos & Audio
+                                                <label className="w3-padding-top">"Emotions in Photos & Audio"
                                                     Task {index + 1}:</label>
                                                 {this.BrowseTask(name)}
                                             </div>
@@ -180,7 +180,7 @@ class TasklistCreator extends Component {
                                 <div className="browse-buttons w3-padding">
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('browseTasks', undefined)}>
-                                        Add Browse Photos & Audio Task
+                                        Add "Emotions in Photos & Audio" Task
                                     </button>
                                 </div>
                                 <FieldArray name="quizTasks">
@@ -193,7 +193,7 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">Quiz Task {index + 1}:</label>
+                                                <label className="w3-padding-top">"Take Quiz" Task {index + 1}:</label>
                                                 {this.QuizTask(name)}
                                             </div>
                                         ))}
@@ -201,7 +201,7 @@ class TasklistCreator extends Component {
                                 <div className="quiz-buttons w3-padding">
                                     <button type="button" className="w3-button w3-theme"
                                             onClick={() => push('quizTasks', undefined)}>
-                                        Add Quiz Task
+                                        Add "Take Quiz" Task
                                     </button>
                                 </div>
                                 {this.multiStudentSelect()}
@@ -307,7 +307,8 @@ class TasklistCreator extends Component {
     WebcamTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion for the student to practice in the webcam feature</p>
+                <p>Pick an emotion for the student to practice using their webcam in the "Emotions on Your Face"
+                    feature</p>
                 <label className="w3-margin-right">Emotion: </label>
                 <Field component="select" className="w3-select" name={`${name}.emotion`}>
                     <option/>
@@ -325,7 +326,8 @@ class TasklistCreator extends Component {
     VideoTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Insert URL/link for a YouTube Video for the student to watch</p>
+                <p>Insert URL/link for a YouTube Video for the student to watch in the "Emotions on Their Faces"
+                    feature</p>
                 <label className="w3-margin-right">YouTube Link: </label>
                 <Field
                     name={`${name}.url`}
@@ -339,7 +341,7 @@ class TasklistCreator extends Component {
     AudioTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion for the student to practice in the record audio feature</p>
+                <p>Pick an emotion for the student to practice by recording their voice in the "Emotions in Your Voice" feature</p>
                 <label className="w3-margin-right">Emotion: </label>
                 <Field component="select" className="w3-select" name={`${name}.emotion`}>
                     <option/>
@@ -357,7 +359,7 @@ class TasklistCreator extends Component {
     BrowseTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion for the student to browse photos or audio clips of in the browse feature</p>
+                <p>Pick an emotion and photos or audio clips for the student to browse photos or audio clips of in the "Emotions in Photos & Audio" feature</p>
                 <label className="w3-margin-right">Photos or Audio Clips: </label>
                 <Field component="select" className="w3-select" name={`${name}.format`}>
                     <option/>

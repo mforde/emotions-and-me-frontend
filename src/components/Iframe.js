@@ -4,16 +4,9 @@ import { connect } from 'react-redux';
 import {fetchurl} from "../actions/videostreaming.js";
 
 class IFrame extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         this.props.fetchurl(this.props.url);
-    }
-
-    componentDidUpdate() {
-
     }
 
     render() {
