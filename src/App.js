@@ -27,7 +27,7 @@ import MyAccount from "./containers/MyAccount";
 import HowToPage from "./containers/HowToPage";
 import TasklistPage from "./containers/TasklistPage";
 import Footer from "./components/Footer";
-import {angryAudioPlayer, confusedAudioPlayer , disgustAudioPlayer, fearAudioPlayer, happyAudioPlayer, neutralAudioPlayer}  from './components/SinglePages/Audio';
+import {angryAudioPlayer, disgustAudioPlayer, fearAudioPlayer, happyAudioPlayer, neutralAudioPlayer}  from './components/SinglePages/Audio';
 import {angryPictureCarousel , confusedPictureCarousel, disgustPictureCarousel, fearPictureCarousel, happyPictureCarousel, neutralPictureCarousel} from './components/SinglePages/Pictures';
 
 
@@ -113,7 +113,6 @@ class App extends Component {
                 <Route path="/howto" component={HowToPage}/>
 
                 <Route path="/audio/Happy" component={happyAudioPlayer}/>
-                <Route path="/audio/Confused" component={confusedAudioPlayer}/>
                 <Route path="/audio/Fear" component={fearAudioPlayer}/>
                 <Route path="/audio/Neutral" component={neutralAudioPlayer}/>
                 <Route path="/audio/Angry" component={angryAudioPlayer}/>

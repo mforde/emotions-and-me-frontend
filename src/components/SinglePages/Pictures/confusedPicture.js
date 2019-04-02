@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import {Slider, WithOnResize} from 'react-simple-image-carousel';
+import emojis from "../../../constants/Emojis";
 
 export class confusedPictureCarousel extends Component {
     render() {
         return (
             <div className="w3-container">
-                <h1 className="w3-center">Confused Photos</h1>
+                <h1 className="w3-center">
+                    <img className="w3-image w3-margin-right" src={emojis.confused} alt="confused" style={{width: '8%'}}/>
+                    Confused Photos
+                    <img className="w3-image w3-margin-left" src={emojis.confused} alt="confused" style={{width: '8%'}}/>
+                </h1>
                 <div className="w3-center w3-padding">
                     <WithOnResize
                         widthFactor={1}
