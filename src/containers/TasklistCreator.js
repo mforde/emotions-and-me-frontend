@@ -17,18 +17,18 @@ class TasklistCreator extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            teacher: 'Teacher Name',
             students: this.props.students,
             selectedStudents: [],
-            saveData: this.props.hasSaved,
-            isSaving: this.props.isSaving,
-            hasFailed: this.props.hasFailed,
         };
     }
 
-    async componentDidMount() {
-        this.props.fetchStudents();
-        this.props.fetchAssignments();
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            if (nextProps.user.type === 'TEACHER') {
+                this.props.fetchStudents(nextProps.user.username);
+                this.props.fetchAssignments(nextProps.user.username, nextProps.user.type);
+            }
+        }
     }
 
     handleDeselect = (deselectedStudent) => {
@@ -61,8 +61,8 @@ class TasklistCreator extends Component {
             studentUsers.push(student.value);
         });
 
-        this.props.sendTasklist(studentUsers, JSON.stringify({
-            'teacher'       : this.state.teacher,
+        this.props.sendTasklist(this.props.user.username, studentUsers, JSON.stringify({
+            'teacher'       : this.props.user.username,
             'students'      : this.state.selectedStudents,
             'tasklistName'      : values.tasklistName,
             'tasklistData'      : this.convertTasklistData(values)
@@ -414,7 +414,8 @@ class TasklistCreator extends Component {
             values.webcamTasks.forEach(task => {
                 let temp = {
                     type: "webcam",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -423,7 +424,8 @@ class TasklistCreator extends Component {
             values.videoTasks.forEach(task => {
                 let temp = {
                     type: "video",
-                    url: task.url
+                    url: task.url,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -432,7 +434,8 @@ class TasklistCreator extends Component {
             values.audioTasks.forEach(task => {
                 let temp = {
                     type: "audio",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -441,7 +444,8 @@ class TasklistCreator extends Component {
             values.browseTasks.forEach(task => {
                 let temp = {
                     type: "browse",
-                    emotion: task.emotion
+                    emotion: task.emotion,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -450,7 +454,8 @@ class TasklistCreator extends Component {
             values.quizTasks.forEach(task => {
                 let temp = {
                     type: "quiz",
-                    quizName: task.quiz
+                    quizName: task.quiz,
+                    checked: false,
                 };
                 tasks.push(temp)
             });
@@ -471,6 +476,8 @@ const mapStateToProps = state => {
         isFetchingUser: state.users.isFetching,
         studentHasFailed: state.users.hasFailed,
         students: state.users.students,
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
     }
 };
 

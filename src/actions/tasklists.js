@@ -10,8 +10,12 @@ export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
 export const RESET_SAVE = 'RESET_SAVE';
 
 export const REMOVE_TASKLIST = 'REMOVE_TASKLIST';
-export const FAILED_REMOVE = 'FAILED_REMOVE';
-export const SUCCESSFUL_REMOVE = 'SUCCESSFUL_REMOVE';
+export const FAILED_TASKLIST_REMOVE = 'FAILED_TASKLIST_REMOVE';
+export const SUCCESSFUL_TASKLIST_REMOVE = 'SUCCESSFUL_TASKLIST_REMOVE';
+
+export const UPDATE_TASKLIST = 'UPDATE_TASKLIST';
+export const FAILED_UPDATE = 'FAILED_UPDATE';
+export const SUCCESSFUL_UPDATE = 'SUCCESSFUL_UPDATE';
 
 export const requestTasklists = () => ({
     type : REQUEST_TASKLISTS
@@ -47,19 +51,39 @@ export const removeTasklist = () => ({
     type : REMOVE_TASKLIST
 });
 
-export const successfulRemove = (data) => ({
-    type : SUCCESSFUL_REMOVE,
+export const successfulTasklistRemove = (data) => ({
+    type : SUCCESSFUL_TASKLIST_REMOVE,
     data : data
 });
 
-export const failedRemove = () => ({
-    type : FAILED_REMOVE
+export const failedTasklistRemove = () => ({
+    type : FAILED_TASKLIST_REMOVE
 });
 
-export const fetchTasklists = () => {
+export const updatingTasklist = () => ({
+    type: UPDATE_TASKLIST,
+});
+
+export const failedUpdate = () => ({
+    type: FAILED_UPDATE,
+});
+
+export const successfulUpdate = (data) => ({
+    type: SUCCESSFUL_UPDATE,
+    data: data,
+});
+
+export const fetchTasklists = (username, type) => {
+    let url = '';
+    if (type === 'TEACHER') {
+        url = BaseUrl + 'assignments/teacher/tasklists?teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/tasklists?student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(requestTasklists());
-        fetch(BaseUrl + 'assignments/teacher/tasklists?teacher=username', {
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -75,7 +99,7 @@ export const fetchTasklists = () => {
     }
 };
 
-export const sendTasklist = (students, data) => {
+export const sendTasklist = (username, students, data) => {
     return (dispatch) => {
         dispatch(saveTasklist());
 
@@ -91,7 +115,7 @@ export const sendTasklist = (students, data) => {
             idx = idx + 1;
         });
 
-        fetch(BaseUrl + 'assignments/save/tasklist?teacher=username&students=' + studentQuery, {
+        fetch(BaseUrl + 'assignments/save/tasklist?teacher=' + username + '&students=' + studentQuery, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,11 +138,18 @@ export const resetSaveTasklist = () => {
     }
 };
 
-export const deleteTasklist = (tasklistName) => {
+export const deleteTasklist = (username, type, tasklistName) => {
+    let url = '';
+    if (type === 'TEACHER') {
+        url = BaseUrl + 'assignments/teacher/remove/tasklist?tasklistName=' + tasklistName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/remove/tasklist?tasklistName=' + tasklistName + '&student=' + username;
+    }
+
     return (dispatch) => {
         dispatch(removeTasklist());
 
-        fetch(BaseUrl + 'assignments/remove/tasklist?tasklistName=' + tasklistName, {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -126,8 +157,36 @@ export const deleteTasklist = (tasklistName) => {
             },
         })
             .then(response => response.json())
-            .then(json => dispatch(successfulRemove(json)),
-                () => dispatch(failedRemove()))
+            .then(json => dispatch(successfulTasklistRemove(json)),
+                () => dispatch(failedTasklistRemove()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};
+
+export const updateTasklist = (username, type, tasklistName, data) => {
+    let url = '';
+    if (type === 'TEACHER') {
+        url = BaseUrl + 'assignments/teacher/updatetasklist?tasklistName=' + tasklistName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/updatetasklist?tasklistName=' + tasklistName + '&student=' + username;
+    }
+
+    return (dispatch) => {
+        dispatch(updatingTasklist());
+
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(json => dispatch(successfulUpdate(json)),
+                () => dispatch(failedUpdate()))
             .catch(function(error) {
                 console.error(error);
             });

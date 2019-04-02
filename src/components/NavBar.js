@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
+import {connect} from "react-redux";
 
 class NavBar extends Component {
     static propTypes = {
@@ -8,25 +9,44 @@ class NavBar extends Component {
         onClickLogin: PropTypes.func.isRequired,
         onClickSignup: PropTypes.func.isRequired,
         onClickSignout: PropTypes.func.isRequired,
-    }
+    };
 
     featuresDropdown() {
-        return (
-            <div className="w3-dropdown-hover">
-                <button className="w3-button w3-padding-16">
-                    Features
-                    <span className="caret"/>
-                </button>
-                <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                    <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>
-                    <a href="/videostreaming" className="w3-bar-item w3-button">Video Streaming</a>
-                    <a href="/recordaudio" className="w3-bar-item w3-button">Record Audio</a>
-                    <a href="/browse" className="w3-bar-item w3-button">Browse Photos & Audio</a>
-                    <a href="/assignmentcreator" className="w3-bar-item w3-button">Assignment Creator</a>
-                    <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
+        if (this.props.user.type === 'TEACHER') {
+            return (
+                <div className="w3-dropdown-hover">
+                    <button className="w3-button w3-padding-16">
+                        Features
+                        <span className="caret"/>
+                    </button>
+                    <div className="w3-dropdown-content w3-card-4 w3-bar-block">
+                        <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>
+                        <a href="/videostreaming" className="w3-bar-item w3-button">Video Streaming</a>
+                        <a href="/recordaudio" className="w3-bar-item w3-button">Record Audio</a>
+                        <a href="/browse" className="w3-bar-item w3-button">Browse Photos & Audio</a>
+                        <a href="/assignmentcreator" className="w3-bar-item w3-button">Assignment Creator</a>
+                        <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
+        else {
+            return (
+                <div className="w3-dropdown-hover">
+                    <button className="w3-button w3-padding-16">
+                        Features
+                        <span className="caret"/>
+                    </button>
+                    <div className="w3-dropdown-content w3-card-4 w3-bar-block">
+                        <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>
+                        <a href="/videostreaming" className="w3-bar-item w3-button">Video Streaming</a>
+                        <a href="/recordaudio" className="w3-bar-item w3-button">Record Audio</a>
+                        <a href="/browse" className="w3-bar-item w3-button">Browse Photos & Audio</a>
+                        <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
+                    </div>
+                </div>
+            )
+        }
     }
 
     howToButton() {
@@ -66,7 +86,7 @@ class NavBar extends Component {
         const { isLoggedIn } = this.props;
 
         return (
-            <div className="w3-bar w3-theme">
+            <div className="w3-bar w3-theme-dark">
                 <a href="/" className="w3-bar-item w3-button w3-padding-16">Home</a>
                 {isLoggedIn ? this.featuresDropdown() : null}
                 {isLoggedIn ? this.howToButton() : null}
@@ -82,4 +102,11 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+const mapStateToProps = state => {
+    return {
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
+    }
+};
+
+export default connect(mapStateToProps, null) (NavBar);
