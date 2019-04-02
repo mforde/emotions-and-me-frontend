@@ -74,17 +74,24 @@ class RecordAudio extends React.Component {
       var emot = ""
       for (var k = 0; k < 8; k++)
       {
-        let conf = data[k][1];
+        // console.log(test_arr[k][0]);
+        // console.log(test_arr[k][1]);
+        let conf = test_arr[k][1]
         if (conf > maxConf) {
           maxConf = conf
           emot = data[k][0]
         }
-        // console.log(test_arr[k][0]);
-        // console.log(test_arr[k][1]);
       }
 
-      var resultStr = emot + " " + maxConf;
-      this.setState({result: resultStr})
+      var resultStr = emot;
+      if(maxConf > 0.30){
+        this.setState({result: resultStr + " " + maxConf})
+      }
+      else
+      {
+        this.setState({result: 'not enough data was given, please record again'})
+      }
+
 
     }.bind(this)));
 
@@ -99,6 +106,7 @@ class RecordAudio extends React.Component {
     // filter out current videoURL from the list of saved videos
     const audios = this.state.audios.filter(a => a !== audioURL);
     this.setState({audios});
+    this.setState({result: 'emotion'})
   }
 
   render() {
