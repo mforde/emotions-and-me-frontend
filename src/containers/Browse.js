@@ -1,21 +1,29 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import  PictureList from '../components/PictureList.js'
-import Nav from '../components/nav';
-import { withRouter } from 'react-router-dom';
-
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../App.css';
 
-export default class Browse extends React.Component {
+export default class Browse extends Component {
     render() {
-      return (
-        <div className="browse">
-               <Link to={"/picturelist"}><h3>Picture</h3></Link>
-                <Link to={"/audiolist"}><h3>Audio</h3></Link>
-
-        </div>
-      );
+        return (
+            <div className="w3-container">
+                <h1 className="w3-center">Emotions in Faces and Voices</h1>
+                <div className="browse w3-centered w3-container w3-margin">
+                    <Link to={"/picturelist"} style={{textDecoration: 'none'}}>
+                        <div
+                            className="w3-theme w3-card w3-padding w3-hover-shadow w3-hover-light-gray w3-margin">
+                            <h3 className="w3-center">Picture</h3>
+                        </div>
+                    </Link>
+                    <Link to={"/audiolist"} style={{textDecoration: 'none'}}>
+                        <div
+                            className="w3-theme w3-card w3-padding w3-hover-shadow w3-hover-light-gray w3-margin">
+                            <h3 className="w3-center">Audio</h3>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+        );
     }
-  }
+}
 
 

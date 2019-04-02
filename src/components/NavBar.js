@@ -20,10 +20,10 @@ class NavBar extends Component {
                         <span className="caret"/>
                     </button>
                     <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                        <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>
-                        <a href="/videostreaming" className="w3-bar-item w3-button">Video Streaming</a>
-                        <a href="/recordaudio" className="w3-bar-item w3-button">Record Audio</a>
-                        <a href="/browse" className="w3-bar-item w3-button">Browse Photos & Audio</a>
+                        <a href="/webcam" className="w3-bar-item w3-button">Emotions on Your Face</a>
+                        <a href="/videostreaming" className="w3-bar-item w3-button">Emotions on Their Faces</a>
+                        <a href="/recordaudio" className="w3-bar-item w3-button">Emotions in Your Voice</a>
+                        <a href="/browse" className="w3-bar-item w3-button">Emotions in Photos & Audio</a>
                         <a href="/assignmentcreator" className="w3-bar-item w3-button">Assignment Creator</a>
                         <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
                     </div>
@@ -38,10 +38,10 @@ class NavBar extends Component {
                         <span className="caret"/>
                     </button>
                     <div className="w3-dropdown-content w3-card-4 w3-bar-block">
-                        <a href="/webcam" className="w3-bar-item w3-button">Webcam</a>
-                        <a href="/videostreaming" className="w3-bar-item w3-button">Video Streaming</a>
-                        <a href="/recordaudio" className="w3-bar-item w3-button">Record Audio</a>
-                        <a href="/browse" className="w3-bar-item w3-button">Browse Photos & Audio</a>
+                        <a href="/webcam" className="w3-bar-item w3-button">Emotions on Your Face</a>
+                        <a href="/videostreaming" className="w3-bar-item w3-button">Emotions on Their Faces</a>
+                        <a href="/recordaudio" className="w3-bar-item w3-button">Emotions in Your Voice</a>
+                        <a href="/browse" className="w3-bar-item w3-button">Emotions in Photos & Audio</a>
                         <a href="/myassignments" className="w3-bar-item w3-button">My Assignments</a>
                     </div>
                 </div>

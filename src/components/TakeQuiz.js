@@ -39,6 +39,7 @@ function Quiz(props) {
                 total={props.questionTotal}
                 onNext={props.onNextQ}
                 onPrev={props.onPrevQ}
+                showCorrect={props.showCorrect}
             />
         </div>
     );
@@ -53,7 +54,8 @@ Quiz.propTypes = {
     questionTotal: PropTypes.number.isRequired,
     onAnswerChange: PropTypes.func.isRequired,
     onNextQ: PropTypes.func.isRequired,
-    onPrevQ: PropTypes.func.isRequired
+    onPrevQ: PropTypes.func.isRequired,
+    showCorrect: PropTypes.bool.isRequired,
 };
 
 export default Quiz;

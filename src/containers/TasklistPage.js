@@ -41,7 +41,6 @@ class TasklistPage extends Component {
 const mapStateToProps = state => {
     return {
         hasFailed: state.tasklists.hasFailed,
-        //quiz: state.assignments.quizData,
         isSaving: state.tasklists.isFetching,
         hasSaved: state.tasklists.hasSaved,
         user: state.userInfo.user,

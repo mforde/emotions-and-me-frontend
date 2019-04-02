@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Modal, DropdownButton, MenuItem} from 'react-bootstrap';
 import '../../App.css';
 import {angryPhotos, happyPhotos, neutralPhotos,
-    fearPhotos, disgustPhotos} from "../../constants/photoUrls";
+    fearPhotos, disgustPhotos} from "../../constants/PhotoUrls";
 
 class AddPhoto extends Component {
     constructor(props) {
@@ -61,11 +61,11 @@ class AddPhoto extends Component {
         }
         if (this.state.selectedEmotion === "none") {
             return (
-                <DropdownButton id="dropdown-photos" title="Choose an Emotion" disabled={true}/>
+                <DropdownButton id="dropdown-photos" className="w3-margin-left w3-padding" title="Choose an Emotion" disabled={true}/>
             )
         } else {
             return (
-                <DropdownButton id={"dropdown-" + id} className="w3-padding" title="Choose a Photo">
+                <DropdownButton id={"dropdown-" + id} className="w3-margin-left w3-padding" title="Choose a Photo">
                     <>
                         {photos.map(photo => {
                             return (

@@ -22,7 +22,7 @@ class FeatureGrid extends Component {
                             <a href="/videostreaming">
                                 <div className="w3-third">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray w3-white">
-                                        <h3>Emotions on Their Face</h3>
+                                        <h3>Emotions on Their Faces</h3>
                                         <p className="w3-padding-top">Choose a youtube video and we will tell you</p>
                                         <p>what emotions the people in the video are expressing</p>
                                     </div>
@@ -42,7 +42,7 @@ class FeatureGrid extends Component {
                             <a href="/browse">
                                 <div className="w3-third">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray w3-white">
-                                        <h3>Look Through Photos & Audio</h3>
+                                        <h3>Emotions in Photos & Audio</h3>
                                         <p className="w3-padding-top">Look through photos and audio clips of</p>
                                         <p>people expressing all different kinds of emotions</p>
                                     </div>
@@ -77,7 +77,7 @@ class FeatureGrid extends Component {
                             <a href="/webcam">
                                 <div className="w3-third">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray">
-                                        <h3>Webcam</h3>
+                                        <h3>Emotions on Your Face</h3>
                                         <p className="w3-padding-top">Using your webcam, we will tell you</p>
                                         <p>what emotion you are expressing</p>
                                     </div>
@@ -86,7 +86,7 @@ class FeatureGrid extends Component {
                             <a href="/videostreaming">
                                 <div className="w3-third">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray">
-                                        <h3>Video Streaming</h3>
+                                        <h3>Emotions on Their Faces</h3>
                                         <p className="w3-padding-top">Choose a youtube video and we will tell you</p>
                                         <p>what emotions the people in the video are expressing</p>
                                     </div>
@@ -95,7 +95,7 @@ class FeatureGrid extends Component {
                             <a href="/recordaudio">
                                 <div className="w3-third">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray">
-                                        <h3>Record Audio</h3>
+                                        <h3>Emotions in Your Voice</h3>
                                         <p className="w3-padding-top">Record yourself and we will tell you</p>
                                         <p>what emotion you are expressing with your voice</p>
                                     </div>
@@ -106,7 +106,7 @@ class FeatureGrid extends Component {
                             <a href="/browse">
                                 <div style={{width: '33.33333%'}} className="w3-show-inline-block">
                                     <div className="w3-card w3-container w3-hover-shadow w3-hover-light-gray">
-                                        <h3>Browse Photos & Audio</h3>
+                                        <h3>Emotions in Photos & Audio</h3>
                                         <p className="w3-padding-top">Look through photos and audio clips of</p>
                                         <p>people expressing all different kinds of emotions</p>
                                     </div>
