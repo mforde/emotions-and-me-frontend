@@ -9,6 +9,7 @@ class RecordAudio extends React.Component {
     this.state = {
       recording: false,
       audios: [],
+      result: "emotion"
     };
   }
 
@@ -66,11 +67,27 @@ class RecordAudio extends React.Component {
       method: "POST",
       body: adata,
       data: adata,
-    }).then(response =>  {
-      return response.clone().json();
-    }).then(data => {
+    }).then(response => response.json().then(function(data) {
       console.log(data)
-    });
+      var test_arr = data;
+      var maxConf = 0
+      var emot = ""
+      for (var k = 0; k < 8; k++)
+      {
+        let conf = data[k][1];
+        if (conf > maxConf) {
+          maxConf = conf
+          emot = data[k][0]
+        }
+        // console.log(test_arr[k][0]);
+        // console.log(test_arr[k][1]);
+      }
+
+      var resultStr = emot + " " + maxConf;
+      this.setState({result: resultStr})
+
+    }.bind(this)));
+
 
     const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
@@ -113,6 +130,7 @@ class RecordAudio extends React.Component {
             </div>
           ))}
         </div>
+        <p>{this.state.result}</p>
       </div>
     );
   }
