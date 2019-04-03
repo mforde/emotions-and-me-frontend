@@ -1,8 +1,6 @@
 .PHONY: all build deploy
 
-collect:
-	git checkout master
-	git pull
+all: build deploy
 
 build:
 	yarn build
