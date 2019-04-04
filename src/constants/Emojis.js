@@ -8,6 +8,7 @@ const emojis = {
     surprise: "https://cdn.shopify.com/s/files/1/1061/1924/products/Surprised_Emoji_Icon_96bb4180-3119-4a67-85f5-3a62e5127514_large.png",
     confused: "https://cdn.shopify.com/s/files/1/1061/1924/products/Confused_Face_Emoji_Icon_ios10_large.png",
     party: "https://cdn.shopify.com/s/files/1/1061/1924/products/4_large.png",
+    calm: "https://cdn.shopify.com/s/files/1/1061/1924/products/Relieved_Emoji_2_large.png",
 };
 
 export default emojis;
