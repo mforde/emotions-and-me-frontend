@@ -143,6 +143,13 @@ export  class angryAudioPlayer extends Component {
                         )
                     })}
                 </div>
+                <div className="w3-display-container">
+                    <a href="/audiolist">
+                        <button className="w3-button w3-theme w3-display-left w3-margin-bottom">
+                            <i className="arrow left"/> Back
+                        </button>
+                    </a>
+                </div>
             </div>
         )
     }

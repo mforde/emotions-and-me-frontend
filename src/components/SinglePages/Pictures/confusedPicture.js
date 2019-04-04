@@ -34,6 +34,13 @@ export class confusedPictureCarousel extends Component {
                         )}
                     </WithOnResize>
                 </div>
+                <div className="w3-display-container">
+                    <a href="/picturelist">
+                        <button className="w3-button w3-theme w3-display-left w3-margin-bottom">
+                            <i className="arrow left"/> Back
+                        </button>
+                    </a>
+                </div>
             </div>
         );
     }
