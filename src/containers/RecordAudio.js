@@ -3,6 +3,10 @@ import BaseUrl from '../constants/BaseUrl';
 //const audioType = 'audio/*';
 const audioType = 'audio/wav';
 
+Date.prototype.getUnixTime = function() { return this.getTime()/1000|0 };
+if(!Date.now) Date.now = function() { return new Date(); }
+Date.time = function() { return Date.now().getUnixTime(); }
+
 class RecordAudio extends React.Component {
   constructor(props) {
     super(props);
@@ -61,7 +65,7 @@ class RecordAudio extends React.Component {
     var myblob = new Blob(this.chunks, {type: audioType});
     // send audio blob to backend
     let adata = new FormData();
-    adata.append('file', myblob, 'audio' + new Date() +'.wav')
+    adata.append('file', myblob, 'audio' + new Date().getUnixTime() +'.wav')
 
     fetch(BaseUrl + 'audio_emotions', {
       method: "POST",

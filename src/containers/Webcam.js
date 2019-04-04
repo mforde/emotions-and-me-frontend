@@ -364,12 +364,6 @@ class Webcam extends Component {
                 // (the constant 50.0 is empirical: other cascades might require a different one)
                 if (dets[i][3] > 50.0) {
                     //draws circle around face
-                    // ctx.beginPath();
-                    // ctx.arc(dets[i][1], dets[i][0], dets[i][2]/2,  0, 2*Math.PI, false);
-                    // ctx.lineWidth = 3;
-                    // ctx.strokeStyle = 'red';
-                    // ctx.stroke();
-
                     // Crop the face and output as array of grayscale integers
                     let centerx = dets[i][1];
                     let centery = dets[i][0];
@@ -407,7 +401,7 @@ class Webcam extends Component {
                     }
 
                     ctx2.putImageData(imgData, 0, 0);
-
+                    //post request sending JSON of face to the backend point
                     let imageJSON = {"image": JSON.stringify(data)};
                     fetch(BaseUrl + 'analyze_emotion', {
                         method: "POST",
@@ -418,7 +412,9 @@ class Webcam extends Component {
                     }).then(response => response.json().then(function (data) {
                         console.log(data);
                         let maxConf = 0;
+                        let test = [];
                         let emot = "";
+                        let counter = 0;
                         for (let k = 0; k < 7; k++) {
                             let conf = data[k][1];
                             if (conf > maxConf) {
@@ -426,6 +422,9 @@ class Webcam extends Component {
                                 emot = data[k][0];
                             }
                         }
+
+                        test.push(data);
+
                         let resultStr = emot;
                         this.setState({result: resultStr})
                     }.bind(this)));
