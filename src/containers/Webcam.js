@@ -4,7 +4,7 @@ import CBuffer from  "CBuffer";
 
 
 var map = {};
-var len = 20;
+var len = 50;
 var emotions = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"];
 
 
