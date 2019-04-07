@@ -2,66 +2,58 @@ import React, { Component } from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import CBuffer from  "CBuffer";
 
+//post processing variables and functions
+var cbuffermap = {};
+var cbuflen = 5;
 
-var map = {};
-var len = 5;
-var emotions = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"];
-
-
-var angrybuffer = new  CBuffer(len);
-angrybuffer.push(0,0,0,0,0);
-
-var disgustbuffer = new CBuffer(len);
-disgustbuffer.push(0,0,0,0,0);
-
-var fearbuffer = new CBuffer(len);
-fearbuffer.push(0,0,0,0,0);
-
-var happybuffer = new CBuffer(len);
-happybuffer.push(0,0,0,0,0);
-
-var sadbuffer = new CBuffer(len);
-sadbuffer.push(0,0,0,0,0);
-
-var suprisebuffer = new CBuffer(len);
-suprisebuffer.push(0,0,0,0,0);
-
-var neutralbuffer = new CBuffer(len);
-neutralbuffer.push(0,0,0,0,0);
-
+var angrybuffer = new  CBuffer(cbuflen);
+var disgustbuffer = new CBuffer(cbuflen);
+var fearbuffer = new CBuffer(cbuflen);
+var happybuffer = new CBuffer(cbuflen);
+var sadbuffer = new CBuffer(cbuflen);
+var suprisebuffer = new CBuffer(cbuflen);
+var neutralbuffer = new CBuffer(cbuflen);
 
 angrybuffer.overflow = function(data) {
 };
-
 disgustbuffer.overflow = function(data) {
 };
-
 fearbuffer.overflow = function(data) {
 };
-
 happybuffer.overflow = function(data) {
 };
-
 sadbuffer.overflow = function(data) {
 };
-
 suprisebuffer.overflow = function(data) {
-
 };
-
 neutralbuffer.overflow = function(data) {
 };
 
-map["angry"] = angrybuffer;
-map["disgust"] = disgustbuffer;
-map["fear"] = fearbuffer;
-map["happy"] = happybuffer;
-map["sad"] = sadbuffer;
-map["surprise"] = suprisebuffer;
-map["neutral"] = neutralbuffer;
 
+for(var i = 0; i < cbuflen; i++){
+    angrybuffer.push(0);
+    disgustbuffer.push(0);
+    fearbuffer.push(0);
+    happybuffer.push(0);
+    sadbuffer.push(0);
+    suprisebuffer.push(0);
+    neutralbuffer.push(0);
 
+}
 
+cbuffermap["angry"] = angrybuffer;
+cbuffermap["disgust"] = disgustbuffer;
+cbuffermap["fear"] = fearbuffer;
+cbuffermap["happy"] = happybuffer;
+cbuffermap["sad"] = sadbuffer;
+cbuffermap["surprise"] = suprisebuffer;
+cbuffermap["neutral"] = neutralbuffer;
+
+var emotion_prob = {};
+
+function multiply(accumulator, a) {
+    return accumulator * a;
+}
 
 class Webcam extends Component {
     constructor(props) {
@@ -494,24 +486,17 @@ class Webcam extends Component {
                             if (conf > maxConf) {
                                 maxConf = conf
                                 emot = data[k][0]
-                                map[emot].push(maxConf);
+                                cbuffermap[emot].push(maxConf);
                             }
                         }
                         // var resultStr = JSON.stringify(data);
 
-                        //do math here
-                        var emotion_prob = {};
+                        for (var key in cbuffermap) {
 
-                        function multiply(accumulator, a) {
-                            return accumulator * a;
-                        }
-                        for (var key in map) {
-
-                            emotion_prob[key] = map[key].toArray().reduce(multiply);
+                            emotion_prob[key] = cbuffermap[key].toArray().reduce(multiply);
                         }
 
                         var resultStr = Object.keys(emotion_prob).reduce((a, b) => emotion_prob[a] > emotion_prob[b] ? a : b);
-                        console.log(resultStr);
                         this.setState({result: resultStr})
                     }.bind(this)));
 
