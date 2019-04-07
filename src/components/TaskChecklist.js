@@ -11,11 +11,29 @@ class TaskChecklist extends Component {
         };
     }
 
+    updateData = (data) => {
+        let tasklist = this.state.tasklistData;
+        let toggled = false;
+
+        tasklist.forEach((task) => {
+            if (task === data && !toggled) {
+                toggled = true;
+                task.checked = !task.checked;
+            }
+        });
+
+        this.setState({
+            tasklistData: tasklist
+        });
+
+        this.props.onCheck(tasklist);
+    };
+
     checklist() {
         return (
-            <div className="w3-card w3-center">
+            <div className="w3-card">
                 {this.state.tasklistData.map((task,i) => (
-                    <Tasks type={task.type} data={task} key={i}/>
+                    <Tasks type={task.type} data={task} key={i} checked={task.checked} onCheck={() => this.updateData(task)}/>
                 ))}
             </div>
         );

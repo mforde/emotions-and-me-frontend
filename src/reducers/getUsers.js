@@ -49,10 +49,23 @@ const users = ( state = defaultState, action) => {
                 isFetching: true,
             };
         case RECEIVE_TEACHER:
+            let teacherList = [];
+            action.data.teachers.forEach(function(teacher) {
+                let temp = {
+                    value: teacher[0],
+                    label: teacher[1]
+                };
+                teacherList.push(temp);
+            });
+            teacherList = teacherList.sort(function(a, b){
+                if(a.label < b.label) { return -1; }
+                if(a.label > b.label) { return 1; }
+                return 0;
+            });
             return {
                 ...state,
                 isFetching: false,
-                teacher: action.data,
+                teacher: teacherList,
             };
         case FAILED_RECEIVE_TEACHER:
             return {

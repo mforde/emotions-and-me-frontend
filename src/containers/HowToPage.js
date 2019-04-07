@@ -33,25 +33,25 @@ class HowToPage extends Component {
             <div className="w3-container">
                 <h1>How To Use This Site</h1>
                 <p>
-                    Emotions & me is a website for learning about emotions. By using the features
+                    Emotions & Me is a website for learning about emotions. By using the features
                     on this site, you can learn about how to express and understand emotions. Click
                     on the links below to read more about how to use each feature.
                 </p>
                 <h3 className="w3-padding-top">Features</h3>
                 <div className="w3-container">
-                    <button onClick={this.onClickWebcam} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Webcam</button>
+                    <button onClick={this.onClickWebcam} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Emotions on Your Face</button>
                     <div id="webcam" className="w3-hide">
                         <p>How to for the webcam</p>
                     </div>
-                    <button onClick={this.onClickVideo} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Video Streaming</button>
+                    <button onClick={this.onClickVideo} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Emotions on Their Faces</button>
                     <div id="video" className="w3-hide">
                         <p>How to for the video streaming</p>
                     </div>
-                    <button onClick={this.onClickAudio} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Record Audio</button>
+                    <button onClick={this.onClickAudio} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Emotions in Your Voice</button>
                     <div id="audio" className="w3-hide">
                         <p>How to for the record audio</p>
                     </div>
-                    <button onClick={this.onClickBrowse} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Browse Photos & Audio</button>
+                    <button onClick={this.onClickBrowse} className="w3-padding-16 w3-theme w3-button w3-block w3-left-align">Emotions in Photos & Audio</button>
                     <div id="browse" className="w3-hide">
                         <p>How to for the browse photos & audio</p>
                     </div>

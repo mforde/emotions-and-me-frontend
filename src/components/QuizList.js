@@ -17,7 +17,6 @@ function QuizList(props) {
                             </div>
                         </Link>
                         <div className="w3-display-right w3-quarter">
-                            <button type="button" className="w3-button w3-hover-theme">Edit Quiz</button>
                             <button type="button" className="w3-button w3-hover-red" onClick={() => props.remove(quiz.quizName)}>Remove Quiz</button>
                         </div>
                     </div>

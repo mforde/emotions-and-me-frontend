@@ -3,12 +3,28 @@ import PropTypes from 'prop-types';
 import '../App.css';
 
 function QuestionNum(props) {
-    if (props.counter === 1) {
-        return (
-            <div className='w3-display-container'>
+
+    function numOrCorrect() {
+        if (props.showCorrect) {
+            return (
+                <div className="correct w3-display-middle w3-padding w3-card w3-theme w3-third w3-center">
+                    CORRECT!
+                </div>
+            )
+        }
+        else {
+            return (
                 <div className="questionNum w3-display-bottommiddle w3-padding-top">
                     Question <span>{props.counter}</span> of <span>{props.total}</span>
                 </div>
+            )
+        }
+    }
+
+    if (props.counter === 1) {
+        return (
+            <div className='w3-display-container'>
+                {numOrCorrect()}
                 <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Next</button>
             </div>
         );
@@ -17,9 +33,7 @@ function QuestionNum(props) {
         return (
             <div className='w3-display-container'>
                 <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>Previous</button>
-                <div className="questionNum w3-display-bottommiddle w3-padding-top">
-                    Question <span>{props.counter}</span> of <span>{props.total}</span>
-                </div>
+                {numOrCorrect()}
                 <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Finish!</button>
             </div>
         );
@@ -28,9 +42,7 @@ function QuestionNum(props) {
         return (
             <div className='w3-display-container'>
                 <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>Previous</button>
-                <div className="questionNum w3-display-bottommiddle w3-padding-top">
-                    Question <span>{props.counter}</span> of <span>{props.total}</span>
-                </div>
+                {numOrCorrect()}
                 <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Next</button>
             </div>
         );
@@ -41,7 +53,8 @@ QuestionNum.propTypes = {
     counter: PropTypes.number.isRequired,
     total: PropTypes.number.isRequired,
     onNext: PropTypes.func.isRequired,
-    onPrev: PropTypes.func.isRequired
+    onPrev: PropTypes.func.isRequired,
+    showCorrect: PropTypes.bool.isRequired,
 };
 
 export default QuestionNum;

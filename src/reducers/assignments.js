@@ -5,7 +5,10 @@ import {
     SAVE_ASSIGNMENT,
     SUCCESSFUL_SAVE, FAILED_SAVE,
     RESET_SAVE, REMOVE_ASSIGNMENT,
-    SUCCESSFUL_REMOVE, FAILED_REMOVE
+    SUCCESSFUL_REMOVE, FAILED_REMOVE,
+    REQUEST_ASSIGNMENT,
+    RECEIVE_ASSIGNMENT,
+    FAILED_RECEIVE_ASSIGNMENT
 } from "../actions/assignments";
 
 const defaultState = {
@@ -71,12 +74,31 @@ const assignments = ( state = defaultState, action) => {
             return {
                 ...state,
                 isRemoving: false,
+                hasRemoved: action.data,
                 quizData: action.data
             };
         case FAILED_REMOVE:
             return {
                 ...state,
+                isRemoving: false,
                 hasFailed: true
+            };
+        case REQUEST_ASSIGNMENT:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_ASSIGNMENT:
+            return {
+                ...state,
+                isFetching: false,
+                quizData: action.data,
+            };
+        case FAILED_RECEIVE_ASSIGNMENT:
+            return {
+                ...state,
+                isFetching: false,
+                hasFailed: true,
             };
         default:
             return state

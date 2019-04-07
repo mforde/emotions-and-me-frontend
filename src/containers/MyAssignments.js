@@ -11,44 +11,30 @@ import {
 } from "../actions";
 
 class MyAssignments extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            quizData: this.props.quizData,
-            tasklistData: this.props.tasklistData,
-            isFetchingQuiz: this.props.isFetchingQuiz,
-            quizHasFailed: this.props.quizHasFailed,
-            removingQuiz: this.props.removingQuiz,
-            removedQuiz: this.props.removedQuiz,
-            isFetchingTasklist: this.props.isFetchingTasklist,
-            tasklistHasFailed: this.props.tasklistHasFailed,
-            removingTasklist: this.props.removingTasklist,
-            removedTasklist: this.props.removedTasklist,
+    componentWillReceiveProps(nextProps) {
+        if (this.props.user !== nextProps.user) {
+            this.props.fetchAssignments(nextProps.user.username, nextProps.user.type);
+            this.props.fetchTasklists(nextProps.user.username, nextProps.user.type);
         }
     }
 
-    async componentDidMount() {
-        this.props.fetchAssignments();
-        this.props.fetchTasklists();
-    }
-
     removeQuiz = (quizName) => {
-        this.props.deleteAssignment(quizName);
+        this.props.deleteAssignment(this.props.user.username, this.props.user.type, quizName);
     };
 
     removeTasklist = (tasklistName) => {
-        this.props.deleteTasklist(tasklistName);
+        this.props.deleteTasklist(this.props.user.username, this.props.user.type, tasklistName);
     };
 
     myQuizzes() {
-        if ((this.props.isFetchingQuiz === true) || (this.props.quizData === null)) {
-            return (
-                <p className="w3-center">Loading Quizzes...</p>
-            )
-        } else if ((this.props.quizHasFailed === true) || (this.props.tasklistHasFailed === true)) {
+        if (this.props.quizHasFailed === true) {
             return (
                 <p className="w3-center">Failed to Receive Quizzes</p>
+            )
+        } else if ((this.props.isFetchingQuiz === true) || (this.props.quizData === null)) {
+            return (
+                <p className="w3-center">Loading Quizzes...</p>
             )
         } else {
             return (
@@ -58,13 +44,13 @@ class MyAssignments extends Component {
     }
 
     myTasklists() {
-        if ((this.props.isFetchingTasklist === true) || (this.props.tasklistData === null)) {
-            return (
-                <p className="w3-center">Loading Tasklists...</p>
-            )
-        } else if (this.props.tasklistHasFailed === true) {
+        if (this.props.tasklistHasFailed === true) {
             return (
                 <p className="w3-center">Failed to Receive Tasklists</p>
+            )
+        } else if ((this.props.isFetchingTasklist === true) || (this.props.tasklistData === null)) {
+            return (
+                <p className="w3-center">Loading Tasklists...</p>
             )
         } else {
             return (
@@ -96,6 +82,8 @@ const mapStateToProps = state => {
         tasklistHasFailed: state.tasklists.hasFailed,
         removingTasklist: state.tasklists.isRemoving,
         removedTasklist: state.tasklists.hasRemoved,
+        user: state.userInfo.user,
+        userRequestStatus: state.userInfo.currentUserRequestStatus,
     }
 };
 

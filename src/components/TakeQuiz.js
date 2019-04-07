@@ -7,6 +7,7 @@ import QuizAnswers from "./TakeQuizAnswers";
 
 function Quiz(props) {
     function renderAnswerOptions(key) {
+
         return (
             <div className="w3-group w3-card w3-padding w3-padding-24" key={key.content}>
                 <QuizAnswers
@@ -16,14 +17,20 @@ function Quiz(props) {
                     answer={props.answer}
                     questionId={props.questionId}
                     onAnswerChange={props.onAnswerChange}
-                />
+                    photo={key.photo}
+                    audio={key.audio}
+                 />
             </div>
         );
     }
 
     return (
         <div className="quiz w3-container w3-display-container">
-            <Question content={props.question} />
+            <Question
+                content={props.question.content}
+                photo={props.question.photo}
+                audio={props.question.audio}
+            />
             <ul className="answerOptions w3-margin-bottom-large w3-ul w3-hoverable">
                 {props.answerOptions.map(renderAnswerOptions)}
             </ul>
@@ -32,6 +39,7 @@ function Quiz(props) {
                 total={props.questionTotal}
                 onNext={props.onNextQ}
                 onPrev={props.onPrevQ}
+                showCorrect={props.showCorrect}
             />
         </div>
     );
@@ -41,12 +49,13 @@ Quiz.propTypes = {
     answer: PropTypes.string.isRequired,
     answerOptions: PropTypes.array.isRequired,
     counter: PropTypes.number.isRequired,
-    question: PropTypes.string.isRequired,
+    question: PropTypes.object.isRequired,
     questionId: PropTypes.number.isRequired,
     questionTotal: PropTypes.number.isRequired,
     onAnswerChange: PropTypes.func.isRequired,
     onNextQ: PropTypes.func.isRequired,
-    onPrevQ: PropTypes.func.isRequired
+    onPrevQ: PropTypes.func.isRequired,
+    showCorrect: PropTypes.bool.isRequired,
 };
 
 export default Quiz;

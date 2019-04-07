@@ -1,5 +1,7 @@
 import React from 'react';
-const audioType = 'audio/*';
+import BaseUrl from '../constants/BaseUrl';
+//const audioType = 'audio/*';
+const audioType = 'audio/wav';
 
 class RecordAudio extends React.Component {
   constructor(props) {
@@ -7,6 +9,7 @@ class RecordAudio extends React.Component {
     this.state = {
       recording: false,
       audios: [],
+      result: "emotion"
     };
   }
 
@@ -41,6 +44,7 @@ class RecordAudio extends React.Component {
     this.setState({recording: true});
   }
 
+  //record 3.5 seconds of audio
   stopRecording(e) {
     e.preventDefault();
     // stop the recorder
@@ -54,9 +58,45 @@ class RecordAudio extends React.Component {
 
   saveAudio() {
     // convert saved chunks to blob
-    const blob = new Blob(this.chunks, {type: audioType});
-    // send video  blob backend
-    const audioURL = window.URL.createObjectURL(blob);
+    var myblob = new Blob(this.chunks, {type: audioType});
+    // send audio blob to backend
+    let adata = new FormData();
+    adata.append('file', myblob, 'audio' + new Date() +'.wav')
+
+    fetch(BaseUrl + 'audio_emotions', {
+      method: "POST",
+      body: adata,
+      data: adata,
+    }).then(response => response.json().then(function(data) {
+      console.log(data)
+      var test_arr = data;
+      var maxConf = 0
+      var emot = ""
+      for (var k = 0; k < 8; k++)
+      {
+        // console.log(test_arr[k][0]);
+        // console.log(test_arr[k][1]);
+        let conf = test_arr[k][1]
+        if (conf > maxConf) {
+          maxConf = conf
+          emot = data[k][0]
+        }
+      }
+
+      var resultStr = emot;
+      if(maxConf > 0.30){
+        this.setState({result: resultStr + " " + maxConf})
+      }
+      else
+      {
+        this.setState({result: 'not enough data was given, please record again'})
+      }
+
+
+    }.bind(this)));
+
+
+    const audioURL = window.URL.createObjectURL(myblob);
     // append videoURL to list of saved videos for rendering
     const audios = this.state.audios.concat([audioURL]);
     this.setState({audios});
@@ -66,6 +106,7 @@ class RecordAudio extends React.Component {
     // filter out current videoURL from the list of saved videos
     const audios = this.state.audios.filter(a => a !== audioURL);
     this.setState({audios});
+    this.setState({result: 'emotion'})
   }
 
   render() {
@@ -97,6 +138,7 @@ class RecordAudio extends React.Component {
             </div>
           ))}
         </div>
+        <p>{this.state.result}</p>
       </div>
     );
   }
