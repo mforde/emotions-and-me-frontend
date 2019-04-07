@@ -51,7 +51,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: localStorage.getItem('token') ? true : false,
+      isLoggedIn: true,
       openModal: ModalOptions.NONE,
     };
     this.componentDidUpdate = this.componentDidUpdate.bind(this);

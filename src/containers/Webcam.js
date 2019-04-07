@@ -1,5 +1,67 @@
 import React, { Component } from 'react';
 import BaseUrl from '../constants/BaseUrl';
+import CBuffer from  "CBuffer";
+
+
+var map = {};
+var len = 10;
+var emotions = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"];
+
+
+var angrybuffer = new  CBuffer(len);
+angrybuffer.push(0,0,0,0,0);
+
+var disgustbuffer = new CBuffer(len);
+disgustbuffer.push(0,0,0,0,0);
+
+var fearbuffer = new CBuffer(len);
+fearbuffer.push(0,0,0,0,0);
+
+var happybuffer = new CBuffer(len);
+happybuffer.push(0,0,0,0,0);
+
+var sadbuffer = new CBuffer(len);
+sadbuffer.push(0,0,0,0,0);
+
+var suprisebuffer = new CBuffer(len);
+suprisebuffer.push(0,0,0,0,0);
+
+var neutralbuffer = new CBuffer(len);
+neutralbuffer.push(0,0,0,0,0);
+
+
+angrybuffer.overflow = function(data) {
+};
+
+disgustbuffer.overflow = function(data) {
+};
+
+fearbuffer.overflow = function(data) {
+};
+
+happybuffer.overflow = function(data) {
+};
+
+sadbuffer.overflow = function(data) {
+};
+
+suprisebuffer.overflow = function(data) {
+
+};
+
+neutralbuffer.overflow = function(data) {
+};
+
+map["angry"] = angrybuffer;
+map["disgust"] = disgustbuffer;
+map["fear"] = fearbuffer;
+map["happy"] = happybuffer;
+map["sad"] = sadbuffer;
+map["surprise"] = suprisebuffer;
+map["neutral"] = neutralbuffer;
+
+
+
 
 class Webcam extends Component {
     constructor(props) {
@@ -12,8 +74,7 @@ class Webcam extends Component {
     }
 
     componentDidMount() {
-        //this.interval = setInterval(() => console.log(document.getElementsByTagName('canvas')[0].toDataURL()), 5000);
-        // getImagedata(0, 0, 640, 480).data
+
         this.interval = setInterval(() => {
             var width = 640;
             var height = 480;
@@ -29,20 +90,6 @@ class Webcam extends Component {
                 idx = idx + (width * 4)
             }
 
-            //var imageJSON = { "image": '[[1,2,3],[1,2,3]]' }
-
-            //var imageJSON = '{ "image":"' + JSON.stringify(data) + '"}"';
-            // var imageJSON = {"image": JSON.stringify(data)};
-            //
-            // console.log(imageJSON);
-            //
-            // fetch('http://127.0.0.1:8000/analyze_emotion', {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(imageJSON),
-            // }).then(response => console.log(response));
 
         }, 10000);
 
@@ -440,7 +487,6 @@ class Webcam extends Component {
                         },
                         body: JSON.stringify(imageJSON),
                     }).then(response => response.json().then(function(data) {
-                        console.log(data)
                         var maxConf = 0
                         var emot = ""
                         for (var k=0; k<7; k++) {
@@ -448,10 +494,23 @@ class Webcam extends Component {
                             if (conf > maxConf) {
                                 maxConf = conf
                                 emot = data[k][0]
+                                map[emot].push(maxConf);
                             }
                         }
                         // var resultStr = JSON.stringify(data);
-                        var resultStr = emot;
+                        //do math here
+                        var emotion_prob = {};
+
+                        function multiply(accumulator, a) {
+                            return accumulator * a;
+                        }
+                        for (var key in map) {
+
+                            emotion_prob[key] = map[key].toArray().reduce(multiply);
+                        }
+
+                        var resultStr = Object.keys(emotion_prob).reduce((a, b) => emotion_prob[a] > emotion_prob[b] ? a : b);
+                        console.log(resultStr);
                         this.setState({result: resultStr})
                     }.bind(this)));
 
