@@ -4,7 +4,7 @@ import CBuffer from  "CBuffer";
 
 
 var map = {};
-var len = 10;
+var len = 20;
 var emotions = ["angry", "disgust", "fear", "happy", "sad", "surprise", "neutral"];
 
 
@@ -498,6 +498,7 @@ class Webcam extends Component {
                             }
                         }
                         // var resultStr = JSON.stringify(data);
+
                         //do math here
                         var emotion_prob = {};
 
