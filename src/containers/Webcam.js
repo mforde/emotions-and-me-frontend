@@ -3,6 +3,52 @@ import BaseUrl from '../constants/BaseUrl';
 import '../App.css';
 import emojis from "../constants/Emojis";
 import Link from "react-router-dom/es/Link";
+import CBuffer from "CBuffer";
+
+// post processing variables and functions
+let cbuffermap = {};
+let cbuflen = 5;
+
+let angrybuffer = new CBuffer(cbuflen);
+let disgustbuffer = new CBuffer(cbuflen);
+let fearbuffer = new CBuffer(cbuflen);
+let happybuffer = new CBuffer(cbuflen);
+let sadbuffer = new CBuffer(cbuflen);
+let suprisebuffer = new CBuffer(cbuflen);
+let neutralbuffer = new CBuffer(cbuflen);
+
+angrybuffer.overflow = function(data) {};
+disgustbuffer.overflow = function(data) {};
+fearbuffer.overflow = function(data) {};
+happybuffer.overflow = function(data) {};
+sadbuffer.overflow = function(data) {};
+suprisebuffer.overflow = function(data) {};
+neutralbuffer.overflow = function(data) {};
+
+for (let i = 0; i < cbuflen; i++){
+    angrybuffer.push(0);
+    disgustbuffer.push(0);
+    fearbuffer.push(0);
+    happybuffer.push(0);
+    sadbuffer.push(0);
+    suprisebuffer.push(0);
+    neutralbuffer.push(0);
+}
+
+cbuffermap["angry"] = angrybuffer;
+cbuffermap["disgust"] = disgustbuffer;
+cbuffermap["fear"] = fearbuffer;
+cbuffermap["happy"] = happybuffer;
+cbuffermap["sad"] = sadbuffer;
+cbuffermap["surprise"] = suprisebuffer;
+cbuffermap["neutral"] = neutralbuffer;
+
+let emotion_prob = {};
+
+function multiply(accumulator, a) {
+    return accumulator * a;
+}
+
 
 class Webcam extends Component {
     constructor(props) {
@@ -421,12 +467,15 @@ class Webcam extends Component {
                             if (conf > maxConf) {
                                 maxConf = conf;
                                 emot = data[k][0];
+                                cbuffermap[emot].push(maxConf);
                             }
                         }
 
-                        test.push(data);
+                        for (let key in cbuffermap) {
+                            emotion_prob[key] = cbuffermap[key].toArray().reduce(multiply);
+                        }
 
-                        let resultStr = emot;
+                        let resultStr = Object.keys(emotion_prob).reduce((a, b) => emotion_prob[a] > emotion_prob[b] ? a : b);
                         this.setState({result: resultStr})
                     }.bind(this)));
 
