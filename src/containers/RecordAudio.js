@@ -17,6 +17,8 @@ class RecordAudio extends React.Component {
     };
   }
 
+
+
   async componentDidMount() {
     const stream = await navigator.mediaDevices.getUserMedia({audio: true});
     // show it to user
@@ -46,19 +48,37 @@ class RecordAudio extends React.Component {
     this.mediaRecorder.start(10);
     // say that we're recording
     this.setState({recording: true});
+
+    //e.preventDefault();
+      // stop the recorder after 3 seconds
+      setTimeout(() => {
+        this.mediaRecorder.stop();
+         // say that we're not recording
+      this.setState({recording: false});
+      }, 4000);
+
+
+      // send audio to backend
+     this.mediaRecorder.addEventListener("stop", () => {
+       this.saveAudio();
+     });
+
   }
 
-  //record 3.5 seconds of audio
-  stopRecording(e) {
-    e.preventDefault();
-    // stop the recorder
-    this.mediaRecorder.stop();
-
-    // say that we're not recording
-    this.setState({recording: false});
-    // send audio to backend
-    this.saveAudio();
-  }
+  // //record 3.5 seconds of audio
+  // stopRecording(e) {
+  //   e.preventDefault();
+  //   // stop the recorder after 3 seconds
+  //   setTimeout(() => {
+  //     this.mediaRecorder.stop();
+  //   }, 3000);
+  //
+  //
+  //   // say that we're not recording
+  //   this.setState({recording: false});
+  //   // send audio to backend
+  //   this.saveAudio();
+  // }
 
   saveAudio() {
     // convert saved chunks to blob
@@ -129,7 +149,7 @@ class RecordAudio extends React.Component {
         </audio>
         <div>
           {!recording && <button onClick={e => this.startRecording(e)}>Record</button>}
-          {recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}
+          {/*{recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}*/}
         </div>
         <div>
           <h3>Recorded audios:</h3>
@@ -137,7 +157,7 @@ class RecordAudio extends React.Component {
             <div key={`audio_${i}`}>
               <audio controls style={{width: 200}} src={audioURL}   />
               <div>
-                <button onClick={() => this.deleteAudio(audioURL)}>Delete</button>
+                <button onClick={() => this.deleteAudio(audioURL)}>Reset</button>
               </div>
             </div>
           ))}
