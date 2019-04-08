@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import AudioPlayer from 'react-playlist-player'
 import emojis from "../../../constants/Emojis";
+import Link from "react-router-dom/es/Link";
 
 export  class neutralAudioPlayer extends Component {
     state = {
@@ -44,6 +45,29 @@ export  class neutralAudioPlayer extends Component {
             }
         });
 
+    returnToTasklist = () => {
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.isTLTask === true) {
+                return (
+                    <div className="w3-display-container">
+                        <Link to={{
+                            pathname: '/tasklistpage',
+                            state: {
+                                tasklistName: this.props.location.state.tasklistName,
+                                tasklistData: this.props.location.state.tasklistData
+                            }
+                        }} style={{textDecoration: 'none'}}>
+                            <button className="w3-button w3-theme w3-display-right w3-margin-bottom">
+                                Return to Tasklist <i className="arrow right"/>
+                            </button>
+                        </Link>
+                    </div>
+                )
+            }
+        }
+        return <div className="w3-display-container"/>
+    };
+
     render() {
         return (
             <div className="w3-container">
@@ -83,6 +107,7 @@ export  class neutralAudioPlayer extends Component {
                         </button>
                     </a>
                 </div>
+                {this.returnToTasklist()}
             </div>
         )
     }

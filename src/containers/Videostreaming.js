@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IFrame from '../components/Iframe.js';
 import '../App.css';
-
+import Link from "react-router-dom/es/Link";
 
 export default class VideoStreaming extends Component {
     constructor(props) {
@@ -9,7 +9,7 @@ export default class VideoStreaming extends Component {
 
         this.state = {
             value: '',
-            submitted: false
+            submitted: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -43,9 +43,32 @@ export default class VideoStreaming extends Component {
         return <IFrame url={this.state.value}/>
     }
 
+    returnToTasklist = () => {
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.isTLTask === true) {
+                return (
+                    <div className="w3-display-bottomright w3-padding">
+                        <Link to={{
+                            pathname: '/tasklistpage',
+                            state: {
+                                tasklistName: this.props.location.state.tasklistName,
+                                tasklistData: this.props.location.state.tasklistData
+                            }
+                        }} style={{textDecoration: 'none'}}>
+                            <button className="w3-button w3-theme">
+                                Return to Tasklist <i className="arrow right"/>
+                            </button>
+                        </Link>
+                    </div>
+                )
+            }
+        }
+        return <div className="w3-display-bottomright w3-padding"/>
+    };
+
     render() {
         return (
-            <div className="w3-container">
+            <div className="w3-container w3-display-container">
                 <h1 className="w3-center w3-margin-bottom">Emotions on Their Face</h1>
                 <form className="w3-card w3-bar" onSubmit={this.handleSubmit}>
                     <label className="w3-margin-left">
@@ -55,6 +78,7 @@ export default class VideoStreaming extends Component {
                     <input className="w3-button w3-theme w3-margin" type="submit" value="Submit"/>
                 </form>
                 {this.state.submitted && this.renderIFrame()}
+                {this.returnToTasklist()}
             </div>
         );
     }

@@ -373,7 +373,6 @@ class TasklistCreator extends Component {
                     <option value="Disgust">Disgust</option>
                     <option value="Happy">Happy</option>
                     <option value="Fear">Fear</option>
-                    <option value="Confused">Confused</option>
                     <option value="Neutral">Neutral</option>
                 </Field>
             </div>

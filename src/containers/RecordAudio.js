@@ -2,6 +2,7 @@ import React from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import '../App.css';
 import emojis from "../constants/Emojis";
+import Link from "react-router-dom/es/Link";
 
 const audioType = 'audio/wav';
 
@@ -62,12 +63,12 @@ class RecordAudio extends React.Component {
         this.saveAudio();
     }
 
-  saveAudio() {
-    // convert saved chunks to blob
-    var myblob = new Blob(this.chunks, {type: audioType});
-    // send audio blob to backend
-    let adata = new FormData();
-    adata.append('file', myblob, 'audio' + new Date().getUnixTime() +'.wav')
+    saveAudio() {
+        // convert saved chunks to blob
+        var myblob = new Blob(this.chunks, {type: audioType});
+        // send audio blob to backend
+        let adata = new FormData();
+        adata.append('file', myblob, 'audio' + new Date().getUnixTime() + '.wav')
 
         fetch(BaseUrl + 'audio_emotions', {
             method: "POST",
@@ -168,7 +169,8 @@ class RecordAudio extends React.Component {
             case "neutral":
                 return (
                     <div className="emotion w3-center">
-                        <img className="w3-image w3-margin" src={emojis.neutral} alt={"neutral"} style={{width: '35%'}}/>
+                        <img className="w3-image w3-margin" src={emojis.neutral} alt={"neutral"}
+                             style={{width: '35%'}}/>
                         <h3 className="w3-margin">NEUTRAL</h3>
                     </div>
                 );
@@ -179,11 +181,34 @@ class RecordAudio extends React.Component {
         }
     };
 
+    returnToTasklist = () => {
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.isTLTask === true) {
+                return (
+                    <div className="w3-display-bottomright w3-padding">
+                        <Link to={{
+                            pathname: '/tasklistpage',
+                            state: {
+                                tasklistName: this.props.location.state.tasklistName,
+                                tasklistData: this.props.location.state.tasklistData
+                            }
+                        }} style={{textDecoration: 'none'}}>
+                            <button className="w3-button w3-theme">
+                                Return to Tasklist <i className="arrow right"/>
+                            </button>
+                        </Link>
+                    </div>
+                )
+            }
+        }
+        return <div className="w3-display-bottomright w3-padding"/>
+    };
+
     render() {
         const {recording, audios} = this.state;
 
         return (
-            <div className="w3-container w3-center">
+            <div className="w3-container w3-center w3-display-container">
                 <h1 className="w3-center">Emotions in Your Voice</h1>
                 <audio
                     style={{width: 400}}
@@ -217,9 +242,10 @@ class RecordAudio extends React.Component {
                         {this.getEmoji(this.state.result)}
                     </div>
                 </div>
+                {this.returnToTasklist()}
             </div>
         );
     }
 }
 
-export default RecordAudio
+export default RecordAudio;
