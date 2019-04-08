@@ -493,9 +493,16 @@ class Webcam extends Component {
                         <h3 className="w3-margin">DISGUST</h3>
                     </div>
                 );
+            case "neutral":
+                return (
+                    <div className="emotion w3-center">
+                        <img className="w3-image w3-margin" src={emojis.neutral} alt={"neutral"} style={{width: '35%'}}/>
+                        <h3 className="w3-margin">NEUTRAL</h3>
+                    </div>
+                );
             default:
                 return (
-                    <div className={"emotion"}/>
+                    <div className="emotion"/>
                 );
         }
     };
@@ -504,7 +511,12 @@ class Webcam extends Component {
         const {isFetching} = this.props;
 
         if (isFetching) {
-            return "Loading...";
+            return (
+                <div className="w3-container w3-center">
+                    <h1 className="w3-center">Emotions on Your Face</h1>
+                    <p className="w3-center">Loading...</p>
+                </div>
+            )
         }
 
         return (
