@@ -46,6 +46,7 @@ class RecordAudio extends React.Component {
     this.chunks = [];
     // start recorder with 10ms buffer
     this.mediaRecorder.start(10);
+    this.startTimer();
     // say that we're recording
     this.setState({recording: true});
 
@@ -87,6 +88,11 @@ class RecordAudio extends React.Component {
     let adata = new FormData();
     adata.append('file', myblob, 'audio' + new Date().getUnixTime() +'.wav')
 
+    const audioURL = window.URL.createObjectURL(myblob);
+    // append videoURL to list of saved videos for rendering
+    const audios = this.state.audios.concat([audioURL]);
+    this.setState({audios});
+
     fetch(BaseUrl + 'audio_emotions', {
       method: "POST",
       body: adata,
@@ -120,10 +126,7 @@ class RecordAudio extends React.Component {
     }.bind(this)));
 
 
-    const audioURL = window.URL.createObjectURL(myblob);
-    // append videoURL to list of saved videos for rendering
-    const audios = this.state.audios.concat([audioURL]);
-    this.setState({audios});
+
   }
 
   deleteAudio(audioURL) {
@@ -131,7 +134,30 @@ class RecordAudio extends React.Component {
     const audios = this.state.audios.filter(a => a !== audioURL);
     this.setState({audios});
     this.setState({result: 'emotion'})
+    this.resetTimer();
   }
+
+   startTimer(){
+    let counter = 3;
+    setInterval(function() {
+      counter--;
+      if (counter >= 0) {
+        var span = document.getElementById("count");
+        span.innerHTML = counter;
+      }
+      if (counter === 0) {
+        //alert('sorry, out of time');
+        //clearInterval(counter);
+        span = 3;
+      }
+    }, 1000);
+  }
+  resetTimer(){
+    let counter = 3;
+    let span = document.getElementById("count");
+    span.innerHTML = counter;
+  }
+
 
   render() {
     const {recording, audios} = this.state;
@@ -149,6 +175,7 @@ class RecordAudio extends React.Component {
         </audio>
         <div>
           {!recording && <button onClick={e => this.startRecording(e)}>Record</button>}
+          <span id="count">3</span> seconds
           {/*{recording && <button onClick={e => this.stopRecording(e)}>Stop</button>}*/}
         </div>
         <div>
