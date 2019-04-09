@@ -601,7 +601,7 @@ class Webcam extends Component {
                 <div>
                     <div className="w3-half w3-left">
                         <canvas width='640' height='480'/>
-                        <canvas width='640' height='480' id="myFace"/>
+                        <canvas width='640' height='480' id="myFace" hidden={true}/>
                     </div>
                     <div className="w3-half w3-right">
                         {this.getEmoji(this.state.result)}
