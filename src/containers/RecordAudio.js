@@ -103,8 +103,10 @@ class RecordAudio extends React.Component {
       console.log(data)
       var test_arr = data;
       var maxConf = 0
+      //var secondMax = 0
       var emot = ""
-      for (var k = 0; k < 8; k++)
+      var secondEmot = ""
+      for (var k = 0; k < 7; k++)
       {
         // console.log(test_arr[k][0]);
         // console.log(test_arr[k][1]);
@@ -114,10 +116,29 @@ class RecordAudio extends React.Component {
           emot = data[k][0]
         }
       }
-
+      // //return second max
+      // for (var k = 0; k < 7; k++)
+      // {
+      //   // console.log(test_arr[k][0]);
+      //   // console.log(test_arr[k][1]);
+      //   let conf = test_arr[k][1]
+      //   if (conf > maxConf) {
+      //     secondMax = maxConf
+      //     maxConf = conf
+      //     //emot = data[k][0]
+      //   }
+      //   else if (test_arr[k][1]>secondMax && test_arr[k][1] != maxConf){
+      //     secondMax = test_arr[k][1];
+      //     secondEmot = data[k][0];
+      //   }
+      // }
+      //Math.round(num * 100) / 100
+      maxConf = Math.round(maxConf * 100)/100;
+      //secondMax = Math.round(secondMax * 100)/100;
       var resultStr = emot;
+      var resultStrSecond = secondEmot;
       if(maxConf > 0.30){
-        this.setState({result: resultStr + " " + maxConf})
+        this.setState({result: resultStr})
       }
       else
       {
