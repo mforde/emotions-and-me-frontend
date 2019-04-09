@@ -12,6 +12,7 @@ class Task extends Component {
         this.state = {
             checked: this.props.data.checked,
             type: this.props.data.type,
+            tasklistName: this.props.tasklistName,
             data: this.getTaskData(this.props.data),
             isDisabled: true,
             quizData: {},
@@ -28,7 +29,7 @@ class Task extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if (this.props.user.type !== prevProps.user.type) {
             if (this.props.user.type === 'TEACHER' || this.props.user.type === 'STUDENT') {
                 if (this.state.type === 'quiz') {
@@ -85,7 +86,14 @@ class Task extends Component {
                         a <b>{this.state.data}</b> face!
                     </div>
                     <div className="w3-right w3-quarter">
-                        <Link to={{pathname: '/webcam',}} style={{textDecoration: 'none'}}>
+                        <Link to={{
+                            pathname: '/webcam',
+                            state: {
+                                isTLTask: true,
+                                tasklistName: this.props.tasklistName,
+                                tasklistData: this.props.tasklist
+                            }
+                        }} style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-theme w3-margin-left go-btn-padding"
                                     onClick={this.props.onCheck}>GO!
                             </button>
@@ -103,7 +111,16 @@ class Task extends Component {
                         this video: <b>{this.state.data}</b>
                     </div>
                     <div className="w3-right w3-quarter">
-                        <Link to={{pathname: '/videostreaming', state: {submitted: true, value: this.state.data}}}
+                        <Link to={{
+                            pathname: '/videostreaming',
+                            state: {
+                                submitted: true,
+                                value: this.state.data,
+                                isTLTask: true,
+                                tasklistName: this.props.tasklistName,
+                                tasklistData: this.props.tasklist
+                            }
+                        }}
                               style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-theme w3-margin-left go-btn-padding"
                                     onClick={this.props.onCheck}>GO!
@@ -122,7 +139,14 @@ class Task extends Component {
                         a <b>{this.state.data}</b> voice!
                     </div>
                     <div className="w3-right w3-quarter">
-                        <Link to={{pathname: '/audio',}} style={{textDecoration: 'none'}}>
+                        <Link to={{
+                            pathname: '/recordaudio',
+                            state: {
+                                isTLTask: true,
+                                tasklistName: this.props.tasklistName,
+                                tasklistData: this.props.tasklist
+                            }
+                        }} style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-theme w3-margin-left go-btn-padding"
                                     onClick={this.props.onCheck}>GO!
                             </button>
@@ -141,7 +165,13 @@ class Task extends Component {
                         look through <b>{this.state.data.emotion} {this.state.data.format}s</b>!
                     </div>
                     <div className="w3-quarter w3-right">
-                        <Link to={{pathname: url,}} style={{textDecoration: 'none'}}>
+                        <Link to={{
+                            pathname: url, state: {
+                                isTLTask: true,
+                                tasklistName: this.props.tasklistName,
+                                tasklistData: this.props.tasklist
+                            }
+                        }} style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-theme w3-margin-left go-btn-padding"
                                     onClick={this.props.onCheck}>GO!
                             </button>
@@ -161,9 +191,14 @@ class Task extends Component {
                     <div className="w3-right w3-quarter">
                         <Link to={{
                             pathname: '/takequiz',
-                            state: {quizName: this.state.data, quizData: this.state.quizData.quizData}
-                        }}
-                              style={{textDecoration: 'none'}}>
+                            state: {
+                                quizName: this.state.data,
+                                quizData: this.state.quizData.quizData,
+                                isTLTask: true,
+                                tasklistName: this.props.tasklistName,
+                                tasklistData: this.props.tasklist
+                            }
+                        }} style={{textDecoration: 'none'}}>
                             <button className="w3-button w3-theme w3-margin-left go-btn-padding"
                                     disabled={this.state.isDisabled} onClick={this.props.onCheck}>GO!
                             </button>

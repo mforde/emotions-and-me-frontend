@@ -25,25 +25,35 @@ function QuestionNum(props) {
         return (
             <div className='w3-display-container'>
                 {numOrCorrect()}
-                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Next</button>
+                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>
+                    Next <i className="arrow right"/>
+                </button>
             </div>
         );
     }
     else if (props.counter === props.total) {
         return (
             <div className='w3-display-container'>
-                <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>Previous</button>
+                <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>
+                    <i className="arrow left"/> Previous
+                </button>
                 {numOrCorrect()}
-                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Finish!</button>
+                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>
+                    Finish! <i className="arrow right"/>
+                </button>
             </div>
         );
     }
     else {
         return (
             <div className='w3-display-container'>
-                <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>Previous</button>
+                <button className="w3-button w3-theme w3-display-left" onClick={props.onPrev}>
+                    <i className="arrow left"/> Previous
+                </button>
                 {numOrCorrect()}
-                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>Next</button>
+                <button className="w3-button w3-theme w3-display-right" onClick={props.onNext}>
+                    Next <i className="arrow right"/>
+                </button>
             </div>
         );
     }
