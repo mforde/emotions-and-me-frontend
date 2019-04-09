@@ -55,13 +55,15 @@ class RecordAudio extends React.Component {
       setTimeout(() => {
         this.mediaRecorder.stop();
          // say that we're not recording
+        this.saveAudio();
+
       this.setState({recording: false});
       }, 4000);
 
 
       // send audio to backend
      this.mediaRecorder.addEventListener("stop", () => {
-       this.saveAudio();
+       this.chunks = [];
      });
 
   }
