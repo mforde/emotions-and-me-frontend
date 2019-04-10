@@ -41,27 +41,48 @@ class RecordAudio extends React.Component {
         };
     }
 
-    startRecording(e) {
-        e.preventDefault();
-        // wipe old data chunks
-        this.chunks = [];
-        // start recorder with 10ms buffer
-        this.mediaRecorder.start(10);
-        // say that we're recording
-        this.setState({recording: true});
-    }
+  startRecording(e) {
+    e.preventDefault();
+    // wipe old data chunks
+    this.chunks = [];
+    // start recorder with 10ms buffer
+    this.mediaRecorder.start(10);
+    this.startTimer();
+    // say that we're recording
+    this.setState({recording: true});
 
-    //record 3.5 seconds of audio
-    stopRecording(e) {
-        e.preventDefault();
-        // stop the recorder
+    //e.preventDefault();
+      // stop the recorder after 3 seconds
+      setTimeout(() => {
         this.mediaRecorder.stop();
-
-        // say that we're not recording
-        this.setState({recording: false});
-        // send audio to backend
+         // say that we're not recording
         this.saveAudio();
-    }
+
+      this.setState({recording: false});
+      }, 4000);
+
+
+      // send audio to backend
+     this.mediaRecorder.addEventListener("stop", () => {
+       this.chunks = [];
+     });
+
+  }
+
+  // //record 3.5 seconds of audio
+  // stopRecording(e) {
+  //   e.preventDefault();
+  //   // stop the recorder after 3 seconds
+  //   setTimeout(() => {
+  //     this.mediaRecorder.stop();
+  //   }, 3000);
+  //
+  //
+  //   // say that we're not recording
+  //   this.setState({recording: false});
+  //   // send audio to backend
+  //   this.saveAudio();
+  // }
 
     saveAudio() {
         // convert saved chunks to blob
@@ -79,7 +100,7 @@ class RecordAudio extends React.Component {
             let test_arr = data;
             let maxConf = 0;
             let emot = "";
-            for (let k = 0; k < 8; k++) {
+            for (let k = 0; k < 7; k++) {
                 // console.log(test_arr[k][0]);
                 // console.log(test_arr[k][1]);
                 let conf = test_arr[k][1];
@@ -106,12 +127,35 @@ class RecordAudio extends React.Component {
         this.setState({audios});
     }
 
-    deleteAudio(audioURL) {
-        // filter out current videoURL from the list of saved videos
-        const audios = this.state.audios.filter(a => a !== audioURL);
-        this.setState({audios});
-        this.setState({result: 'emotion'})
-    }
+  deleteAudio(audioURL) {
+    // filter out current videoURL from the list of saved videos
+    const audios = this.state.audios.filter(a => a !== audioURL);
+    this.setState({audios});
+    this.setState({result: ''})
+    this.resetTimer();
+  }
+
+   startTimer(){
+    let counter = 3;
+    setInterval(function() {
+      counter--;
+      if (counter >= 0) {
+        var span = document.getElementById("count");
+        span.innerHTML = counter;
+      }
+      if (counter === 0) {
+        //alert('sorry, out of time');
+        //clearInterval(counter);
+        span = 3;
+      }
+    }, 1000);
+  }
+  resetTimer(){
+    let counter = 3;
+    let span = document.getElementById("count");
+    span.innerHTML = counter;
+  }
+
 
     getEmoji = (emotion) => {
         switch (emotion) {
@@ -221,9 +265,8 @@ class RecordAudio extends React.Component {
                     <div>
                         {!recording && <button className="w3-button w3-theme w3-padding w3-margin"
                                                onClick={e => this.startRecording(e)}>Record</button>}
-                        {recording &&
-                        <button className="w3-button w3-theme w3-padding w3-margin"
-                                onClick={e => this.stopRecording(e)}>Stop</button>}
+                        <span id="count">3</span> seconds
+
                     </div>
                     <div className="w3-half w3-left">
                         <div>
@@ -232,7 +275,7 @@ class RecordAudio extends React.Component {
                                 <div key={`audio_${i}`} className="w3-margin">
                                     <audio controls style={{width: 200}} src={audioURL} className="w3-left"/>
                                     <button className="w3-button w3-hover-red w3-margin-left margin-small"
-                                            onClick={() => this.deleteAudio(audioURL)}>Delete
+                                            onClick={() => this.deleteAudio(audioURL)}>Reset
                                     </button>
                                 </div>
                             ))}
