@@ -2,6 +2,53 @@ import React, { Component } from 'react';
 import BaseUrl from '../constants/BaseUrl';
 import '../App.css';
 import emojis from "../constants/Emojis";
+import Link from "react-router-dom/es/Link";
+import CBuffer from "CBuffer";
+
+// post processing variables and functions
+let cbuffermap = {};
+let cbuflen = 5;
+
+let angrybuffer = new CBuffer(cbuflen);
+let disgustbuffer = new CBuffer(cbuflen);
+let fearbuffer = new CBuffer(cbuflen);
+let happybuffer = new CBuffer(cbuflen);
+let sadbuffer = new CBuffer(cbuflen);
+let suprisebuffer = new CBuffer(cbuflen);
+let neutralbuffer = new CBuffer(cbuflen);
+
+angrybuffer.overflow = function(data) {};
+disgustbuffer.overflow = function(data) {};
+fearbuffer.overflow = function(data) {};
+happybuffer.overflow = function(data) {};
+sadbuffer.overflow = function(data) {};
+suprisebuffer.overflow = function(data) {};
+neutralbuffer.overflow = function(data) {};
+
+for (let i = 0; i < cbuflen; i++){
+    angrybuffer.push(0);
+    disgustbuffer.push(0);
+    fearbuffer.push(0);
+    happybuffer.push(0);
+    sadbuffer.push(0);
+    suprisebuffer.push(0);
+    neutralbuffer.push(0);
+}
+
+cbuffermap["angry"] = angrybuffer;
+cbuffermap["disgust"] = disgustbuffer;
+cbuffermap["fear"] = fearbuffer;
+cbuffermap["happy"] = happybuffer;
+cbuffermap["sad"] = sadbuffer;
+cbuffermap["surprise"] = suprisebuffer;
+cbuffermap["neutral"] = neutralbuffer;
+
+let emotion_prob = {};
+
+function multiply(accumulator, a) {
+    return accumulator * a;
+}
+
 
 class Webcam extends Component {
     constructor(props) {
@@ -420,12 +467,15 @@ class Webcam extends Component {
                             if (conf > maxConf) {
                                 maxConf = conf;
                                 emot = data[k][0];
+                                cbuffermap[emot].push(maxConf);
                             }
                         }
 
-                        test.push(data);
+                        for (let key in cbuffermap) {
+                            emotion_prob[key] = cbuffermap[key].toArray().reduce(multiply);
+                        }
 
-                        let resultStr = emot;
+                        let resultStr = Object.keys(emotion_prob).reduce((a, b) => emotion_prob[a] > emotion_prob[b] ? a : b);
                         this.setState({result: resultStr})
                     }.bind(this)));
 
@@ -493,22 +543,57 @@ class Webcam extends Component {
                         <h3 className="w3-margin">DISGUST</h3>
                     </div>
                 );
+            case "neutral":
+                return (
+                    <div className="emotion w3-center">
+                        <img className="w3-image w3-margin" src={emojis.neutral} alt={"neutral"} style={{width: '35%'}}/>
+                        <h3 className="w3-margin">NEUTRAL</h3>
+                    </div>
+                );
             default:
                 return (
-                    <div className={"emotion"}/>
+                    <div className="emotion"/>
                 );
         }
+    };
+
+    returnToTasklist = () => {
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.isTLTask === true) {
+                return (
+                    <div className="w3-display-bottomright w3-padding">
+                        <Link to={{
+                            pathname: '/tasklistpage',
+                            state: {
+                                tasklistName: this.props.location.state.tasklistName,
+                                tasklistData: this.props.location.state.tasklistData
+                            }
+                        }} style={{textDecoration: 'none'}}>
+                            <button className="w3-button w3-theme">
+                                Return to Tasklist <i className="arrow right"/>
+                            </button>
+                        </Link>
+                    </div>
+                )
+            }
+        }
+        return <div className="w3-display-bottomright w3-padding"/>
     };
 
     render() {
         const {isFetching} = this.props;
 
         if (isFetching) {
-            return "Loading...";
+            return (
+                <div className="w3-container w3-center w3-display-container">
+                    <h1 className="w3-center">Emotions on Your Face</h1>
+                    <p className="w3-center">Loading...</p>
+                </div>
+            )
         }
 
         return (
-            <div className="w3-container w3-center">
+            <div className="w3-container w3-center w3-display-container">
                 <h1 className="w3-center">Emotions on Your Face</h1>
                 <button className="w3-button w3-theme w3-padding-large w3-margin"
                         onClick={this.button_callback}>Start!
@@ -516,12 +601,13 @@ class Webcam extends Component {
                 <div>
                     <div className="w3-half w3-left">
                         <canvas width='640' height='480'/>
-                        <canvas width='640' height='480' id="myFace"/>
+                        <canvas width='640' height='480' id="myFace" hidden={true}/>
                     </div>
                     <div className="w3-half w3-right">
                         {this.getEmoji(this.state.result)}
                     </div>
                 </div>
+                {this.returnToTasklist()}
             </div>
         )
     }

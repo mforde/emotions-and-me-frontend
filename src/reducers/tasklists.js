@@ -5,7 +5,8 @@ import {
     RESET_SAVE, REMOVE_TASKLIST,
     SUCCESSFUL_TASKLIST_REMOVE, FAILED_TASKLIST_REMOVE,
     UPDATE_TASKLIST, FAILED_UPDATE,
-    SUCCESSFUL_UPDATE
+    SUCCESSFUL_UPDATE, REQUEST_TASKLIST,
+    RECEIVE_TASKLIST, FAILED_RECEIVE_TASKLIST
 } from "../actions/tasklists";
 
 const defaultState = {
@@ -22,17 +23,20 @@ const defaultState = {
 const tasklists = ( state = defaultState, action) => {
     switch (action.type) {
         case REQUEST_TASKLISTS:
+        case REQUEST_TASKLIST:
             return {
                 ...state,
                 isFetching: true,
             };
         case RECEIVE_TASKLISTS:
+        case RECEIVE_TASKLIST:
             return {
                 ...state,
                 isFetching: false,
                 tasklistData: action.data,
             };
         case FAILED_RECEIVE_TASKLISTS:
+        case FAILED_RECEIVE_TASKLIST:
             return {
                 ...state,
                 isFetching: false,

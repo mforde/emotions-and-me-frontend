@@ -26,9 +26,16 @@ class TasklistPage extends Component {
 
     renderTasklist() {
         return (
-            <div className="w3-container">
+            <div className="w3-container w3-display-container">
                 <h1 className="w3-center">{this.state.tasklistName}</h1>
-                <TaskChecklist tasklistData={this.state.tasklistData} onCheck={this.onCheck}/>
+                <TaskChecklist tasklistData={this.state.tasklistData} tasklistName={this.state.tasklistName} onCheck={this.onCheck}/>
+                <div className="w3-left">
+                    <a href="/myassignments">
+                        <button className="w3-button w3-theme w3-margin-top">
+                            <i className="arrow left"/> Back
+                        </button>
+                    </a>
+                </div>
             </div>
         );
     }

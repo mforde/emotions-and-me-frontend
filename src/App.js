@@ -80,7 +80,6 @@ class App extends Component {
     }
 
     handleCloseModal() {
-        alert("closing?");
         this.setState({openModal: ModalOptions.NONE})
     }
 

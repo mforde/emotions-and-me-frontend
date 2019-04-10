@@ -4,6 +4,10 @@ export const REQUEST_TASKLISTS = 'REQUEST_TASKLISTS';
 export const RECEIVE_TASKLISTS = 'RECEIVE_TASKLISTS';
 export const FAILED_RECEIVE_TASKLISTS = 'FAILED_RECEIVE_TASKLISTS';
 
+export const REQUEST_TASKLIST = 'REQUEST_TASKLIST';
+export const RECEIVE_TASKLIST = 'RECEIVE_TASKLIST';
+export const FAILED_RECEIVE_TASKLIST = 'FAILED_RECEIVE_TASKLIST';
+
 export const SAVE_TASKLIST = 'SAVE_TASKLIST';
 export const FAILED_SAVE = 'FAILED_SAVE';
 export const SUCCESSFUL_SAVE = 'SUCCESSFUL_SAVE';
@@ -28,6 +32,19 @@ export const receiveTasklists = json => ({
 
 export const failedToReceiveTasklists = () => ({
     type: FAILED_RECEIVE_TASKLISTS,
+});
+
+export const requestTasklist = () => ({
+    type : REQUEST_TASKLIST
+});
+
+export const receiveTasklist = json => ({
+    type: RECEIVE_TASKLIST,
+    data: json,
+});
+
+export const failedToReceiveTasklist = () => ({
+    type: FAILED_RECEIVE_TASKLIST,
 });
 
 export const saveTasklist = () => ({
@@ -93,6 +110,33 @@ export const fetchTasklists = (username, type) => {
             .then(response => response.json())
             .then(json => dispatch(receiveTasklists(json)),
                 () => dispatch(failedToReceiveTasklists()))
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+};
+
+export const getSingleTasklist = (username, type, tasklistName) => {
+    let url = '';
+    if (type === 'TEACHER') {
+        url = BaseUrl + 'assignments/teacher/gettasklist?tasklistName=' + tasklistName + '&teacher=' + username;
+    } else {
+        url = BaseUrl + 'assignments/student/gettasklist?tasklistName=' + tasklistName + '&student=' + username;
+    }
+
+    return (dispatch) => {
+        dispatch(requestTasklist());
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+//                'Authorization': `JWT ${localStorage.getItem('token')}`,
+            },
+        })
+            .then(response => response.json())
+            .then(json => dispatch(receiveTasklist(json)),
+                () => dispatch(failedToReceiveTasklist()))
             .catch(function(error) {
                 console.error(error);
             });

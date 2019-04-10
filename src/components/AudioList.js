@@ -34,6 +34,13 @@ export default class AudioList extends Component {
                 <div className="browse w3-centered w3-container w3-margin">
                     {this.getEmotion()}
                 </div>
+                <div className="w3-display-container">
+                    <a href="/browse">
+                        <button className="w3-button w3-theme w3-display-left w3-margin-bottom">
+                            <i className="arrow left"/> Back
+                        </button>
+                    </a>
+                </div>
             </div>
         );
     }

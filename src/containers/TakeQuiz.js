@@ -268,8 +268,26 @@ class TakeQuiz extends Component {
     }
 
     renderResult() {
+        if (this.props.location.state !== undefined) {
+            if (this.props.location.state.isTLTask === true) {
+                return (
+                    <Result
+                        numCorrect={this.state.result}
+                        numQuestions={this.quizQuestions.length}
+                        tasklistName={this.props.location.state.tasklistName}
+                        tasklistData={this.props.location.state.tasklistData}
+                    />
+                )
+            }
+        }
+
         return (
-            <Result numCorrect={this.state.result} numQuestions={this.quizQuestions.length}/>
+            <Result
+                numCorrect={this.state.result}
+                numQuestions={this.quizQuestions.length}
+                tasklistName=""
+                tasklistData={null}
+            />
         );
     }
 
