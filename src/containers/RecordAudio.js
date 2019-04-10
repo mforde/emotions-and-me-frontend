@@ -112,7 +112,7 @@ class RecordAudio extends React.Component {
 
             let resultStr = emot;
             if (maxConf > 0.30) {
-                this.setState({result: resultStr + " " + maxConf})
+                this.setState({result: resultStr})
             } else {
                 this.setState({result: 'not enough data was given, please record again'})
             }
@@ -220,7 +220,9 @@ class RecordAudio extends React.Component {
                 );
             default:
                 return (
-                    <div className={"emotion"}/>
+                    <div className={"emotion"}>
+                        {emotion}
+                    </div>
                 );
         }
     };
