@@ -1,9 +1,13 @@
 import {
-    RECEIVE_VIDEOURL , REQUEST_VIDEOURL, FAILED_VIDEOURL
+    SEND_VIDEOURL, SUCCESS_SEND_URL, FAILED_SEND_URL,
+    REQUEST_VIDEOURL, RECEIVE_VIDEOURL, FAILED_VIDEOURL
 } from '../actions';
 
 const defaultState = {
-    emotion_url: "",
+    video_id: "",
+    video_url: "",
+    status: "",
+    yt_url: "",
     isFetching: false,
     hasFailed: false,
 };
@@ -18,10 +22,31 @@ const videostream = ( state = defaultState, action) => {
         case RECEIVE_VIDEOURL:
             return {
                 ...state,
-                emotion_url: action.emotion_url,
+                video_id: action.data,
                 isFetching: false,
             };
         case FAILED_VIDEOURL:
+            return {
+                ...state,
+                isFetching: false,
+                hasFailed: true,
+            };
+        case SEND_VIDEOURL:
+            return {
+                ...state,
+                isFetching: true,
+                status: "",
+            };
+        case SUCCESS_SEND_URL:
+            return {
+                ...state,
+                video_id: action.id,
+                video_url: action.saved_path,
+                status: action.status,
+                yt_url: action.original_url,
+                isFetching: false,
+            };
+        case FAILED_SEND_URL:
             return {
                 ...state,
                 isFetching: false,
