@@ -448,6 +448,7 @@ class TasklistCreator extends Component {
                 let temp = {
                     type: "video",
                     id: json,
+                    url: task.url,
                     checked: false,
                 };
                 tasks.push(temp)

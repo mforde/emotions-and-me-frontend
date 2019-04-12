@@ -14,7 +14,11 @@ class IFrame extends Component {
     }
 
     componentDidMount() {
-        this.props.sendVideoUrl(this.props.url);
+        if (this.props.id === '') {
+            this.props.sendVideoUrl(this.props.url);
+        } else {
+            this.props.getProcessedVideo(this.props.id);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -26,6 +30,7 @@ class IFrame extends Component {
             if (this.props.status === 'FAILED') {
                 this.setState({
                     hasFailed: true,
+                    isProcessing: false,
                 })
             }
             if (this.props.status === 'SUCCEEDED') {
