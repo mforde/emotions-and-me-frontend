@@ -43,25 +43,24 @@ class IFrame extends Component {
         if (this.props.status === 'PENDING') {
             if (this.props.id !== '') {
                 this.props.getProcessedVideo(this.props.video_id);
-            }
-            else {
+            } else {
                 this.props.getProcessedVideo(this.props.id);
             }
         }
     }
 
     render() {
-        if (this.state.isProcessing || this.props.isFetching) {
-            return (
-                <div className="w3-center w3-padding">
-                    <h4>Processing Video...</h4>
-                </div>
-            )
-        }
         if (this.state.hasFailed || this.props.hasFailed) {
             return (
                 <div className="w3-center w3-padding">
                     <h4>Failed to process video.</h4>
+                </div>
+            )
+        }
+        if (this.state.isProcessing || this.props.isFetching) {
+            return (
+                <div className="w3-center w3-padding">
+                    <h4>Processing Video...</h4>
                 </div>
             )
         } else {

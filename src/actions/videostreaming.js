@@ -63,7 +63,7 @@ export const getProcessedVideo = (id) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({id: id})
+            body: JSON.stringify({id: id.toString()})
         })
             .then(response => response.json())
             .then(json => dispatch(receiveVideo(json)),
