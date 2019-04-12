@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import allNames from './hello';
 import webcamStream from './webcam';
 import userInfo,* as fromAuth from './userInfo';
 import assignments from './assignments';
@@ -9,7 +8,6 @@ import tasklists from './tasklists';
 
 
 export default combineReducers({
-    allNames,
     webcamStream,
     userInfo,
     assignments,

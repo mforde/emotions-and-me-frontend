@@ -60,7 +60,10 @@ class Task extends Component {
             return data.emotion;
         }
         if (data.type === "video") {
-            return data.url;
+            return {
+                id: data.id,
+                url: data.url,
+            };
         }
         if (data.type === "audio") {
             return data.emotion;
@@ -108,14 +111,15 @@ class Task extends Component {
                     <div className="w3-container w3-threequarter w3-left">
                         <input type="checkbox" className="w3-check" checked={this.state.checked}
                                onChange={this.handleClick}/> Go to the <b>Emotions on Their Faces</b> feature and watch
-                        this video: <b>{this.state.data}</b>
+                        this video: <b>{this.state.data.url}</b>
                     </div>
                     <div className="w3-right w3-quarter">
                         <Link to={{
                             pathname: '/videostreaming',
                             state: {
                                 submitted: true,
-                                value: this.state.data,
+                                value: this.state.data.url,
+                                id: this.state.data.id,
                                 isTLTask: true,
                                 tasklistName: this.props.tasklistName,
                                 tasklistData: this.props.tasklist

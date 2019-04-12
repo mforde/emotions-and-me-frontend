@@ -7,6 +7,7 @@ import {Field, Form} from "react-final-form";
 import arrayMutators from "final-form-arrays";
 import {FieldArray} from "react-final-form-arrays";
 import Redirect from "./QuizMakerPage";
+import BaseUrl from "../constants/BaseUrl";
 
 class TasklistCreator extends Component {
     constructor(props) {
@@ -61,11 +62,13 @@ class TasklistCreator extends Component {
             studentUsers.push(student.value);
         });
 
+        let data = await this.convertTasklistData(values);
+
         this.props.sendTasklist(this.props.user.username, studentUsers, JSON.stringify({
-            'teacher'       : this.props.user.username,
-            'students'      : this.state.selectedStudents,
-            'tasklistName'      : values.tasklistName,
-            'tasklistData'      : this.convertTasklistData(values)
+            'teacher': this.props.user.username,
+            'students': this.state.selectedStudents,
+            'tasklistName': values.tasklistName,
+            'tasklistData': data
         }));
     };
 
@@ -106,7 +109,8 @@ class TasklistCreator extends Component {
                                                     className="w3-display-topright w3-padding w3-padding-16"
                                                     style={{cursor: 'pointer'}}>✖
                                                 </div>
-                                                <label className="w3-padding-top">"Emotions on Your Face" Task {index + 1}:</label>
+                                                <label className="w3-padding-top">"Emotions on Your Face"
+                                                    Task {index + 1}:</label>
                                                 {this.WebcamTask(name)}
                                             </div>
                                         ))}
@@ -341,7 +345,8 @@ class TasklistCreator extends Component {
     AudioTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion for the student to practice by recording their voice in the "Emotions in Your Voice" feature</p>
+                <p>Pick an emotion for the student to practice by recording their voice in the "Emotions in Your Voice"
+                    feature</p>
                 <label className="w3-margin-right">Emotion: </label>
                 <Field component="select" className="w3-select" name={`${name}.emotion`}>
                     <option/>
@@ -359,7 +364,8 @@ class TasklistCreator extends Component {
     BrowseTask = (name) => {
         return (
             <div className="w3-group w3-padding">
-                <p>Pick an emotion and photos or audio clips for the student to browse photos or audio clips of in the "Emotions in Photos & Audio" feature</p>
+                <p>Pick an emotion and photos or audio clips for the student to browse photos or audio clips of in the
+                    "Emotions in Photos & Audio" feature</p>
                 <label className="w3-margin-right">Photos or Audio Clips: </label>
                 <Field component="select" className="w3-select" name={`${name}.format`}>
                     <option/>
@@ -415,8 +421,9 @@ class TasklistCreator extends Component {
         )
     };
 
-    convertTasklistData = (values) => {
+    convertTasklistData = async (values) => {
         let tasks = [];
+
         if ('webcamTasks' in values) {
             values.webcamTasks.forEach(task => {
                 let temp = {
@@ -428,14 +435,24 @@ class TasklistCreator extends Component {
             });
         }
         if ('videoTasks' in values) {
-            values.videoTasks.forEach(task => {
+            for (const task of values.videoTasks) {
+                const response = await (
+                    fetch(BaseUrl + 'get_video', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({url: task.url.toString()})
+                    }));
+                const json = await response.json();
                 let temp = {
                     type: "video",
+                    id: json.id,
                     url: task.url,
                     checked: false,
                 };
                 tasks.push(temp)
-            });
+            }
         }
         if ('audioTasks' in values) {
             values.audioTasks.forEach(task => {
