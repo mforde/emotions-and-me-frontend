@@ -3,7 +3,6 @@ import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
 import {getProcessedVideo, sendVideoUrl} from "../actions";
 
-const TIMEOUT = 600; // how many seconds until tick() stops
 const INTERVAL = 5; // how many seconds before re-trying "check_video"
 
 class IFrame extends Component {
@@ -29,7 +28,7 @@ class IFrame extends Component {
         } else {
             this.props.getProcessedVideo(this.props.id);
         }
-        this.interval = setInterval(() => this.tick(), TIMEOUT);
+        this.interval = setInterval(() => this.tick(), 1000);
     }
 
     componentWillUnmount() {
@@ -56,11 +55,13 @@ class IFrame extends Component {
             }
         }
 
-        if (this.props.status === 'PENDING' && this.state.seconds % INTERVAL === 0) {
+        if (this.props.status === 'PENDING' && this.state.seconds > INTERVAL) {
             if (this.props.id !== '') {
                 this.props.getProcessedVideo(this.props.id);
+                this.setState({ seconds: 0 }); // re-set count
             } else {
                 this.props.getProcessedVideo(this.props.video_id);
+                this.setState({ seconds: 0 }); // re-set count
             }
         }
     }

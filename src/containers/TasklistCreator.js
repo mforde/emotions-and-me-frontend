@@ -447,7 +447,7 @@ class TasklistCreator extends Component {
                 const json = await response.json();
                 let temp = {
                     type: "video",
-                    id: json,
+                    id: json.id,
                     url: task.url,
                     checked: false,
                 };
