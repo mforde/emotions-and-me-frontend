@@ -38,8 +38,14 @@ class IFrame extends Component {
                     isProcessing: false,
                 })
             }
-            if (this.props.status === 'PENDING') {
+        }
+
+        if (this.props.status === 'PENDING') {
+            if (this.props.id !== '') {
                 this.props.getProcessedVideo(this.props.video_id);
+            }
+            else {
+                this.props.getProcessedVideo(this.props.id);
             }
         }
     }
