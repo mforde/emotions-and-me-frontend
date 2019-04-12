@@ -9,6 +9,7 @@ export default class VideoStreaming extends Component {
 
         this.state = {
             value: '',
+            id: '',
             submitted: false,
         };
 
@@ -19,6 +20,7 @@ export default class VideoStreaming extends Component {
     componentDidMount() {
         if (this.props.location.state) {
             this.setState({
+                id: this.props.location.state.id,
                 value: this.props.location.state.value,
                 submitted: this.props.location.state.submitted
             })
@@ -40,7 +42,7 @@ export default class VideoStreaming extends Component {
     }
 
     renderIFrame() {
-        return <IFrame url={this.state.value}/>
+        return <IFrame url={this.state.value} id={this.state.id}/>
     }
 
     returnToTasklist = () => {
