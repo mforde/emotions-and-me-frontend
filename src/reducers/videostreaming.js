@@ -22,7 +22,10 @@ const videostream = ( state = defaultState, action) => {
         case RECEIVE_VIDEOURL:
             return {
                 ...state,
-                video_id: action.data,
+                video_id: action.data.id,
+                video_url: action.data.saved_path,
+                status: action.data.status,
+                yt_url: action.data.original_url,
                 isFetching: false,
             };
         case FAILED_VIDEOURL:
@@ -40,10 +43,10 @@ const videostream = ( state = defaultState, action) => {
         case SUCCESS_SEND_URL:
             return {
                 ...state,
-                video_id: action.id,
-                video_url: action.saved_path,
-                status: action.status,
-                yt_url: action.original_url,
+                video_id: action.data.id,
+                video_url: action.data.saved_path,
+                status: action.data.status,
+                yt_url: action.data.original_url,
                 isFetching: false,
             };
         case FAILED_SEND_URL:

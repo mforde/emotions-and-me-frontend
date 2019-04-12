@@ -3,6 +3,9 @@ import ReactPlayer from 'react-player';
 import { connect } from 'react-redux';
 import {getProcessedVideo, sendVideoUrl} from "../actions";
 
+const TIMEOUT = 600; // how many seconds until tick() stops
+const INTERVAL = 5; // how many seconds before re-trying "check_video"
+
 class IFrame extends Component {
     constructor(props) {
         super(props);
@@ -10,7 +13,14 @@ class IFrame extends Component {
         this.state = {
             isProcessing: true,
             hasFailed: false,
+            seconds: 0
         }
+    }
+
+    tick() {
+        this.setState(prevState => ({
+            seconds: prevState.seconds + 1
+        }));
     }
 
     componentDidMount() {
@@ -19,11 +29,17 @@ class IFrame extends Component {
         } else {
             this.props.getProcessedVideo(this.props.id);
         }
+        this.interval = setInterval(() => this.tick(), TIMEOUT);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.video_id !== prevProps.video_id) {
             this.props.getProcessedVideo(this.props.video_id);
+            this.setState({ seconds: 0 }); // re-set count
         }
 
         if (this.props.status !== prevProps.status) {
@@ -40,11 +56,11 @@ class IFrame extends Component {
             }
         }
 
-        if (this.props.status === 'PENDING') {
+        if (this.props.status === 'PENDING' && this.state.seconds % INTERVAL === 0) {
             if (this.props.id !== '') {
-                this.props.getProcessedVideo(this.props.video_id);
-            } else {
                 this.props.getProcessedVideo(this.props.id);
+            } else {
+                this.props.getProcessedVideo(this.props.video_id);
             }
         }
     }

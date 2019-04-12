@@ -45,31 +45,31 @@ export const sendVideoUrl = (video_url) => {
             },
             body: JSON.stringify({url: video_url.toString()})
         })
-            .then(response => response.json())
-            .then(json => dispatch(sentUrl(json)),
-                () => dispatch(failedSendUrl()))
-            .catch(function(error) {
-                console.error(error);
-            });
+        .then(response => response.json())
+        .then(json => dispatch(sentUrl(json)),
+            () => dispatch(failedSendUrl()))
+        .catch(function(error) {
+            console.error(error);
+        });
     }
 };
 
 export const getProcessedVideo = (id) => {
     return dispatch => {
         dispatch(requestVideo());
-
-        fetch(BaseUrl + 'check_video', {
+        fetch(BaseUrl + 'check_video?id=' + id.toString(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({id: id.toString()})
+            }
         })
-            .then(response => response.json())
-            .then(json => dispatch(receiveVideo(json)),
-                () => dispatch(failedVideo()))
-            .catch(function(error) {
-                console.error(error);
-            })
+        .then(response => {
+            return response.json()
+        })
+        .then(json =>  dispatch(receiveVideo(json)),
+            error => dispatch(failedVideo()))
+        .catch(function(error) {
+            console.error(error);
+        })
     }
 };
