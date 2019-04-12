@@ -458,17 +458,9 @@ class Webcam extends Component {
                         body: JSON.stringify(imageJSON),
                     }).then(response => response.json().then(function (data) {
                         console.log(data);
-                        let maxConf = 0;
-                        let test = [];
-                        let emot = "";
-                        let counter = 0;
+
                         for (let k = 0; k < 7; k++) {
-                            let conf = data[k][1];
-                            if (conf > maxConf) {
-                                maxConf = conf;
-                                emot = data[k][0];
-                                cbuffermap[emot].push(maxConf);
-                            }
+                                cbuffermap[data[k][0]].push(data[k][1]);
                         }
 
                         for (let key in cbuffermap) {
