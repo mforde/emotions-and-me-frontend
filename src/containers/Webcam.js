@@ -457,7 +457,6 @@ class Webcam extends Component {
                         },
                         body: JSON.stringify(imageJSON),
                     }).then(response => response.json().then(function (data) {
-                        console.log(data);
 
                         for (let k = 0; k < 7; k++) {
                                 cbuffermap[data[k][0]].push(data[k][1]);
